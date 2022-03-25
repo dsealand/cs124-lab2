@@ -77,13 +77,6 @@ function App(props) {
   }
 
   function handleAddNewTask(task) {
-    // setTasks([...tasks,
-    //   {
-    //     id: generateUniqueID(),
-    //     text: task,
-    //     isCompleted: false
-    //   }
-    // ]);
     const uniqueID = generateUniqueID();
     setDoc(doc(db, collectionName, uniqueID),
     {
