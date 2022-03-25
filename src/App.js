@@ -6,7 +6,7 @@ import { useState } from 'react';
 import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
 import {useCollectionData} from "react-firebase-hooks/firestore";
 import {initializeApp} from "firebase/app";
-import {collection, deleteDoc, doc, getFirestore, query, setDoc} from "firebase/firestore";
+import {collection, doc, getFirestore, query, setDoc} from "firebase/firestore";
 
 
 const firebaseConfig = {
