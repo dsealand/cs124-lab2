@@ -11,7 +11,7 @@
   }
   
 .task-row input {
-    flex: 7;
+    flex: 6;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -48,7 +48,7 @@
 }
 
 .task-priority {
-    flex: 1;
+    flex: 2;
     text-align: center;
     text-decoration: none;
 }
