@@ -24,7 +24,7 @@ function ListItem(props) {
     <div className={"task-row" + ((props.isCompleted) ? " completed" : "")}>
       <div className="task-icon">
         <button className="icon-button" onClick={() => props.onToggleItemCompleted(props.id)}>
-          {(props.isCompleted) ? <FaRegCheckCircle /> : <FaRegCircle />}
+          {(props.isCompleted) ? <FaRegCheckCircle/> : <FaRegCircle/>}
         </button>
       </div>
       <input
@@ -42,15 +42,15 @@ function ListItem(props) {
             e.target.blur()
           }
         }} />
-      <div>
+      <div className="task-priority">
         {isEditing ?
-        <button className="task-priority" onMouseDown={(e) => {e.preventDefault()
+        <button className="icon-button" onMouseDown={(e) => {e.preventDefault()
           setPriority((priority+1)%3);
           console.log("priority", priority)}}
         >
           {priorityElements}
         </button> : 
-        <div className="task-priority">{priorityElements}</div>}
+        <div className="icon-button">{priorityElements}</div>}
       </div>
     </div>
   )
