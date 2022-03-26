@@ -8,10 +8,11 @@ function ListContainer(props) {
     <div id="container">
       {props.items.map(p =>
         <ListItem 
-          key={p.id} 
+          key={p.id}
           onChangeField={props.onChangeField} 
           onToggleItemCompleted={props.onToggleItemCompleted}
           onDeleteById={props.onDeleteById}
+          priority={p.priority}
           {...p}
         />)}
       <NewListItem onAddNewTask={props.onAddNewTask}/>

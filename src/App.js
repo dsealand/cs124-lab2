@@ -102,6 +102,7 @@ function App(props) {
       id: uniqueID,
       text: task,
       isCompleted: false,
+      priority: 0
     })
   }
 

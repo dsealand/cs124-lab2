@@ -46,6 +46,20 @@
     text-decoration: none;
 }
 
+.task-priority {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    
+    vertical-align: middle;
+    flex: 4;
+    align-items: center;
+}
+
 .completed {
   text-decoration: line-through;
   color: #8E8D8A;
