@@ -2,11 +2,11 @@ import './App.css';
 import React from 'react';
 import Header from './Header';
 import ListContainer from './ListContainer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
 import {useCollectionData} from "react-firebase-hooks/firestore";
 import {initializeApp} from "firebase/app";
-import {collection, doc, getFirestore, query, setDoc} from "firebase/firestore";
+import {collection, doc, getFirestore, query, setDoc, onSnapshot, getDocs, deleteDoc, where} from "firebase/firestore";
 
 
 const firebaseConfig = {
@@ -47,29 +47,48 @@ function DeleteDialog(props) {
 
 function App(props) {
   const [isShowCompleted, setIsShowCompleted] = useState(true)
-  // const [tasks, setTasks] = useState(props.data)
+  const [tasks, setTasks] = useState([])
   const [isShowDeleteDialog, setShowDeleteDialog] = useState(false);
 
   // query initial tasks
-  const q = query(tasksCollection)
-  const [tasks, loading, error] = useCollectionData(q);
+  const q = query(tasksCollection);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const temp = querySnapshot.docs.map(doc => doc.data());
+      console.log("snapshot", temp)
+      setTasks(temp);
+    });
+
+    return () => unsubscribe();
+  }, []);
+  
 
   function handleToggleShowCompleted() {
     setIsShowCompleted(!isShowCompleted);
     console.log(tasks)
   }
 
-  function handleDeleteCompleted() {
+  async function handleDeleteCompleted() {
+    // const completedQ = query(tasksCollection, where("isCompleted", "==", true));
+    // const completedTasks = await getDocs(completedQ);
+
+    const completedTasks = tasks.filter((t) => t.isCompleted)
+
+    completedTasks.forEach((t) => {
+      tasksCollection.doc(t.id).delete();
+    });
     // setTasks(tasks.filter(t => !t.isCompleted));
   }
 
   function handleChangeField(id, field, value) {
     // setTasks(tasks.map(
     //   t => t.id === id ? {...t, [field]: value} : t))
+    console.log(id, field, value)
     setDoc(doc(db, collectionName, id),
     {
       [field]: value,
-    })
+    }, {merge: true})
   }
 
   function handleToggleItemCompleted(id) {
@@ -81,7 +100,7 @@ function App(props) {
     setDoc(doc(db, collectionName, uniqueID),
     {
       id: uniqueID,
-      text: "",
+      text: task,
       isCompleted: false,
     })
   }
@@ -94,12 +113,12 @@ function App(props) {
     // setTasks(tasks.filter(t => !(t.id === id)))
   }
 
-  if (loading) {
-    return <div>Loading</div>
-  }
-  if (error) {
-      return <div>Error</div>
-  }
+  // if (loading) {
+  //   return <div>Loading</div>
+  // }
+  // if (error) {
+  //     return <div>Error</div>
+  // }
   return (
     <div className="App">
       <Header
