@@ -18,6 +18,7 @@ To indicate the possible actions of our app, we used icons from Font Awesome. Th
 In order to give users the ability to distinguish their tasks based on their importance, we implemented a prioritization system that has 3 levels of importance, and reorganizes the list based on these importance levels. In the spirit of our app's simplistic theme, we decided to communicate each level of importance by an exclamation point (!) symbol. That is, one exclamation point means lowest priority, two means medium priority, and three means highest priority. We displayed the priority level button at the far right of each task item, and the user can change the priority level by clicking on the button (only when editing the task). Doing so cycles through the different priority levels, and their corresponding number of exclamation points. If a user changes an items priority level, our app will automatically update the task list, in the order of highest priority items at the top and lowest at the bottom.
 
 Example of tasks sorted by priority:
+
 <img src='Task_Priority_Feature.png' width=300px>
 
 ### Delete Confirmation
