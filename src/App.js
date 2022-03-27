@@ -2,11 +2,12 @@ import './App.css';
 import React from 'react';
 import Header from './Header';
 import ListContainer from './ListContainer';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
 import {useCollectionData} from "react-firebase-hooks/firestore";
 import {initializeApp} from "firebase/app";
-import {collection, doc, getFirestore, query, setDoc, onSnapshot, getDocs, deleteDoc, where} from "firebase/firestore";
+import {collection, doc, getFirestore, query, setDoc, onSnapshot, deleteDoc, 
+  serverTimestamp} from "firebase/firestore";
 
 
 const firebaseConfig = {
@@ -46,91 +47,58 @@ function DeleteDialog(props) {
 }
 
 function App(props) {
-  const [isShowCompleted, setIsShowCompleted] = useState(true)
-  const [tasks, setTasks] = useState([])
+  const [isShowCompleted, setIsShowCompleted] = useState(true);
+  const [tasks, _setTasks] = useState([]);
   const [isShowDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [_sortField, setSortField] = useState("updated");
+
+  const sortField = useRef({});
+  sortField.current = _sortField;
+
+
+  function setTasks(arr) {
+    let sorted = arr.sort((a, b) => b[sortField.current] >= a[sortField.current] ? 1 : -1);
+    if (sortField.current === "text") {sorted.reverse();}
+    _setTasks((prev) => [...sorted]);
+    console.log("sorting by", sortField.current)
+  }
+
+  useEffect(() => {
+    console.log("sort field updated to", sortField.current)
+    setTasks(tasks);
+  }, [_sortField])
 
   // query initial tasks
   const q = query(tasksCollection);
 
-  useEffect(() => {
+  // subscribe to changes in firestore collection
+  useEffect(() => { 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const temp = querySnapshot.docs.map(doc => doc.data());
-      console.log("snapshot", temp)
+
+      // on update to collection, update tasks state
       setTasks(temp);
     });
-
     return () => unsubscribe();
   }, []);
-  
-  function sortByName() {
-    let sortedTasks = tasks.sort(function(a, b) {
-      const valueA = a.text.toUpperCase();
-      const valueB = b.text.toUpperCase();
-      if (valueA < valueB) {
-        return -1;
-      }
-      if (valueA > valueB) {
-        return 1;
-      }
-      return 0;
-    })
-    console.log('name sorted tasks: ', sortedTasks);
-    setTasks(sortedTasks);
-  }
-
-  function sortByDate() {
-    let sortedTasks = tasks.sort(function(a, b) {
-      const valueA = a.updated;
-      const valueB = b.updated;
-      if (valueA < valueB) {
-        return -1;
-      }
-      if (valueA > valueB) {
-        return 1;
-      }
-      return 0;
-    })
-    setTasks(sortedTasks);
-    console.log('date sorted tasks: ', sortedTasks);
-  }
-
-  function sortByPriority() {
-    let sortedTasks = tasks.sort(function(a, b) {
-      if (a.priority < b.priority) {
-        return 1;
-      }
-      if (a.priority > b.priority) {
-        return -1;
-      }
-      return 0;
-    })
-    console.log('priority sorted tasks: ', sortedTasks);
-    setTasks(sortedTasks);
-  }
 
   function handleToggleShowCompleted() {
     setIsShowCompleted(!isShowCompleted);
-    console.log(tasks)
   }
 
-  async function handleDeleteCompleted() {
-    // const completedQ = query(tasksCollection, where("isCompleted", "==", true));
-    // const completedTasks = await getDocs(completedQ);
-
+  function handleDeleteCompleted() {
     const completedTasks = tasks.filter((t) => t.isCompleted)
 
     completedTasks.forEach((t) => {
-      tasksCollection.doc(t.id).delete();
+      deleteDoc(doc(tasksCollection, t.id));
     });
-    // setTasks(tasks.filter(t => !t.isCompleted));
   }
 
   function handleChangeField(id, field, value) {
-    console.log(id, field, value)
     setDoc(doc(db, collectionName, id),
     {
       [field]: value,
+      updated: serverTimestamp()
     }, {merge: true})
   }
 
@@ -145,7 +113,8 @@ function App(props) {
       id: uniqueID,
       text: task,
       isCompleted: false,
-      priority: 0
+      priority: 0,
+      updated: serverTimestamp()
     })
   }
 
@@ -154,15 +123,9 @@ function App(props) {
   }
 
   function handleDeleteById(id) {
-    // setTasks(tasks.filter(t => !(t.id === id)))
+    deleteDoc(doc(tasksCollection, id));
   }
 
-  // if (loading) {
-  //   return <div>Loading</div>
-  // }
-  // if (error) {
-  //     return <div>Error</div>
-  // }
   return (
     <div className="App">
       <Header
@@ -170,9 +133,7 @@ function App(props) {
         onToggleModal={toggleModal}
         onDeleteCompleted={handleDeleteCompleted}
         isShowCompleted={isShowCompleted}
-        sortByDate={sortByDate}
-        sortByName={sortByName}
-        sortByPriority={sortByPriority}
+        setSortField={setSortField}
       ></Header>
       <ListContainer
         items={tasks.filter(t => !t.isCompleted || isShowCompleted)}

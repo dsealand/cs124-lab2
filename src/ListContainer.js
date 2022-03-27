@@ -12,7 +12,6 @@ function ListContainer(props) {
           onChangeField={props.onChangeField} 
           onToggleItemCompleted={props.onToggleItemCompleted}
           onDeleteById={props.onDeleteById}
-          priority={p.priority}
           {...p}
         />)}
       <NewListItem onAddNewTask={props.onAddNewTask}/>
