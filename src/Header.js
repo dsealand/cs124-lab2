@@ -1,18 +1,16 @@
 import './Header.css';
 import React from 'react';
 import { useState } from 'react';
-import Dropdown from 'react-dropdown';
-import Select, { Components } from 'react-select';
 import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-icons/fa';
 
 function Header(props) {
   const [showSortMenu, setShowSortMenu] = useState(false);
-
-  const options = [
-    { value: 'Date Created', label: 'Date Created' },
-    { value: 'Name', label: 'Name' },
-    { value: 'Priority', label: 'Priority' }]
-  const defaultOption = options[0]
+  
+  function handleSortClick(field) {
+    props.setSortField(field);
+    console.log("setting sort field to", field)
+    setShowSortMenu(false);  
+  }
 
   return (
     <div id="header">
@@ -26,32 +24,22 @@ function Header(props) {
       <div className="header-sort">
         <div className="sort-icon">
           <button className="icon-button" onClick={(e) => {
-            setShowSortMenu(!showSortMenu)
-            console.log("set showsortmenu", showSortMenu)
+            setShowSortMenu(!showSortMenu);
           }}>
             <FaSortAmountDown></FaSortAmountDown>
           </button>
           {showSortMenu && <div className="dropdown">
             <ul>
               <li>
-                <button onClick={(e) => {
-                  props.sortByDate()
-                  console.log('sorting by date')
-                }}>Date Created
+                <button onClick={e => handleSortClick("updated")}>Date Updated
                 </button>
               </li>
               <li>
-                <button onClick={(e) => {
-                  props.sortByName()
-                  console.log('sorting by name')
-                }}>Name
+                <button onClick={e => handleSortClick("text")}>Name
                 </button>
               </li>
               <li>
-                <button onClick={(e) => {
-                  props.sortByPriority()
-                  console.log('sorting by priority')
-                }}>Priority
+                <button onClick={e => handleSortClick("priority")}>Priority
                 </button>
               </li>
             </ul>

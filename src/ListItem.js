@@ -1,24 +1,37 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaRegCircle, FaRegCheckCircle, FaExclamation } from 'react-icons/fa'
 import './ListItem.css';
 
 function ListItem(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [priority, setPriority] = useState(props.priority);
+  const [text, setText] = useState(props.text)
+
+  // update input text if props changes
+  useEffect(() => {
+    setText(props.text)
+  }, [props.text])
+
+  // update priority icons if props changes
+  useEffect(() => {
+    setPriority(props.priority)
+  }, [props.priority])
 
   function handleBlur(e) {
     if (e.target.value === "") {
       props.onDeleteById(props.id);
     }
+    else {
+      props.onChangeField(props.id, "priority", priority);
+      props.onChangeField(props.id, "text", e.target.value)
+    }
     setIsEditing(false);
-    props.onChangeField(props.id, "priority", priority);
-    console.log("isEditing handleBlur", isEditing);
   }
 
   let priorityElements = isNaN(priority) ?
-                         Array(1).fill(<FaExclamation></FaExclamation>) :
-                         Array(priority+1).fill(<FaExclamation></FaExclamation>);
+                         Array(1).fill(<FaExclamation />) :
+                         Array(priority+1).fill(<FaExclamation />);
 
   return (
     <div className={"task-row" + ((props.isCompleted) ? " completed" : "")}>
@@ -29,13 +42,9 @@ function ListItem(props) {
       </div>
       <input
         className="task-label"
-        defaultValue={props.text}
-        onFocus={(e) => {
-          setIsEditing(true)
-          console.log("isEditing onFocus", isEditing)}}
-        onChange={e => {
-          props.onChangeField(props.id, "text", e.target.value)
-          setIsEditing(true)}}
+        value={text}
+        onFocus={e => setIsEditing(true)}
+        onChange={e => setText(e.target.value)}
         onBlur={handleBlur}
         onKeyPress={(e) => {
           if (e.key === 'Enter') {
@@ -43,14 +52,15 @@ function ListItem(props) {
           }
         }} />
       <div className="task-priority">
-        {isEditing ?
-        <button className="icon-button" onMouseDown={(e) => {e.preventDefault()
-          setPriority((priority+1)%3);
-          console.log("priority", priority)}}
+        <button 
+          className="icon-button" 
+          onMouseDown={(e) => {
+            e.preventDefault();
+            if (isEditing) setPriority((priority+1)%3);
+          }}
         >
           {priorityElements}
-        </button> : 
-        <div className="icon-button">{priorityElements}</div>}
+        </button>
       </div>
     </div>
   )
