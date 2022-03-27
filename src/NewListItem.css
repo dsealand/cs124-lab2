@@ -20,4 +20,7 @@
 .new, ::placeholder{
   color: #8E8D8A;
 }
-  
+
+#newTaskInput {
+  flex:  8;
+}
