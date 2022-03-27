@@ -2,7 +2,7 @@ import './App.css';
 import React from 'react';
 import Header from './Header';
 import ListContainer from './ListContainer';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
 import {useCollectionData} from "react-firebase-hooks/firestore";
 import {initializeApp} from "firebase/app";
@@ -50,18 +50,23 @@ function App(props) {
   const [isShowCompleted, setIsShowCompleted] = useState(true);
   const [tasks, _setTasks] = useState([]);
   const [isShowDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [sortField, setSortField] = useState("updated");
+  const [_sortField, setSortField] = useState("updated");
+
+  const sortField = useRef({});
+  sortField.current = _sortField;
+
 
   function setTasks(arr) {
-    let sorted = arr.sort((a, b) => b[sortField] >= a[sortField] ? 1 : -1);
-    if (sortField === "text") {sorted.reverse();}
+    let sorted = arr.sort((a, b) => b[sortField.current] >= a[sortField.current] ? 1 : -1);
+    if (sortField.current === "text") {sorted.reverse();}
     _setTasks((prev) => [...sorted]);
-    console.log("tasks sorted by", sortField);
+    console.log("sorting by", sortField.current)
   }
 
   useEffect(() => {
+    console.log("sort field updated to", sortField.current)
     setTasks(tasks);
-  }, [sortField])
+  }, [_sortField])
 
   // query initial tasks
   const q = query(tasksCollection);

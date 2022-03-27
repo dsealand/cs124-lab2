@@ -5,10 +5,9 @@ import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-
 
 function Header(props) {
   const [showSortMenu, setShowSortMenu] = useState(false);
-  
+
   function handleSortClick(field) {
     props.setSortField(field);
-    console.log("setting sort field to", field)
     setShowSortMenu(false);  
   }
 
