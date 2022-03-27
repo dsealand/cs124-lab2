@@ -24,6 +24,10 @@ Example of tasks sorted by priority:
 ### Task Sorting (NEW FEATURE)
 Another added feature is the ability to sort the task list by name (alphabetically), date of creation, and priority. We determined through user testing that a sorting icon placed in the header bar above the task text was intuitive and fit in with the design of the rest of the app. The sorting icon opens up a drop down menu from the icon that contains the options for sorting by date, name, and priority. Tapping on these buttons will sort the list and close the dropdown menu.
 
+Picture of sorting button being clicked, revealing drop down menu:
+
+<img src='sorting_general.png' width=300px>
+
 ### Delete Confirmation
 
 We figured it would be best to include a warning modal to make sure users dont accidentally delete all completed items by tapping the trash button. So, when the trash icon is pressed, a warning box comes up at the bottom asking if the user is sure they want to delete all completed items.
