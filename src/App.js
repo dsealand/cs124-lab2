@@ -67,7 +67,6 @@ function App(props) {
     let sortedTasks = tasks.sort(function(a, b) {
       const valueA = a.text.toUpperCase();
       const valueB = b.text.toUpperCase();
-      console.log('valuea and valueb', valueA, valueB)
       if (valueA < valueB) {
         return -1;
       }
@@ -128,8 +127,6 @@ function App(props) {
   }
 
   function handleChangeField(id, field, value) {
-    // setTasks(tasks.map(
-    //   t => t.id === id ? {...t, [field]: value} : t))
     console.log(id, field, value)
     setDoc(doc(db, collectionName, id),
     {

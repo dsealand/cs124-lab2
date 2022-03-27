@@ -34,23 +34,26 @@ function Header(props) {
           {showSortMenu && <div className="dropdown">
             <ul>
               <li>
-                <button onClick={(e) => {
-                  props.sortByDate()
-                  console.log('sorting by date')
+                <button className='sort-button' onClick={(e) => {
+                  props.sortByDate();
+                  setShowSortMenu(false);
+                  console.log('sorting by date');
                 }}>Date Created
                 </button>
               </li>
               <li>
-                <button onClick={(e) => {
-                  props.sortByName()
-                  console.log('sorting by name')
+                <button className='sort-button' onClick={(e) => {
+                  props.sortByName();
+                  setShowSortMenu(false);
+                  console.log('sorting by name');
                 }}>Name
                 </button>
               </li>
               <li>
-                <button onClick={(e) => {
+                <button className='sort-button' onClick={(e) => {
                   props.sortByPriority()
-                  console.log('sorting by priority')
+                  setShowSortMenu(false);
+                  console.log('sorting by priority');
                 }}>Priority
                 </button>
               </li>
