@@ -63,6 +63,52 @@ function App(props) {
     return () => unsubscribe();
   }, []);
   
+  function sortByName() {
+    let sortedTasks = tasks.sort(function(a, b) {
+      const valueA = a.text.toUpperCase();
+      const valueB = b.text.toUpperCase();
+      console.log('valuea and valueb', valueA, valueB)
+      if (valueA < valueB) {
+        return -1;
+      }
+      if (valueA > valueB) {
+        return 1;
+      }
+      return 0;
+    })
+    console.log('name sorted tasks: ', sortedTasks);
+    setTasks(sortedTasks);
+  }
+
+  function sortByDate() {
+    let sortedTasks = tasks.sort(function(a, b) {
+      const valueA = a.updated;
+      const valueB = b.updated;
+      if (valueA < valueB) {
+        return -1;
+      }
+      if (valueA > valueB) {
+        return 1;
+      }
+      return 0;
+    })
+    setTasks(sortedTasks);
+    console.log('date sorted tasks: ', sortedTasks);
+  }
+
+  function sortByPriority() {
+    let sortedTasks = tasks.sort(function(a, b) {
+      if (a.priority < b.priority) {
+        return 1;
+      }
+      if (a.priority > b.priority) {
+        return -1;
+      }
+      return 0;
+    })
+    console.log('priority sorted tasks: ', sortedTasks);
+    setTasks(sortedTasks);
+  }
 
   function handleToggleShowCompleted() {
     setIsShowCompleted(!isShowCompleted);
@@ -127,6 +173,9 @@ function App(props) {
         onToggleModal={toggleModal}
         onDeleteCompleted={handleDeleteCompleted}
         isShowCompleted={isShowCompleted}
+        sortByDate={sortByDate}
+        sortByName={sortByName}
+        sortByPriority={sortByPriority}
       ></Header>
       <ListContainer
         items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
