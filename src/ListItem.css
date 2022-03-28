@@ -11,7 +11,7 @@
   }
   
 .task-row input {
-    flex: 8;
+    flex: 6;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -21,6 +21,7 @@
     font-family: inherit;
     border: none;
     color: inherit;
+    width: 50%;
 }
 
 .icon-button {
@@ -42,6 +43,12 @@
 
 .task-icon {
     flex: 1;
+    text-align: center;
+    text-decoration: none;
+}
+
+.task-priority {
+    flex: 2;
     text-align: center;
     text-decoration: none;
 }

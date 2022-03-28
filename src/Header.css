@@ -1,49 +1,104 @@
 .icon {
-    text-align: center;
-    text-decoration: none;
-    flex: 1;
+  text-align: center;
+  text-decoration: none;
+  flex: 1;
 }
 
 #header {
-    height: 60px;
-    background-color: #D8C3A5;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    text-align: center;
-    padding: 5px;
+  height: 60px;
+  background-color: #D8C3A5;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  padding: 5px;
 }
 
 #header h3 {
-    flex: 7;
+  flex: 5;
+}
+
+.header-sort {
+  flex: 1;
+  text-align: left;
+  text-decoration: none;
+}
+
+.spacing {
+  flex: 1
+}
+
+.dropdown {
+  position: absolute;
+  top: 55px;
+  left: 11%;
+  width: 200px;
+  z-index: 2;
+  background: white;
+  /* border: 1px solid rgba(0, 0, 0, 0.04); */
+  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  padding: 8px 12px;
+}
+
+li:hover {
+  background-color: rgba(0, 0, 0, 0.14);
+  cursor: pointer;
 }
 
 .header-icon {
-    flex: 1;
-    text-align: center;
-    text-decoration: none;
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
 }
 
 .icon-button {
-    /*override default button styling*/
-    background: none;
-    color: inherit;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
+  /*override default button styling*/
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
 
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 .icon-button * {
-    margin-top: 6px;
+  margin-top: 6px;
 }
 
 .task-icon {
-    flex: 1;
-    text-align: center;
-    text-decoration: none;
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+}
+
+.trash-icon {
+  flex: 2;
+  text-align: center;
+  text-decoration: none;
+}
+
+li button{
+  /*override default button styling*/
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  
+  vertical-align: middle;
 }
