@@ -4,7 +4,6 @@ import Header from './Header';
 import ListContainer from './ListContainer';
 import { useState, useEffect, useRef } from 'react';
 import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
-import {useCollectionData} from "react-firebase-hooks/firestore";
 import {initializeApp} from "firebase/app";
 import {collection, doc, getFirestore, query, setDoc, onSnapshot, deleteDoc, 
   serverTimestamp} from "firebase/firestore";
