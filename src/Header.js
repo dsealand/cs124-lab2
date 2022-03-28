@@ -46,8 +46,7 @@ function Header(props) {
         </div>
       </div>
       <h3>Tasks</h3>
-      <div className="spacing" />
-      <div className="task-icon">
+      <div className="trash-icon">
         <button className="icon-button" onClick={() => props.onToggleModal()}>
           <FaRegTrashAlt />
         </button>

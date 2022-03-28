@@ -15,11 +15,18 @@ We leveraged the common design metaphor of a header on a mobile application; tho
 To indicate the possible actions of our app, we used icons from Font Awesome. The specific icons used were `circle`, `circle-check`, `pen-to-square` `eye`, `eye-slash`, `trash-can`. While we didn't think all of these were perfect icons (for example, `pen-to-square` could have been a simple plus sign or just a pen), we believed these were the best free options available to us.
 
 ### Task Priority (NEW FEATURE)
-In order to give users the ability to distinguish their tasks based on their importance, we implemented a prioritization system that has 3 levels of importance, and reorganizes the list based on these importance levels. In the spirit of our app's simplistic theme, we decided to communicate each level of importance by an exclamation point (!) symbol. That is, one exclamation point means lowest priority, two means medium priority, and three means highest priority. We displayed the priority level button at the far right of each task item, and the user can change the priority level by clicking on the button (only when editing the task). Doing so cycles through the different priority levels, and their corresponding number of exclamation points. If a user changes an items priority level, our app will automatically update the task list, in the order of highest priority items at the top and lowest at the bottom.
+In order to give users the ability to distinguish their tasks based on their importance, we implemented a prioritization system that has 3 levels of importance. In the spirit of our app's simplistic theme, we decided to communicate each level of importance by an exclamation point (!) symbol. That is, one exclamation point means lowest priority, two means medium priority, and three means highest priority. We displayed the priority level button at the far right of each task item, and the user can change the priority level by clicking on the button (only when editing the task, preventing the priority of tasks from being accidentally toggled). Doing so cycles through the different priority levels, and their corresponding number of exclamation points.
 
 Example of tasks sorted by priority:
 
 <img src='Task_Priority_Feature.png' width=300px>
+
+### Task Sorting (NEW FEATURE)
+Another added feature is the ability to sort the task list by name (alphabetically), date of creation, and priority. We determined through user testing that a sorting icon placed in the header bar above the task text was intuitive and fit in with the design of the rest of the app. The sorting icon opens up a drop down menu from the icon that contains the options for sorting by date, name, and priority. Tapping on these buttons will sort the list and close the dropdown menu.
+
+Picture of sorting button being clicked, revealing drop down menu:
+
+<img src='sorting_general.png' width=300px>
 
 ### Delete Confirmation
 
