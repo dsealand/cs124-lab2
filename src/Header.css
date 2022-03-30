@@ -88,7 +88,7 @@ li:hover {
 .trash-icon {
   flex: 2;
   text-align: center;
-  text-decoration: none;
+  /* text-decoration: none; */
 }
 
 li button{

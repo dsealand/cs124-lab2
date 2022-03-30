@@ -26,7 +26,7 @@ const collectionName = "tasks-0";
 const tasksCollection = collection(db, collectionName);
 
 function DeleteDialog(props) {
-  return <div className={"backdrop"}>
+  return <div className={"backdrop"} onClick={e => props.onClose()}>
     <div className="modal">
       Delete all completed items?
       <div className="alert-buttons">
