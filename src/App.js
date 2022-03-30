@@ -5,8 +5,9 @@ import ListContainer from './ListContainer';
 import { useState, useEffect, useRef } from 'react';
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import { initializeApp } from "firebase/app";
-import { collection, doc, getFirestore, query, setDoc, onSnapshot, deleteDoc, 
-  serverTimestamp, updateDoc} from "firebase/firestore";
+import { collection, doc, getFirestore, query, orderBy, setDoc, updateDoc, deleteDoc, 
+  serverTimestamp } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 
 const firebaseConfig = {

@@ -8,16 +8,6 @@ function ListItem(props) {
   const [priority, setPriority] = useState(props.priority);
   const [text, setText] = useState(props.text)
 
-  // update input text if props changes
-  useEffect(() => {
-    setText(props.text)
-  }, [props.text])
-
-  // update priority icons if props changes
-  useEffect(() => {
-    setPriority(props.priority)
-  }, [props.priority])
-
   function handleBlur(e) {
     if (e.target.value === "") {
       props.onDeleteById(props.id);
@@ -29,8 +19,6 @@ function ListItem(props) {
     setIsEditing(false);
   }
 
-  let priorityElements = Array(priority).fill(<FaExclamation />);
-
   return (
     <div className={"task-row" + ((props.isCompleted) ? " completed" : "")}>
       <div className="task-icon">
@@ -40,7 +28,7 @@ function ListItem(props) {
       </div>
       <input
         className="task-label"
-        value={text}
+        value={isEditing?text:props.text}
         onFocus={e => {setIsEditing(true)
                        setPriority(props.priority)
                        setText(props.text)}}
@@ -59,7 +47,7 @@ function ListItem(props) {
             if (isEditing) setPriority((priority%3)+1);
           }}
         >
-          {priorityElements}
+          {Array(priority).fill(<FaExclamation />)}
         </button>
       </div>
     </div>
