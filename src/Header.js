@@ -60,7 +60,8 @@ function Header(props) {
                 </li>
               </ul>
             </div>
-          </div>}
+          </div>
+          }
         </div>
       </div>
       <h3>Tasks</h3>

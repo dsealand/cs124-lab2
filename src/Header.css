@@ -103,9 +103,3 @@ li button{
   
   vertical-align: middle;
 }
-
-.backdrop {
-  position: fixed;
-  color:rgba(0, 0, 0, 0.14);
-  z-index: 1000;
-}
