@@ -29,9 +29,7 @@ function ListItem(props) {
     setIsEditing(false);
   }
 
-  let priorityElements = isNaN(priority) ?
-                         Array(1).fill(<FaExclamation />) :
-                         Array(priority+1).fill(<FaExclamation />);
+  let priorityElements = Array(priority).fill(<FaExclamation />);
 
   return (
     <div className={"task-row" + ((props.isCompleted) ? " completed" : "")}>
@@ -43,7 +41,9 @@ function ListItem(props) {
       <input
         className="task-label"
         value={text}
-        onFocus={e => setIsEditing(true)}
+        onFocus={e => {setIsEditing(true)
+                       setPriority(props.priority)
+                       setText(props.text)}}
         onChange={e => setText(e.target.value)}
         onBlur={handleBlur}
         onKeyPress={(e) => {
@@ -56,7 +56,7 @@ function ListItem(props) {
           className="icon-button" 
           onMouseDown={(e) => {
             e.preventDefault();
-            if (isEditing) setPriority((priority+1)%3);
+            if (isEditing) setPriority((priority%3)+1);
           }}
         >
           {priorityElements}

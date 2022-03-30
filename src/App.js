@@ -3,10 +3,10 @@ import React from 'react';
 import Header from './Header';
 import ListContainer from './ListContainer';
 import { useState, useEffect, useRef } from 'react';
-import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
-import {initializeApp} from "firebase/app";
-import {collection, doc, getFirestore, query, setDoc, onSnapshot, deleteDoc, 
-  serverTimestamp} from "firebase/firestore";
+import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
+import { initializeApp } from "firebase/app";
+import { collection, doc, getFirestore, query, setDoc, onSnapshot, deleteDoc, 
+  serverTimestamp, updateDoc} from "firebase/firestore";
 
 
 const firebaseConfig = {
@@ -94,11 +94,11 @@ function App(props) {
   }
 
   function handleChangeField(id, field, value) {
-    setDoc(doc(db, collectionName, id),
+    updateDoc(doc(db, collectionName, id),
     {
       [field]: value,
       updated: serverTimestamp()
-    }, {merge: true})
+    })
   }
 
   function handleToggleItemCompleted(id) {
@@ -112,7 +112,7 @@ function App(props) {
       id: uniqueID,
       text: task,
       isCompleted: false,
-      priority: 0,
+      priority: 1,
       updated: serverTimestamp()
     })
   }
