@@ -88,7 +88,11 @@ li:hover {
 .trash-icon {
   flex: 2;
   text-align: center;
-  /* text-decoration: none; */
+  text-decoration: none;
+}
+
+.icon-button:focus {
+  border-color:rgba(255, 0, 0);
 }
 
 li button{
