@@ -47,39 +47,11 @@ function DeleteDialog(props) {
 
 function App(props) {
   const [isShowCompleted, setIsShowCompleted] = useState(true);
-  const [tasks, _setTasks] = useState([]);
   const [isShowDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [_sortField, setSortField] = useState("updated");
+  const [sortField, setSortField] = useState("updated");
 
-  const sortField = useRef({});
-  sortField.current = _sortField;
-
-
-  function setTasks(arr) {
-    let sorted = arr.sort((a, b) => b[sortField.current] >= a[sortField.current] ? 1 : -1);
-    if (sortField.current === "text") {sorted.reverse();}
-    _setTasks((prev) => [...sorted]);
-    console.log("sorting by", sortField.current)
-  }
-
-  useEffect(() => {
-    console.log("sort field updated to", sortField.current)
-    setTasks(tasks);
-  }, [_sortField])
-
-  // query initial tasks
-  const q = query(tasksCollection);
-
-  // subscribe to changes in firestore collection
-  useEffect(() => { 
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const temp = querySnapshot.docs.map(doc => doc.data());
-
-      // on update to collection, update tasks state
-      setTasks(temp);
-    });
-    return () => unsubscribe();
-  }, []);
+  // need to deal with asc/desc fofr priority and dateUpdated
+  const [tasks, loading, error] = useCollectionData(query(tasksCollection, orderBy(sortField)))
 
   function handleToggleShowCompleted() {
     setIsShowCompleted(!isShowCompleted);
@@ -124,6 +96,8 @@ function App(props) {
   function handleDeleteById(id) {
     deleteDoc(doc(tasksCollection, id));
   }
+
+  if (loading) return (<div>loading</div>) 
 
   return (
     <div className="App">
