@@ -2,11 +2,11 @@ import './App.css';
 import React from 'react';
 import Header from './Header';
 import ListContainer from './ListContainer';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import { initializeApp } from "firebase/app";
-import { collection, doc, getFirestore, query, setDoc, onSnapshot, deleteDoc,
-  serverTimestamp, orderBy } from "firebase/firestore";
+import { collection, doc, getFirestore, query, orderBy, setDoc, updateDoc, 
+  deleteDoc, serverTimestamp } from "firebase/firestore";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 
@@ -54,9 +54,6 @@ function App(props) {
   // need to deal with asc/desc fofr priority and dateUpdated
   const [tasks, loading, error] = useCollectionData(query(tasksCollection, orderBy(sortField)))
 
-  // query initial tasks
-  const q = query(tasksCollection);
-
   function handleToggleShowCompleted() {
     setIsShowCompleted(!isShowCompleted);
   }
@@ -70,11 +67,11 @@ function App(props) {
   }
 
   function handleChangeField(id, field, value) {
-    setDoc(doc(db, collectionName, id),
+    updateDoc(doc(db, collectionName, id),
     {
       [field]: value,
       updated: serverTimestamp()
-    }, {merge: true})
+    })
   }
 
   function handleToggleItemCompleted(id) {
