@@ -12,7 +12,7 @@ function ListItem(props) {
     if (e.target.value === "") {
       props.onDeleteById(props.id);
     }
-    else {
+    else if (priority !== props.priority || text !== props.text) {
       props.onChangeField(props.id, "priority", priority);
       props.onChangeField(props.id, "text", e.target.value)
     }

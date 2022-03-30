@@ -49,10 +49,10 @@ function DeleteDialog(props) {
 function App(props) {
   const [isShowCompleted, setIsShowCompleted] = useState(true);
   const [isShowDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [sortField, setSortField] = useState("updated");
+  const [sortOrder, setSortOrder] = useState("updated desc");
 
-  // need to deal with asc/desc fofr priority and dateUpdated
-  const [tasks, loading, error] = useCollectionData(query(tasksCollection, orderBy(sortField)))
+  // need to deal with asc/desc for priority and dateUpdated
+  const [tasks, loading, error] = useCollectionData(query(tasksCollection, orderBy(...sortOrder.split(" "))))
 
   function handleToggleShowCompleted() {
     setIsShowCompleted(!isShowCompleted);
@@ -107,7 +107,8 @@ function App(props) {
         onToggleModal={toggleModal}
         onDeleteCompleted={handleDeleteCompleted}
         isShowCompleted={isShowCompleted}
-        setSortField={setSortField}
+        setSortOrder={setSortOrder}
+        sortOrder={sortOrder}
       ></Header>
       <ListContainer
         items={tasks.filter(t => !t.isCompleted || isShowCompleted)}

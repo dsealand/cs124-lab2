@@ -7,8 +7,24 @@ function Header(props) {
   const [showSortMenu, setShowSortMenu] = useState(false);
 
   function handleSortClick(field) {
-    props.setSortField(field);
-    setShowSortMenu(false);
+    console.log(props.sortOrder)
+    let [currentField, currentDir] = props.sortOrder.split(" ")
+    let newOrder = "";
+
+    if (field === currentField) {
+      newOrder = [field, (currentDir=="asc")?"desc":"asc"].join(" ");
+    }
+
+    else if (field === "text")  {
+      newOrder = [field, "asc"].join(" ");
+    }
+
+    else {
+      newOrder = [field, "desc"].join(" ");
+    }
+
+    props.setSortOrder(newOrder);
+    setShowSortMenu(false);  
   }
 
   return (
@@ -44,7 +60,8 @@ function Header(props) {
                 </li>
               </ul>
             </div>
-          </div>}
+          </div>
+          }
         </div>
       </div>
       <h3>Tasks</h3>
