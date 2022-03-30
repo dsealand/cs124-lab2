@@ -3,9 +3,10 @@ import React from 'react';
 import Header from './Header';
 import ListContainer from './ListContainer';
 import { useState, useEffect, useRef } from 'react';
+import TabList from "./TabList";
 import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
 import {initializeApp} from "firebase/app";
-import {collection, doc, getFirestore, query, setDoc, onSnapshot, deleteDoc, 
+import {collection, doc, getFirestore, query, setDoc, onSnapshot, deleteDoc,
   serverTimestamp} from "firebase/firestore";
 
 
@@ -71,7 +72,7 @@ function App(props) {
   const q = query(tasksCollection);
 
   // subscribe to changes in firestore collection
-  useEffect(() => { 
+  useEffect(() => {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const temp = querySnapshot.docs.map(doc => doc.data());
 
@@ -135,12 +136,12 @@ function App(props) {
         setSortField={setSortField}
       ></Header>
       <ListContainer
-        items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
-        onChangeField={handleChangeField}
-        onToggleItemCompleted={handleToggleItemCompleted}
-        onAddNewTask={handleAddNewTask}
-        onDeleteById={handleDeleteById}
-      />
+          items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
+          onChangeField={handleChangeField}
+          onToggleItemCompleted={handleToggleItemCompleted}
+          onAddNewTask={handleAddNewTask}
+          onDeleteById={handleDeleteById}
+        />
         {isShowDeleteDialog && <DeleteDialog onClose={toggleModal} onOK={handleDeleteCompleted}/>}
     </div>
   );
