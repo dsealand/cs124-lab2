@@ -38,6 +38,7 @@
   background: white;
   /* border: 1px solid rgba(0, 0, 0, 0.04); */
   box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
+  z-index: 1001;
 }
 
 ul {
@@ -88,6 +89,11 @@ li:hover {
   flex: 2;
   text-align: center;
   text-decoration: none;
+}
+
+.icon-button:focus {
+  outline: 5px auto Highlight;
+  outline: 5px auto -webkit-focus-ring-color;
 }
 
 li button{

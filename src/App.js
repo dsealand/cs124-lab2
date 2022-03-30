@@ -3,11 +3,11 @@ import React from 'react';
 import Header from './Header';
 import ListContainer from './ListContainer';
 import { useState, useEffect, useRef } from 'react';
-import TabList from "./TabList";
-import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
-import {initializeApp} from "firebase/app";
-import {collection, doc, getFirestore, query, setDoc, onSnapshot, deleteDoc,
-  serverTimestamp} from "firebase/firestore";
+import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
+import { initializeApp } from "firebase/app";
+import { collection, doc, getFirestore, query, orderBy, setDoc, updateDoc, deleteDoc, 
+  serverTimestamp } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 
 const firebaseConfig = {
@@ -26,7 +26,7 @@ const collectionName = "tasks-0";
 const tasksCollection = collection(db, collectionName);
 
 function DeleteDialog(props) {
-  return <div className={"backdrop"}>
+  return <div className={"backdrop"} onClick={e => props.onClose()}>
     <div className="modal">
       Delete all completed items?
       <div className="alert-buttons">
@@ -48,39 +48,11 @@ function DeleteDialog(props) {
 
 function App(props) {
   const [isShowCompleted, setIsShowCompleted] = useState(true);
-  const [tasks, _setTasks] = useState([]);
   const [isShowDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [_sortField, setSortField] = useState("updated");
+  const [sortOrder, setSortOrder] = useState("updated desc");
 
-  const sortField = useRef({});
-  sortField.current = _sortField;
-
-
-  function setTasks(arr) {
-    let sorted = arr.sort((a, b) => b[sortField.current] >= a[sortField.current] ? 1 : -1);
-    if (sortField.current === "text") {sorted.reverse();}
-    _setTasks((prev) => [...sorted]);
-    console.log("sorting by", sortField.current)
-  }
-
-  useEffect(() => {
-    console.log("sort field updated to", sortField.current)
-    setTasks(tasks);
-  }, [_sortField])
-
-  // query initial tasks
-  const q = query(tasksCollection);
-
-  // subscribe to changes in firestore collection
-  useEffect(() => {
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const temp = querySnapshot.docs.map(doc => doc.data());
-
-      // on update to collection, update tasks state
-      setTasks(temp);
-    });
-    return () => unsubscribe();
-  }, []);
+  // need to deal with asc/desc for priority and dateUpdated
+  const [tasks, loading, error] = useCollectionData(query(tasksCollection, orderBy(...sortOrder.split(" "))))
 
   function handleToggleShowCompleted() {
     setIsShowCompleted(!isShowCompleted);
@@ -95,11 +67,11 @@ function App(props) {
   }
 
   function handleChangeField(id, field, value) {
-    setDoc(doc(db, collectionName, id),
+    updateDoc(doc(tasksCollection, id),
     {
       [field]: value,
       updated: serverTimestamp()
-    }, {merge: true})
+    })
   }
 
   function handleToggleItemCompleted(id) {
@@ -108,12 +80,12 @@ function App(props) {
 
   function handleAddNewTask(task) {
     const uniqueID = generateUniqueID();
-    setDoc(doc(db, collectionName, uniqueID),
+    setDoc(doc(tasksCollection, uniqueID),
     {
       id: uniqueID,
       text: task,
       isCompleted: false,
-      priority: 0,
+      priority: 1,
       updated: serverTimestamp()
     })
   }
@@ -126,6 +98,8 @@ function App(props) {
     deleteDoc(doc(tasksCollection, id));
   }
 
+  if (loading) return (<div>loading</div>) 
+
   return (
     <div className="App">
       <Header
@@ -133,15 +107,16 @@ function App(props) {
         onToggleModal={toggleModal}
         onDeleteCompleted={handleDeleteCompleted}
         isShowCompleted={isShowCompleted}
-        setSortField={setSortField}
+        setSortOrder={setSortOrder}
+        sortOrder={sortOrder}
       ></Header>
       <ListContainer
-          items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
-          onChangeField={handleChangeField}
-          onToggleItemCompleted={handleToggleItemCompleted}
-          onAddNewTask={handleAddNewTask}
-          onDeleteById={handleDeleteById}
-        />
+        items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
+        onChangeField={handleChangeField}
+        onToggleItemCompleted={handleToggleItemCompleted}
+        onAddNewTask={handleAddNewTask}
+        onDeleteById={handleDeleteById}
+      />
         {isShowDeleteDialog && <DeleteDialog onClose={toggleModal} onOK={handleDeleteCompleted}/>}
     </div>
   );
