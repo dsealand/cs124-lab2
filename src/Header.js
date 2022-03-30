@@ -8,7 +8,7 @@ function Header(props) {
 
   function handleSortClick(field) {
     props.setSortField(field);
-    setShowSortMenu(false);  
+    setShowSortMenu(false);
   }
 
   return (
@@ -27,21 +27,23 @@ function Header(props) {
           }}>
             <FaSortAmountDown></FaSortAmountDown>
           </button>
-          {showSortMenu && <div className="dropdown">
-            <ul>
-              <li>
-                <button onClick={e => handleSortClick("updated")}>Date Updated
-                </button>
-              </li>
-              <li>
-                <button onClick={e => handleSortClick("text")}>Name
-                </button>
-              </li>
-              <li>
-                <button onClick={e => handleSortClick("priority")}>Priority
-                </button>
-              </li>
-            </ul>
+          {showSortMenu && <div className="backdrop" onClick={e => setShowSortMenu(false)}>
+            <div className="dropdown">
+              <ul>
+                <li>
+                  <button onClick={e => handleSortClick("updated")}>Date Updated
+                  </button>
+                </li>
+                <li>
+                  <button onClick={e => handleSortClick("text")}>Name
+                  </button>
+                </li>
+                <li>
+                  <button onClick={e => handleSortClick("priority")}>Priority
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>}
         </div>
       </div>
