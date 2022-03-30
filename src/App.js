@@ -66,7 +66,7 @@ function App(props) {
   }
 
   function handleChangeField(id, field, value) {
-    updateDoc(doc(db, collectionName, id),
+    updateDoc(doc(tasksCollection, id),
     {
       [field]: value,
       updated: serverTimestamp()
@@ -79,7 +79,7 @@ function App(props) {
 
   function handleAddNewTask(task) {
     const uniqueID = generateUniqueID();
-    setDoc(doc(db, collectionName, uniqueID),
+    setDoc(doc(tasksCollection, uniqueID),
     {
       id: uniqueID,
       text: task,
