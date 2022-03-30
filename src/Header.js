@@ -7,7 +7,23 @@ function Header(props) {
   const [showSortMenu, setShowSortMenu] = useState(false);
 
   function handleSortClick(field) {
-    props.setSortField(field);
+    console.log(props.sortOrder)
+    let [currentField, currentDir] = props.sortOrder.split(" ")
+    let newOrder = "";
+
+    if (field === currentField) {
+      newOrder = [field, (currentDir=="asc")?"desc":"asc"].join(" ");
+    }
+
+    else if (field === "text")  {
+      newOrder = [field, "asc"].join(" ");
+    }
+
+    else {
+      newOrder = [field, "desc"].join(" ");
+    }
+
+    props.setSortOrder(newOrder);
     setShowSortMenu(false);  
   }
 
@@ -30,11 +46,13 @@ function Header(props) {
           {showSortMenu && <div className="dropdown">
             <ul>
               <li>
-                <button onClick={e => handleSortClick("updated")}>Date Updated
+                <button 
+                  onClick={e => handleSortClick("updated")}>Date Updated
                 </button>
               </li>
               <li>
-                <button onClick={e => handleSortClick("text")}>Name
+                <button 
+                  onClick={e => handleSortClick("text")}>Name
                 </button>
               </li>
               <li>
