@@ -3,12 +3,21 @@ import React from 'react';
 import { useState } from 'react';
 import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-icons/fa';
 
+function SortLabel({field, name, isSelected, onSortClick}) {
+
+  return <li onClick={e => {onSortClick(field)}}>
+    <p className={"sort-label " + (isSelected?"selected":"")}>{name}</p>
+  </li>
+}
+
 function Header(props) {
   const [showSortMenu, setShowSortMenu] = useState(false);
+  const fields = ["updated", "text", "priority"];
+  const names = ["Last Updated", "Alphabetical", "Priority"];
+  const [currentField, currentDir] = props.sortOrder.split(" ")
+
 
   function handleSortClick(field) {
-    console.log(props.sortOrder)
-    let [currentField, currentDir] = props.sortOrder.split(" ")
     let newOrder = "";
 
     if (field === currentField) {
@@ -22,9 +31,19 @@ function Header(props) {
     else {
       newOrder = [field, "desc"].join(" ");
     }
-
+    console.log("setting sort order to "+ newOrder)
     props.setSortOrder(newOrder);
     setShowSortMenu(false);  
+  }
+
+  function createLabel(field, index) {
+    return <SortLabel
+      key={field}
+      field={field}
+      name={names[index]}
+      isSelected={(currentField===field)}
+      onSortClick={handleSortClick}
+    />
   }
 
   return (
@@ -46,18 +65,7 @@ function Header(props) {
           {showSortMenu && <div className="backdrop" onClick={e => setShowSortMenu(false)}>
             <div className="dropdown">
               <ul>
-                <li>
-                  <button onClick={e => handleSortClick("updated")}>Date Updated
-                  </button>
-                </li>
-                <li>
-                  <button onClick={e => handleSortClick("text")}>Name
-                  </button>
-                </li>
-                <li>
-                  <button onClick={e => handleSortClick("priority")}>Priority
-                  </button>
-                </li>
+                {fields.map(createLabel)}
               </ul>
             </div>
           </div>

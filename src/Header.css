@@ -96,15 +96,11 @@ li:hover {
   outline: 5px auto -webkit-focus-ring-color;
 }
 
-li button{
-  /*override default button styling*/
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-  
-  vertical-align: middle;
+.sort-label {
+  display:  inline;
 }
+
+.sort-label.selected {
+  font-weight:  600;
+}
+
