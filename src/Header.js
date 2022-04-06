@@ -31,7 +31,6 @@ function Header(props) {
     else {
       newOrder = [field, "desc"].join(" ");
     }
-    console.log("setting sort order to "+ newOrder)
     props.setSortOrder(newOrder);
     setShowSortMenu(false);  
   }

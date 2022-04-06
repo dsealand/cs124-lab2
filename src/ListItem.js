@@ -5,18 +5,21 @@ import './ListItem.css';
 
 function ListItem(props) {
   const [isEditing, setIsEditing] = useState(false);
-  const [priority, setPriority] = useState(props.priority);
   const [text, setText] = useState(props.text)
 
   function handleBlur(e) {
     if (e.target.value === "") {
       props.onDeleteById(props.id);
     }
-    else if (priority !== props.priority || text !== props.text) {
-      props.onChangeField(props.id, "priority", priority);
-      props.onChangeField(props.id, "text", e.target.value)
+    else if (text !== props.text) {
+      props.onChangeField(props.id, "text", e.target.value);
     }
     setIsEditing(false);
+  }
+
+  function handleFocus(e) {
+    setIsEditing(true);
+    setText(props.text);
   }
 
   return (
@@ -29,9 +32,7 @@ function ListItem(props) {
       <input
         className="task-label"
         value={isEditing?text:props.text}
-        onFocus={e => {setIsEditing(true)
-                       setPriority(props.priority)
-                       setText(props.text)}}
+        onFocus={handleFocus}
         onChange={e => setText(e.target.value)}
         onBlur={handleBlur}
         onKeyPress={(e) => {
@@ -42,12 +43,11 @@ function ListItem(props) {
       <div className="task-priority">
         <button 
           className="icon-button" 
-          onMouseDown={(e) => {
-            e.preventDefault();
-            if (isEditing) setPriority((priority%3)+1);
+          onClick={(e) => {
+            props.onChangeField(props.id, "priority", (props.priority%3)+1);
           }}
         >
-          {Array(priority).fill(<FaExclamation />)}
+          {Array(props.priority).fill(<FaExclamation />)}
         </button>
       </div>
     </div>
