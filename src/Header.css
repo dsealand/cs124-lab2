@@ -32,8 +32,8 @@
 .dropdown {
   position: absolute;
   top: 55px;
-  left: 11%;
-  width: auto;
+  left: 11.2%;
+  width: 200px;
   z-index: 2;
   background: white;
   /* border: 1px solid rgba(0, 0, 0, 0.04); */
