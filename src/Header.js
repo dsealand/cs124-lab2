@@ -3,10 +3,10 @@ import React from 'react';
 import { useState } from 'react';
 import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-icons/fa';
 
-function SortLabel({field, name, isSelected, onSortClick}) {
+function SortLabel({field, name, isSelected, dir, onSortClick}) {
 
   return <li onClick={e => {onSortClick(field)}}>
-    <p className={"sort-label " + (isSelected?"selected":"")}>{name}</p>
+    <p className={"sort-label " + (isSelected?"selected":"")}>{name} {isSelected?((dir==="asc")?'\u2191':'\u2193'):''}</p>
   </li>
 }
 
@@ -41,6 +41,7 @@ function Header(props) {
       key={field}
       field={field}
       name={names[index]}
+      dir={currentDir}
       isSelected={(currentField===field)}
       onSortClick={handleSortClick}
     />
