@@ -21,7 +21,7 @@ function Header(props) {
     let newOrder = "";
 
     if (field === currentField) {
-      newOrder = [field, (currentDir=="asc")?"desc":"asc"].join(" ");
+      newOrder = [field, (currentDir==="asc")?"desc":"asc"].join(" ");
     }
 
     else if (field === "text")  {
@@ -71,6 +71,9 @@ function Header(props) {
           </div>
           }
         </div>
+      </div>
+      <div className = "sortMethod">
+        {props.sortOrder}
       </div>
       <h3>Tasks</h3>
       <div className="trash-icon">
