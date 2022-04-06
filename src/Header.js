@@ -72,6 +72,9 @@ function Header(props) {
           }
         </div>
       </div>
+      <div className = "sortMethod">
+        {props.sortOrder}
+      </div>
       <h3>Tasks</h3>
       <div className="trash-icon">
         <button className="icon-button" onClick={() => props.onToggleModal()}>
