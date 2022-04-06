@@ -21,7 +21,7 @@ function Header(props) {
     let newOrder = "";
 
     if (field === currentField) {
-      newOrder = [field, (currentDir=="asc")?"desc":"asc"].join(" ");
+      newOrder = [field, (currentDir==="asc")?"desc":"asc"].join(" ");
     }
 
     else if (field === "text")  {
