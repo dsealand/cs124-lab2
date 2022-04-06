@@ -26,7 +26,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const collectionName = "tasks-0";
+const tabCollectionName = "tabs-0";
 const tasksCollection = collection(db, collectionName);
+const tabsCollection = collection(db, tabCollectionName);
 
 function DeleteDialog(props) {
   return <div className={"backdrop"} onClick={e => props.onClose()}>
@@ -56,7 +58,10 @@ function App(props) {
   const [activeTab, setActiveTab] = useState(0);
 
   // need to deal with asc/desc for priority and dateUpdated
-  const [tasks, loading, error] = useCollectionData(query(tasksCollection, orderBy(...sortOrder.split(" "))))
+  const [tasks, loading, error] = useCollectionData(query(tasksCollection, orderBy(...sortOrder.split(" "))));
+  const [tabs, loading2, error2] = useCollectionData(query(tabsCollection));
+
+  console.log('tabs: ', tabs)
 
   function handleToggleShowCompleted() {
     setIsShowCompleted(!isShowCompleted);
@@ -123,15 +128,15 @@ function App(props) {
       />
       {isShowDeleteDialog && <DeleteDialog onClose={toggleModal} onOK={handleDeleteCompleted} />}
       <div className="tabs">
-        <ol className="tab-list">
+        {/* <ol className="tab-list">
             {props.children.map(child =>
                 <Tab key={child.key}
                      label={child.key}
                      activeTab={activeTab}
                      onClickTab={(label) => setActiveTab(label)}/>)}
         </ol>
-        {props.children.map(child => activeTab === child.key && child)}
-    </div>;activeTab
+        {props.children.map(child => activeTab === child.key && child)} */}
+    </div>
     </div>
   );
 }
