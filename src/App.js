@@ -107,7 +107,7 @@ function App(props) {
     deleteDoc(doc(tasksCollection, id));
   }
 
-  if (loading) return (<div>loading</div>)
+  if (loading || loading2) return (<div>loading</div>)
 
   return (
     <div className="App">
@@ -128,15 +128,13 @@ function App(props) {
       />
       {isShowDeleteDialog && <DeleteDialog onClose={toggleModal} onOK={handleDeleteCompleted} />}
       <div className="tabs">
-        {/* <ol className="tab-list">
-            {props.children.map(child =>
-                <Tab key={child.key}
-                     label={child.key}
-                     activeTab={activeTab}
-                     onClickTab={(label) => setActiveTab(label)}/>)}
+        <ol className="tab-list">
+          {tabs.map(tab =>
+            <Tab key={tab.id}
+              activeTab={activeTab} />)}
         </ol>
-        {props.children.map(child => activeTab === child.key && child)} */}
-    </div>
+        {tabs.map(child => activeTab === child.id && child)}
+      </div>
     </div>
   );
 }

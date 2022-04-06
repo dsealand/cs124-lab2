@@ -14,7 +14,7 @@ function TabList(props) {
                      onClickTab={(label) => setActiveTab(label)}/>)}
         </ol>
         {props.children.map(child => activeTab === child.key && child)}
-    </div>;
+    </div>;activeTab
 }
 
 export default TabList;
