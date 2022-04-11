@@ -7,7 +7,7 @@ export function Tab(props) {
         classNames.push("tab-list-active");
     }
     return <li className={classNames.join(" ")}
-               onClick={() => props.onClickTab(props.label)}>
+        onClick={() => props.onClickTab(props.label)}>
         {props.label}
     </li>
 }
