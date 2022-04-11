@@ -11,6 +11,7 @@ import {
   serverTimestamp
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { act } from 'react-dom/test-utils';
 
 
 const firebaseConfig = {
@@ -62,9 +63,9 @@ function App(props) {
   const [tabs, loading2, error2] = useCollectionData(query(tabsCollection, orderBy("created")));
 
   useEffect(() => {
-    if (!loading2) {
-      console.log('tabs: ', tabs[0].id)
-      setActiveTab(tabs[0].id)
+    if (activeTab===0 && !loading2) {
+      setActiveTab(tabs[0].id);
+      console.log(tabs);
     }
   });
 
@@ -117,11 +118,12 @@ function App(props) {
     setDoc(doc(tabsCollection, uniqueID),
       {
         id: uniqueID
-      })
+      });
   }
 
-  function handleSelectTab() {
-
+  function handleSelectTab(id) {
+    setActiveTab(id);
+    console.log('active tab', activeTab);
   }
 
   if (loading || loading2) return (<div>loading</div>)
@@ -149,7 +151,10 @@ function App(props) {
           {tabs.map(tab =>
             <Tab
               key={tab.id}
-              activeTab={activeTab}>{tab.name}</Tab>)}
+              id={tab.id}
+              activeTab={activeTab}
+              label={tab.name}
+              onClickTab={handleSelectTab}/>)}
           <li className="new-tab" onClick={handleAddTab}>New Tab</li>
         </ol>
       </div>
