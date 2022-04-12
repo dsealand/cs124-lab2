@@ -30,10 +30,8 @@ const tabsCollection = collection(db, tabCollectionName);
 
 function App(props) {
   const [isShowCompleted, setIsShowCompleted] = useState(true);
-  const [isShowDeleteDialog, setShowDeleteDialog] = useState(false);
   const [sortOrder, setSortOrder] = useState("updated desc");
   const [activeTab, setActiveTab] = useState(0);
-
   const [modal, setModal] = useState({show: false})
 
   const tasksCollection = collection(db, `${tabCollectionName}/${activeTab}/tasks`);
@@ -89,11 +87,6 @@ function App(props) {
     deleteDoc(doc(tasksCollection, id));
   }
 
-
-  // function toggleModal() {
-  //   setModal({show: false});
-  // }
-
   function handleAddTab(tabName) {
     const uniqueID = generateUniqueID();
     setDoc(doc(tabsCollection, uniqueID),
@@ -125,6 +118,9 @@ function App(props) {
 
 
   if (tasksLoading || tabsLoading) return (<div>loading</div>)
+  if (tasksError) return (<div>{`Error: ${tasksError}`}</div>)
+  if (tabsError) return (<div>{`Error: ${tabsError}`}</div>)
+
 
   return (
     <div className="App">
