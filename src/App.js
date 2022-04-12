@@ -6,10 +6,12 @@ import ListContainer from './ListContainer';
 import { useState, useEffect, useRef } from 'react';
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import { initializeApp } from "firebase/app";
-import TabList from './TabList.js'
-import { collection, doc, getFirestore, query, orderBy, setDoc, updateDoc, deleteDoc,
-  serverTimestamp } from "firebase/firestore";
+import {
+  collection, doc, getFirestore, query, orderBy, setDoc, updateDoc, deleteDoc,
+  serverTimestamp
+} from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { act } from 'react-dom/test-utils';
 
 
 const firebaseConfig = {
@@ -58,9 +60,14 @@ function App(props) {
 
   // need to deal with asc/desc for priority and dateUpdated
   const [tasks, loading, error] = useCollectionData(query(tasksCollection, orderBy(...sortOrder.split(" "))));
-  const [tabs, loading2, error2] = useCollectionData(query(tabsCollection));
+  const [tabs, loading2, error2] = useCollectionData(query(tabsCollection, orderBy("created")));
 
-  console.log('tabs: ', tabs)
+  useEffect(() => {
+    if (activeTab===0 && !loading2) {
+      setActiveTab(tabs[0].id);
+      console.log(tabs);
+    }
+  });
 
   function handleToggleShowCompleted() {
     setIsShowCompleted(!isShowCompleted);
@@ -106,6 +113,19 @@ function App(props) {
     deleteDoc(doc(tasksCollection, id));
   }
 
+  function handleAddTab() {
+    const uniqueID = generateUniqueID();
+    setDoc(doc(tabsCollection, uniqueID),
+      {
+        id: uniqueID
+      });
+  }
+
+  function handleSelectTab(id) {
+    setActiveTab(id);
+    console.log('active tab', activeTab);
+  }
+
   if (loading || loading2) return (<div>loading</div>)
 
   return (
@@ -129,10 +149,14 @@ function App(props) {
       <div className="tabs">
         <ol className="tab-list">
           {tabs.map(tab =>
-            <Tab key={tab.id}
-              activeTab={activeTab} />)}
+            <Tab
+              key={tab.id}
+              id={tab.id}
+              activeTab={activeTab}
+              label={tab.name}
+              onClickTab={handleSelectTab}/>)}
+          <li className="new-tab" onClick={handleAddTab}>New Tab</li>
         </ol>
-        {tabs.map(child => activeTab === child.id && child)}
       </div>
     </div>
   );

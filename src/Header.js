@@ -46,6 +46,16 @@ function Header(props) {
     />
   }
 
+  const properSortName = {
+    "updated desc": "Last Updated",
+    "updated asc": "Last Updated",
+    "text desc": "Alphabetical",
+    "text asc": "Alphabetical",
+    "priority desc": "Priority",
+    "priority asc": "Priority"
+  };
+
+
   return (
     <div id="header">
       <div className="header-icon">
@@ -73,7 +83,7 @@ function Header(props) {
         </div>
       </div>
       <div className = "sortMethod">
-        {props.sortOrder}
+        {properSortName[props.sortOrder]}
       </div>
       <h3>Tasks</h3>
       <div className="trash-icon">

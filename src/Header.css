@@ -19,6 +19,18 @@
   flex: 5;
 }
 
+.sortMethod {
+  position: relative;
+  margin-right: -160.33px;
+
+}
+@media only screen and (max-width: 800px){
+  .sortMethod {
+    color: white;
+    display: none
+  }
+}
+
 .header-sort {
   flex: 1;
   text-align: left;
@@ -54,12 +66,6 @@ li {
 li:hover {
   background-color: rgba(0, 0, 0, 0.14);
   cursor: pointer;
-}
-@media only screen and (max-width: 500px){
-  .sortMethod {
-    flex: 0;
-    display: none;
-  }
 }
 
 .header-icon {
