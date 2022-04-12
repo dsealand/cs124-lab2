@@ -57,6 +57,15 @@ function Header(props) {
     "priority asc": "Priority"
   };
 
+  const modalOptions = {
+    show: true,
+    onClose: () => (props.setModal({show:false})),
+    onCancel: () => (props.setModal({show:false})),
+    cancelText: "Cancel",
+    onConfirm: props.onDeleteCompleted,
+    confirmText: "OK",
+    children: "Delete all completed items?"
+  }
 
   return (
     <div id="header">
@@ -88,7 +97,7 @@ function Header(props) {
       <h3 className="header-name">Tasks</h3>
       <div className="spacing"/>
       <div className="icon-trash icon-wrapper">
-        <button className="icon-button" onClick={() => props.onToggleModal()}>
+        <button className="icon-button" onClick={() => props.setModal(modalOptions)}>
           <FaRegTrashAlt />
         </button>
       </div>

@@ -3,6 +3,7 @@ import React from 'react';
 import Header from './Header';
 import { Tab } from './Tab';
 import ListContainer from './ListContainer';
+import Modal from './Modal';
 import { useState, useEffect } from 'react';
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import { initializeApp } from "firebase/app";
@@ -11,7 +12,6 @@ import {
   serverTimestamp
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyDs9yo12K8YT79DyMVEguJ25hO0d9V-JwQ",
@@ -28,32 +28,13 @@ const db = getFirestore(app);
 const tabCollectionName = "tabs-0";
 const tabsCollection = collection(db, tabCollectionName);
 
-function DeleteDialog(props) {
-  return <div className={"backdrop"} onClick={e => props.onClose()}>
-    <div className="modal">
-      Delete all completed items?
-      <div className="alert-buttons">
-        <button className={"alert-button alert-cancel"} type={"button"}
-          onClick={() => props.onClose()}>
-          No
-        </button>
-        <button className={"alert-button alert-ok"} type={"button"}
-          onClick={() => {
-            props.onOK();
-            props.onClose();
-          }}>
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
-}
-
 function App(props) {
   const [isShowCompleted, setIsShowCompleted] = useState(true);
   const [isShowDeleteDialog, setShowDeleteDialog] = useState(false);
   const [sortOrder, setSortOrder] = useState("updated desc");
   const [activeTab, setActiveTab] = useState(0);
+
+  const [modal, setModal] = useState({show: false})
 
   const tasksCollection = collection(db, `${tabCollectionName}/${activeTab}/tasks`);
 
@@ -80,12 +61,12 @@ function App(props) {
   }
 
   function handleChangeField(id, field, value) {
-    updateDoc(doc(tasksCollection, id),
-      {
-        [field]: value,
-        updated: serverTimestamp()
-      })
-  }
+      updateDoc(doc(tasksCollection, id),
+        {
+          [field]: value,
+          updated: serverTimestamp()
+        })
+    }
 
   function handleToggleItemCompleted(id) {
     handleChangeField(id, "isCompleted", !tasks.find(t => t.id === id).isCompleted)
@@ -101,16 +82,17 @@ function App(props) {
         priority: 1,
         updated: serverTimestamp()
       });
-    console.log(activeTab)
-  }
-
-  function toggleModal() {
-    setShowDeleteDialog(!isShowDeleteDialog)
+    // console.log(activeTab)
   }
 
   function handleDeleteById(id) {
     deleteDoc(doc(tasksCollection, id));
   }
+
+
+  // function toggleModal() {
+  //   setModal({show: false});
+  // }
 
   function handleAddTab(tabName) {
     const uniqueID = generateUniqueID();
@@ -148,7 +130,7 @@ function App(props) {
     <div className="App">
       <Header
         onToggleShowCompleted={handleToggleShowCompleted}
-        onToggleModal={toggleModal}
+        setModal={setModal}
         onDeleteCompleted={handleDeleteCompleted}
         isShowCompleted={isShowCompleted}
         setSortOrder={setSortOrder}
@@ -161,7 +143,10 @@ function App(props) {
         onAddNewTask={handleAddNewTask}
         onDeleteById={handleDeleteById}
       />
-      {isShowDeleteDialog && <DeleteDialog onClose={toggleModal} onOK={handleDeleteCompleted} />}
+      {modal.show && 
+        <Modal {...modal}>
+          {modal.children}
+        </Modal>}
       <div className="tabs">
         <ol className="tab-list">
           {tabs.map(tab =>
