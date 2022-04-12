@@ -136,6 +136,12 @@ function App(props) {
     }
   }
 
+  function handleDeleteTab(id) {
+    deleteDoc(doc(tabsCollection, id));
+    setActiveTab(tabs[0].id)
+    console.log('active tab after delete:', activeTab)
+  }
+
 
   if (loading || loading2) return (<div>loading</div>)
 
@@ -165,7 +171,8 @@ function App(props) {
               id={tab.id}
               activeTab={activeTab}
               label={tab.name}
-              onClickTab={handleSelectTab} />)}
+              onClickTab={handleSelectTab}
+              deleteTab={handleDeleteTab} />)}
           <li className="new-tab">
             <input
               id="newTabInput"

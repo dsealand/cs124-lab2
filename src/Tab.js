@@ -10,5 +10,6 @@ export function Tab(props) {
         onClick={() => {props.onClickTab(props.id)
         console.log(props)}}>
         {props.label}
+        <div onClick={() => {props.deleteTab(props.id)}}>Delete</div>
     </li>
 }
