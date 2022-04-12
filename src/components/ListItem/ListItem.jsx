@@ -36,7 +36,7 @@ function ListItem(props) {
       <input
         className="task-label"
         value={isEditing?text:props.text}
-        autocomplete="off"
+        autoComplete="off"
         onFocus={handleFocus}
         onChange={e => setText(e.target.value)}
         onBlur={handleBlur}

@@ -1,7 +1,7 @@
 import React from 'react';
-import ListItem from './ListItem';
+import ListItem from '../ListItem/ListItem';
 import './ListContainer.css';
-import NewListItem from './NewListItem';
+import NewListItem from '../NewListItem/NewListItem';
 
 function ListContainer(props) {
   return (

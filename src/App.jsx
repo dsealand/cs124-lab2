@@ -1,9 +1,6 @@
 import './App.css';
 import React from 'react';
-import Header from './Header';
-import { Tab } from './Tab';
-import ListContainer from './ListContainer';
-import Modal from './Modal';
+import { Header, Tab, ListContainer, Modal } from './components';
 import { useState, useEffect } from 'react';
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import { initializeApp } from "firebase/app";
@@ -165,7 +162,7 @@ function App(props) {
               defaultValue=""
               placeholder="New tab"
               onBlur={handleBlur}
-              autocomplete="off"
+              autoComplete="off"
               onKeyPress={(e) => {
                 if (e.key === 'Enter') {
                   e.target.blur()

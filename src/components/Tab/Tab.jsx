@@ -2,7 +2,7 @@ import './Tab.css';
 import React from 'react';
 import { FaWindowClose } from 'react-icons/fa';
 
-export function Tab(props) {
+export default function Tab(props) {
   const modalOptions = {
     show: true,
     onClose: () => (props.setModal({show:false})),
