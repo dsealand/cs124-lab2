@@ -47,9 +47,11 @@ After confirming delete:
 In the lab 4 iteration of our app, we added the major feature of multiple possible containers of task lists, in the form of tabs. These tabs, each having a list container, can be added, deleted, and switched to. The user also names the tab when they create a new one. We figured the most natural place for these tabs to be is the bottom of the app display, as there was a lot of empty space there. If the user adds too many tabs that don't fit in the screen size, then they can scroll horizontally to access the rest of the tabs.
 
 App with a non-empty tab selected:
+
 <img src='filled_tab.png' width=300px>
 
 App on a newly-made tab, also featuring scrollability:
+
 <img src='empty_new_tab.png' width=300px>
 
 ## Alternate designs
