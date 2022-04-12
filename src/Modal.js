@@ -6,14 +6,14 @@ function Modal({cancelText, onCancel, confirmText, onConfirm, onClose, children}
       <div className="modal">
         {children}
         <div className="alert-buttons">
-          <button className={"alert-button alert-cancel"} type={"button"}
+          <button aria-label={'cancel '+children} className={"alert-button alert-cancel"} type={"button"}
             onClick={() => {
               onCancel();
               onClose();
             }}>
             {cancelText}
           </button>
-          <button className={"alert-button alert-ok"} type={"button"}
+          <button aria-label={'confirm '+children} className={"alert-button alert-ok"} type={"button"}
             onClick={() => {
               onConfirm();
               onClose();

@@ -3,11 +3,11 @@ import React from 'react';
 import { useState } from 'react';
 import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-icons/fa';
 
-function SortLabel({field, name, isSelected, dir, onSortClick}) {
+function SortLabel({ field, name, isSelected, dir, onSortClick }) {
 
-  return <li onClick={e => {onSortClick(field)}}>
-    <p tabindex={0} className={"sort-label " + (isSelected?"selected":"")}>
-      {name} {isSelected?((dir==="asc")?'\u2191':'\u2193'):''}
+  return <li onClick={e => { onSortClick(field) }}>
+    <p tabindex={0} className={"sort-label " + (isSelected ? "selected" : "")}>
+      {name} {isSelected ? ((dir === "asc") ? '\u2191' : '\u2193') : ''}
     </p>
   </li>
 }
@@ -23,10 +23,10 @@ function Header(props) {
     let newOrder = "";
 
     if (field === currentField) {
-      newOrder = [field, (currentDir==="asc")?"desc":"asc"].join(" ");
+      newOrder = [field, (currentDir === "asc") ? "desc" : "asc"].join(" ");
     }
 
-    else if (field === "text")  {
+    else if (field === "text") {
       newOrder = [field, "asc"].join(" ");
     }
 
@@ -34,7 +34,7 @@ function Header(props) {
       newOrder = [field, "desc"].join(" ");
     }
     props.setSortOrder(newOrder);
-    setShowSortMenu(false);  
+    setShowSortMenu(false);
   }
 
   function createLabel(field, index) {
@@ -43,7 +43,7 @@ function Header(props) {
       field={field}
       name={names[index]}
       dir={currentDir}
-      isSelected={(currentField===field)}
+      isSelected={(currentField === field)}
       onSortClick={handleSortClick}
     />
   }
@@ -59,8 +59,8 @@ function Header(props) {
 
   const modalOptions = {
     show: true,
-    onClose: () => (props.setModal({show:false})),
-    onCancel: () => (props.setModal({show:false})),
+    onClose: () => (props.setModal({ show: false })),
+    onCancel: () => (props.setModal({ show: false })),
     cancelText: "Cancel",
     onConfirm: props.onDeleteCompleted,
     confirmText: "OK",
@@ -70,13 +70,16 @@ function Header(props) {
   return (
     <div id="header">
       <div className="icon-eye icon-wrapper">
-        <button className="icon-button" onClick={props.onToggleShowCompleted}>
+        <button
+          aria-label={props.isShowCompleted ? 'hide completed tasks' : 'show completed tasks'}
+          className="icon-button"
+          onClick={props.onToggleShowCompleted}>
           {(props.isShowCompleted) ? <FaRegEye /> : <FaRegEyeSlash />}
         </button>
       </div>
       <div className="header-sort">
         <div className="sort-icon">
-          <button className="icon-button" onClick={(e) => {
+          <button aria-label={showSortMenu ? 'hide sort menu' : 'show sort menu'} className="icon-button" onClick={(e) => {
             setShowSortMenu(!showSortMenu);
           }}>
             <FaSortAmountDown></FaSortAmountDown>
@@ -95,7 +98,7 @@ function Header(props) {
         </div>
       </div>
       <h3 className="header-name">Tasks</h3>
-      <div className="spacing"/>
+      <div className="spacing" />
       <div className="icon-trash icon-wrapper">
         <button className="icon-button" onClick={() => props.setModal(modalOptions)}>
           <FaRegTrashAlt />
