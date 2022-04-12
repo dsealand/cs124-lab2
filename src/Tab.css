@@ -1,0 +1,35 @@
+.tab-list-item {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    margin-bottom: -1px;
+    width: 200px;
+    padding: 0.5rem 0.75rem;
+    border: solid white; /*White with width to reserve space for active gray border*/
+    border-width: 1px 1px 1px;
+    align-items: center;
+}
+
+.tab-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 4;
+    text-align: left;
+}
+
+.tab-list-active {
+    background-color: white;
+    border-color: #cccccc;
+}
+
+.tab-list-active:hover {
+    background-color: rgb(228, 228, 228);
+    border-color: #cccccc;
+}
+
+.icon-button {
+    flex: 1;
+    text-align: center;
+}

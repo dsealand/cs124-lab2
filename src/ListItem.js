@@ -1,49 +1,43 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FaRegCircle, FaRegCheckCircle, FaExclamation } from 'react-icons/fa'
 import './ListItem.css';
 
 function ListItem(props) {
   const [isEditing, setIsEditing] = useState(false);
-  const [priority, setPriority] = useState(props.priority);
   const [text, setText] = useState(props.text)
-
-  // update input text if props changes
-  useEffect(() => {
-    setText(props.text)
-  }, [props.text])
-
-  // update priority icons if props changes
-  useEffect(() => {
-    setPriority(props.priority)
-  }, [props.priority])
 
   function handleBlur(e) {
     if (e.target.value === "") {
       props.onDeleteById(props.id);
     }
-    else {
-      props.onChangeField(props.id, "priority", priority);
-      props.onChangeField(props.id, "text", e.target.value)
+    else if (text !== props.text) {
+      props.onChangeField(props.id, "text", e.target.value);
     }
     setIsEditing(false);
   }
 
-  let priorityElements = isNaN(priority) ?
-                         Array(1).fill(<FaExclamation />) :
-                         Array(priority+1).fill(<FaExclamation />);
+  function handleFocus(e) {
+    setIsEditing(true);
+    setText(props.text);
+  }
 
   return (
     <div className={"task-row" + ((props.isCompleted) ? " completed" : "")}>
       <div className="task-icon">
-        <button className="icon-button" onClick={() => props.onToggleItemCompleted(props.id)}>
+        <button 
+          className="icon-button" 
+          onClick={() => props.onToggleItemCompleted(props.id)}
+          aria-label={`Complete ${props.text}`}
+          >
           {(props.isCompleted) ? <FaRegCheckCircle/> : <FaRegCircle/>}
         </button>
       </div>
       <input
         className="task-label"
-        value={text}
-        onFocus={e => setIsEditing(true)}
+        value={isEditing?text:props.text}
+        autocomplete="off"
+        onFocus={handleFocus}
         onChange={e => setText(e.target.value)}
         onBlur={handleBlur}
         onKeyPress={(e) => {
@@ -54,12 +48,12 @@ function ListItem(props) {
       <div className="task-priority">
         <button 
           className="icon-button" 
-          onMouseDown={(e) => {
-            e.preventDefault();
-            if (isEditing) setPriority((priority+1)%3);
+          onClick={(e) => {
+            props.onChangeField(props.id, "priority", (props.priority%3)+1);
           }}
+          aria-label={`Priority of ${props.text} is ${props.priority}. Change to ${(props.priority%3)+1}?`}
         >
-          {priorityElements}
+          {Array(props.priority).fill(<FaExclamation />)}
         </button>
       </div>
     </div>

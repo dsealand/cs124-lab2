@@ -13,16 +13,33 @@
   align-items: center;
   text-align: center;
   padding: 5px;
+  flex:  0;
 }
 
 #header h3 {
-  flex: 5;
+  flex: 3;
+}
+
+.sortMethod {
+  position: relative;
+  margin-right: -160.33px;
+
+}
+@media only screen and (max-width: 800px){
+  .sortMethod {
+    color: white;
+    display: none
+  }
 }
 
 .header-sort {
-  flex: 1;
+  flex: 2;
   text-align: left;
   text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .spacing {
@@ -32,12 +49,13 @@
 .dropdown {
   position: absolute;
   top: 55px;
-  left: 11%;
-  width: 200px;
+  left: 11.2%;
+  width: 211px;
   z-index: 2;
   background: white;
   /* border: 1px solid rgba(0, 0, 0, 0.04); */
   box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
+  z-index: 1001;
 }
 
 ul {
@@ -55,6 +73,13 @@ li:hover {
   cursor: pointer;
 }
 
+@media only screen and (max-width: 830px){
+  .display-lg {
+    flex: 0;
+    display: none;
+  }
+}
+
 .header-icon {
   flex: 1;
   text-align: center;
@@ -62,15 +87,6 @@ li:hover {
 }
 
 .icon-button {
-  /*override default button styling*/
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-
   vertical-align: middle;
 }
 
@@ -78,27 +94,26 @@ li:hover {
   margin-top: 6px;
 }
 
-.task-icon {
+.icon-wrapper {
   flex: 1;
   text-align: center;
   text-decoration: none;
 }
 
-.trash-icon {
+.icon-trash {
   flex: 2;
-  text-align: center;
-  text-decoration: none;
 }
 
-li button{
-  /*override default button styling*/
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-  
-  vertical-align: middle;
+.icon-button:focus {
+  outline: 5px auto Highlight;
+  outline: 5px auto -webkit-focus-ring-color;
 }
+
+.sort-label {
+  display:  inline;
+}
+
+.sort-label.selected {
+  font-weight:  600;
+}
+

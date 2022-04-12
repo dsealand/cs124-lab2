@@ -1,13 +1,17 @@
 import './App.css';
 import React from 'react';
 import Header from './Header';
+import { Tab } from './Tab';
 import ListContainer from './ListContainer';
-import { useState, useEffect, useRef } from 'react';
-import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
-import {initializeApp} from "firebase/app";
-import {collection, doc, getFirestore, query, setDoc, onSnapshot, deleteDoc, 
-  serverTimestamp} from "firebase/firestore";
-
+import Modal from './Modal';
+import { useState, useEffect } from 'react';
+import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
+import { initializeApp } from "firebase/app";
+import {
+  collection, doc, getFirestore, query, orderBy, setDoc, updateDoc, deleteDoc,
+  serverTimestamp
+} from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDs9yo12K8YT79DyMVEguJ25hO0d9V-JwQ",
@@ -21,65 +25,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const collectionName = "tasks-0";
-const tasksCollection = collection(db, collectionName);
-
-function DeleteDialog(props) {
-  return <div className={"backdrop"}>
-    <div className="modal">
-      Delete all completed items?
-      <div className="alert-buttons">
-        <button className={"alert-button alert-cancel"} type={"button"}
-                onClick={() => props.onClose()}>
-          No
-        </button>
-        <button className={"alert-button alert-ok"} type={"button"}
-                onClick={() => {
-                  props.onOK();
-                  props.onClose();
-                }}>
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
-}
+const tabCollectionName = "tabs-0";
+const tabsCollection = collection(db, tabCollectionName);
 
 function App(props) {
   const [isShowCompleted, setIsShowCompleted] = useState(true);
-  const [tasks, _setTasks] = useState([]);
-  const [isShowDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [_sortField, setSortField] = useState("updated");
+  const [sortOrder, setSortOrder] = useState("updated desc");
+  const [activeTab, setActiveTab] = useState(0);
+  const [modal, setModal] = useState({show: false})
 
-  const sortField = useRef({});
-  sortField.current = _sortField;
+  const tasksCollection = collection(db, `${tabCollectionName}/${activeTab}/tasks`);
 
-
-  function setTasks(arr) {
-    let sorted = arr.sort((a, b) => b[sortField.current] >= a[sortField.current] ? 1 : -1);
-    if (sortField.current === "text") {sorted.reverse();}
-    _setTasks((prev) => [...sorted]);
-    console.log("sorting by", sortField.current)
-  }
+  const [tabs, tabsLoading, tabsError] = useCollectionData(query(tabsCollection, orderBy("created")));
+  const [tasks, tasksLoading, tasksError] = useCollectionData(query(tasksCollection, orderBy(...sortOrder.split(" "))));
 
   useEffect(() => {
-    console.log("sort field updated to", sortField.current)
-    setTasks(tasks);
-  }, [_sortField])
-
-  // query initial tasks
-  const q = query(tasksCollection);
-
-  // subscribe to changes in firestore collection
-  useEffect(() => { 
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const temp = querySnapshot.docs.map(doc => doc.data());
-
-      // on update to collection, update tasks state
-      setTasks(temp);
-    });
-    return () => unsubscribe();
-  }, []);
+    if (activeTab === 0 && !(tabsError || tabsLoading)) {
+      setActiveTab(tabs[0].id);
+      console.log(tabs);
+    }
+  });
 
   function handleToggleShowCompleted() {
     setIsShowCompleted(!isShowCompleted);
@@ -94,12 +59,12 @@ function App(props) {
   }
 
   function handleChangeField(id, field, value) {
-    setDoc(doc(db, collectionName, id),
-    {
-      [field]: value,
-      updated: serverTimestamp()
-    }, {merge: true})
-  }
+      updateDoc(doc(tasksCollection, id),
+        {
+          [field]: value,
+          updated: serverTimestamp()
+        })
+    }
 
   function handleToggleItemCompleted(id) {
     handleChangeField(id, "isCompleted", !tasks.find(t => t.id === id).isCompleted)
@@ -107,42 +72,110 @@ function App(props) {
 
   function handleAddNewTask(task) {
     const uniqueID = generateUniqueID();
-    setDoc(doc(db, collectionName, uniqueID),
-    {
-      id: uniqueID,
-      text: task,
-      isCompleted: false,
-      priority: 0,
-      updated: serverTimestamp()
-    })
-  }
-
-  function toggleModal() {
-    setShowDeleteDialog(!isShowDeleteDialog)  
+    setDoc(doc(tasksCollection, uniqueID),
+      {
+        id: uniqueID,
+        text: task,
+        isCompleted: false,
+        priority: 1,
+        updated: serverTimestamp()
+      });
+    // console.log(activeTab)
   }
 
   function handleDeleteById(id) {
     deleteDoc(doc(tasksCollection, id));
   }
 
+  function handleAddTab(tabName) {
+    const uniqueID = generateUniqueID();
+    setDoc(doc(tabsCollection, uniqueID),
+      {
+        id: uniqueID,
+        name: tabName,
+        created: serverTimestamp()
+      });
+  }
+
+  function handleSelectTab(id) {
+    setActiveTab(id);
+    console.log('active tab', activeTab);
+  }
+
+  function handleBlur(e) {
+    if (e.target.value !== "") {
+      handleAddTab(e.target.value);
+      console.log(e.target.value);
+      document.getElementById("newTabInput").value = "";
+    }
+  }
+
+  function handleDeleteTab(id) {
+    deleteDoc(doc(tabsCollection, id));
+    setActiveTab(tabs[0].id)
+    console.log('active tab after delete:', activeTab)
+  }
+
+
+  if (tasksLoading || tabsLoading) return (<div></div>)
+  if (tasksError) return (<div>{`Error: ${tasksError}`}</div>)
+  if (tabsError) return (<div>{`Error: ${tabsError}`}</div>)
+
+
   return (
     <div className="App">
-      <Header
-        onToggleShowCompleted={handleToggleShowCompleted}
-        onToggleModal={toggleModal}
-        onDeleteCompleted={handleDeleteCompleted}
-        isShowCompleted={isShowCompleted}
-        setSortField={setSortField}
-      ></Header>
-      <ListContainer
-        items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
-        onChangeField={handleChangeField}
-        onToggleItemCompleted={handleToggleItemCompleted}
-        onAddNewTask={handleAddNewTask}
-        onDeleteById={handleDeleteById}
-      />
-        {isShowDeleteDialog && <DeleteDialog onClose={toggleModal} onOK={handleDeleteCompleted}/>}
+      <div className="header">
+        <Header
+          onToggleShowCompleted={handleToggleShowCompleted}
+          setModal={setModal}
+          onDeleteCompleted={handleDeleteCompleted}
+          isShowCompleted={isShowCompleted}
+          setSortOrder={setSortOrder}
+          sortOrder={sortOrder}
+        ></Header>
+      </div>
+      <div className="content">
+        <ListContainer
+          items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
+          onChangeField={handleChangeField}
+          onToggleItemCompleted={handleToggleItemCompleted}
+          onAddNewTask={handleAddNewTask}
+          onDeleteById={handleDeleteById}
+        />
+        {modal.show && 
+          <Modal {...modal}>
+            {modal.children}
+          </Modal>}
+      </div>
+      <div className="footer">
+        <ol className="tab-list">
+          {tabs.map(tab =>
+            <Tab
+              key={tab.id}
+              id={tab.id}
+              activeTab={activeTab}
+              label={tab.name}
+              onClickTab={handleSelectTab}
+              deleteTab={handleDeleteTab}
+              setModal={setModal}/>)}
+          <li className="new-tab">
+            <input
+              className="new-tab-input"
+              id="newTabInput"
+              defaultValue=""
+              placeholder="New tab"
+              onBlur={handleBlur}
+              autocomplete="off"
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  e.target.blur()
+                }
+              }}
+            />
+          </li>
+      </ol>
     </div>
+    </div >
   );
 }
 
