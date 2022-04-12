@@ -6,6 +6,16 @@ In our initial discussions, some adjectives we used to describe our desired app 
 
 In the picture above, we used eggshell for the background, tan for the header, and grey for the new task text.
 
+## Alternate designs
+
+We considered a few other color palettes (numbers 37 and 50) and some other fonts, but these design decisions were surprisingly easy. There was some more discussion about alternate designs for the overall format of the app. How do we allow the user to create a new task: is it another element in the list or a floating button at the bottom of the screen? Where should we place the buttons to manage completed items: at the top of the list (so scrolling down removes them from display), or floating, or in the header? 
+
+## User Testing
+
+We had 3 people test our app, none of whom have taken this class, or have notable design experience. All three said they enjoyed their experience and felt that the app was simple and intuitive. They did ask if the color of the header could be different, and we changed it to a slightly more orange hue. However, upon doing this, the new color did not look as good to almost everyone, and so we changed it back.
+
+## Final Design
+
 ### Header
 
 We leveraged the common design metaphor of a header on a mobile application; though the header is the first item on the screen, it is understood that the main content of the page is below in the main container. We have actions listed in the header (showing/hiding or deleting completed items) along with the title/name of "Tasks".
@@ -54,15 +64,16 @@ App on a newly-made tab, also featuring scrollability:
 
 <img src='empty_new_tab.png' width=300px>
 
-## Alternate designs
+### Misc. Features (NEW)
 
-We considered a few other color palettes (numbers 37 and 50) and some other fonts, but these design decisions were surprisingly easy. There was some more discussion about alternate designs for the overall format of the app. How do we allow the user to create a new task: is it another element in the list or a floating button at the bottom of the screen? Where should we place the buttons to manage completed items: at the top of the list (so scrolling down removes them from display), or floating, or in the header? 
+We added features to make our app more accessible on a computer. This includes being able to navigate the app through keyboard only, using TAB and ENTER, and also making sure every element has screen-reader support.
 
-## User Testing
+#### ACCESSIBILITY VIDEOS:
+Keyboard-only Functionality: https://drive.google.com/file/d/1m7Z_klUEY01fCF8dIQbMxEMVs8KjsfY-/view?usp=sharing
 
-We had 3 people test our app, none of whom have taken this class, or have notable design experience. All three said they enjoyed their experience and felt that the app was simple and intuitive. They did ask if the color of the header could be different, and we changed it to a slightly more orange hue. However, upon doing this, the new color did not look as good to almost everyone, and so we changed it back.
+Screen Reader Functionality: https://drive.google.com/file/d/12YwhgridT6olv6UI99Uj3pvjLTD9vk26/view?usp=sharing (NOTE: Our screen recorder could not record both the display and computer audio at the same time, only an external microphone, so the screen reader can't be heard, but the box for it is proof that it works).
 
-## Final Design
+### Tasks
 
 Before creating a new task:
 
@@ -81,6 +92,7 @@ Clicking eye icon:
 <img src="show_completed.png" width="300">
 
 <img src="hide_complete.png" width="300">
+
 
 
 ## Challenges
