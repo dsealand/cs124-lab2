@@ -3,7 +3,7 @@ import React from 'react';
 import Header from './Header';
 import { Tab } from './Tab';
 import ListContainer from './ListContainer';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import { initializeApp } from "firebase/app";
 import {
@@ -11,7 +11,6 @@ import {
   serverTimestamp
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { act } from 'react-dom/test-utils';
 
 
 const firebaseConfig = {
@@ -26,9 +25,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const collectionName = "tasks-0";
 const tabCollectionName = "tabs-0";
-const tasksCollection = collection(db, collectionName);
 const tabsCollection = collection(db, tabCollectionName);
 
 function DeleteDialog(props) {
@@ -58,12 +55,13 @@ function App(props) {
   const [sortOrder, setSortOrder] = useState("updated desc");
   const [activeTab, setActiveTab] = useState(0);
 
-  // need to deal with asc/desc for priority and dateUpdated
-  const [tasks, loading, error] = useCollectionData(query(tasksCollection, orderBy(...sortOrder.split(" "))));
-  const [tabs, loading2, error2] = useCollectionData(query(tabsCollection, orderBy("created")));
+  const tasksCollection = collection(db, `${tabCollectionName}/${activeTab}/tasks`);
+
+  const [tabs, tabsLoading, tabsError] = useCollectionData(query(tabsCollection, orderBy("created")));
+  const [tasks, tasksLoading, tasksError] = useCollectionData(query(tasksCollection, orderBy(...sortOrder.split(" "))));
 
   useEffect(() => {
-    if (activeTab === 0 && !loading2) {
+    if (activeTab === 0 && !(tabsError || tabsLoading)) {
       setActiveTab(tabs[0].id);
       console.log(tabs);
     }
@@ -102,7 +100,8 @@ function App(props) {
         isCompleted: false,
         priority: 1,
         updated: serverTimestamp()
-      })
+      });
+    console.log(activeTab)
   }
 
   function toggleModal() {
@@ -137,7 +136,7 @@ function App(props) {
   }
 
 
-  if (loading || loading2) return (<div>loading</div>)
+  if (tasksLoading || tabsLoading) return (<div>loading</div>)
 
   return (
     <div className="App">
