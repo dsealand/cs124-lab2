@@ -17,13 +17,13 @@ export function Tab(props) {
     if (props.activeTab === props.id) {
         classNames.push("tab-list-active");
     }
-    return <li className={classNames.join(" ")}
+    return <li tabindex={0} className={classNames.join(" ")}
         onClick={() => {
             props.onClickTab(props.id)
         }}>
         <div className="tab-name">{props.label}
         </div>
-        <button className="icon-button" onClick={() => { props.setModal(modalOptions) }}>
+        <button aria-label='delete tab' className="icon-button" onClick={() => { props.setModal(modalOptions) }}>
             <FaWindowClose />
         </button>
     </li>

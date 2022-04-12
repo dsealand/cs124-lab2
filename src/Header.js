@@ -6,7 +6,7 @@ import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-
 function SortLabel({field, name, isSelected, dir, onSortClick}) {
 
   return <li onClick={e => {onSortClick(field)}}>
-    <p className={"sort-label " + (isSelected?"selected":"")}>
+    <p tabindex={0} className={"sort-label " + (isSelected?"selected":"")}>
       {name} {isSelected?((dir==="asc")?'\u2191':'\u2193'):''}
     </p>
   </li>
