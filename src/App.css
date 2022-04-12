@@ -17,6 +17,11 @@
   z-index: 1000;
 }
 
+button:focus {
+  outline: 5px auto Highlight;
+  outline: 5px auto -webkit-focus-ring-color;
+}
+
 button {
   /*override default button styling*/
   background-color: inherit;
@@ -59,6 +64,10 @@ button {
 
 .alert-ok {
   background-color: #e78587
+}
+
+.alert-cancel {
+  background-color: rgb(223, 223, 223);
 }
 
 .tab-list {

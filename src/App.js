@@ -156,7 +156,8 @@ function App(props) {
               activeTab={activeTab}
               label={tab.name}
               onClickTab={handleSelectTab}
-              deleteTab={handleDeleteTab} />)}
+              deleteTab={handleDeleteTab}
+              setModal={setModal}/>)}
           <li className="new-tab">
             <input
               className="new-tab-input"

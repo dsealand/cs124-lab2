@@ -3,6 +3,16 @@ import React from 'react';
 import { FaWindowClose } from 'react-icons/fa';
 
 export function Tab(props) {
+    const modalOptions = {
+        show: true,
+        onClose: () => (props.setModal({show:false})),
+        onCancel: () => (props.setModal({show:false})),
+        cancelText: "Cancel",
+        onConfirm: () => props.deleteTab(props.id),
+        confirmText: "OK",
+        children: `Delete ${props.label} tab?`
+      }
+
     const classNames = ["tab-list-item"];
     if (props.activeTab === props.id) {
         classNames.push("tab-list-active");
@@ -13,7 +23,7 @@ export function Tab(props) {
         }}>
         <div className="tab-name">{props.label}
         </div>
-        <button className="icon-button" onClick={() => { props.deleteTab(props.id) }}>
+        <button className="icon-button" onClick={() => { props.setModal(modalOptions) }}>
             <FaWindowClose />
         </button>
     </li>
