@@ -16,7 +16,7 @@
 }
 
 #header h3 {
-  flex: 5;
+  flex: 3;
 }
 
 .sortMethod {
@@ -32,9 +32,12 @@
 }
 
 .header-sort {
-  flex: 1;
+  flex: 2;
   text-align: left;
   text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .spacing {
@@ -68,6 +71,13 @@ li:hover {
   cursor: pointer;
 }
 
+@media only screen and (max-width: 830px){
+  .display-lg {
+    flex: 0;
+    display: none;
+  }
+}
+
 .header-icon {
   flex: 1;
   text-align: center;
@@ -75,15 +85,6 @@ li:hover {
 }
 
 .icon-button {
-  /*override default button styling*/
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-
   vertical-align: middle;
 }
 
@@ -91,16 +92,14 @@ li:hover {
   margin-top: 6px;
 }
 
-.task-icon {
+.icon-wrapper {
   flex: 1;
   text-align: center;
   text-decoration: none;
 }
 
-.trash-icon {
+.icon-trash {
   flex: 2;
-  text-align: center;
-  text-decoration: none;
 }
 
 .icon-button:focus {
