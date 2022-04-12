@@ -6,7 +6,9 @@ import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-
 function SortLabel({field, name, isSelected, dir, onSortClick}) {
 
   return <li onClick={e => {onSortClick(field)}}>
-    <p className={"sort-label " + (isSelected?"selected":"")}>{name} {isSelected?((dir==="asc")?'\u2191':'\u2193'):''}</p>
+    <button className={"sort-label " + (isSelected?"selected":"")}>
+      {name} {isSelected?((dir==="asc")?'\u2191':'\u2193'):''}
+    </button>
   </li>
 }
 
@@ -58,12 +60,10 @@ function Header(props) {
 
   return (
     <div id="header">
-      <div className="header-icon">
-        <div className="task-icon">
-          <button className="icon-button" onClick={props.onToggleShowCompleted}>
-            {(props.isShowCompleted) ? <FaRegEye /> : <FaRegEyeSlash />}
-          </button>
-        </div>
+      <div className="icon-eye icon-wrapper">
+        <button className="icon-button" onClick={props.onToggleShowCompleted}>
+          {(props.isShowCompleted) ? <FaRegEye /> : <FaRegEyeSlash />}
+        </button>
       </div>
       <div className="header-sort">
         <div className="sort-icon">
@@ -81,12 +81,13 @@ function Header(props) {
           </div>
           }
         </div>
+        <div className="display-lg">
+          {properSortName[props.sortOrder]}
+        </div>
       </div>
-      <div className = "sortMethod">
-        {properSortName[props.sortOrder]}
-      </div>
-      <h3>Tasks</h3>
-      <div className="trash-icon">
+      <h3 className="header-name">Tasks</h3>
+      <div className="spacing"/>
+      <div className="icon-trash icon-wrapper">
         <button className="icon-button" onClick={() => props.onToggleModal()}>
           <FaRegTrashAlt />
         </button>
