@@ -63,7 +63,7 @@ function App(props) {
   const [tabs, loading2, error2] = useCollectionData(query(tabsCollection, orderBy("created")));
 
   useEffect(() => {
-    if (activeTab===0 && !loading2) {
+    if (activeTab === 0 && !loading2) {
       setActiveTab(tabs[0].id);
       console.log(tabs);
     }
@@ -113,11 +113,13 @@ function App(props) {
     deleteDoc(doc(tasksCollection, id));
   }
 
-  function handleAddTab() {
+  function handleAddTab(tabName) {
     const uniqueID = generateUniqueID();
     setDoc(doc(tabsCollection, uniqueID),
       {
-        id: uniqueID
+        id: uniqueID,
+        name: tabName,
+        created: serverTimestamp()
       });
   }
 
@@ -125,6 +127,15 @@ function App(props) {
     setActiveTab(id);
     console.log('active tab', activeTab);
   }
+
+  function handleBlur(e) {
+    if (e.target.value !== "") {
+      handleAddTab(e.target.value);
+      console.log(e.target.value);
+      document.getElementById("newTabInput").value = "";
+    }
+  }
+
 
   if (loading || loading2) return (<div>loading</div>)
 
@@ -154,11 +165,23 @@ function App(props) {
               id={tab.id}
               activeTab={activeTab}
               label={tab.name}
-              onClickTab={handleSelectTab}/>)}
-          <li className="new-tab" onClick={handleAddTab}>New Tab</li>
-        </ol>
-      </div>
+              onClickTab={handleSelectTab} />)}
+          <li className="new-tab">
+            <input
+              id="newTabInput"
+              defaultValue=""
+              placeholder="New tab"
+              onBlur={handleBlur}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  e.target.blur()
+                }
+              }}
+            />
+          </li>
+      </ol>
     </div>
+    </div >
   );
 }
 
