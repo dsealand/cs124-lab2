@@ -117,7 +117,7 @@ function App(props) {
   }
 
 
-  if (tasksLoading || tabsLoading) return (<div>loading</div>)
+  if (tasksLoading || tabsLoading) return (<div></div>)
   if (tasksError) return (<div>{`Error: ${tasksError}`}</div>)
   if (tabsError) return (<div>{`Error: ${tabsError}`}</div>)
 
