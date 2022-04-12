@@ -174,6 +174,7 @@ function App(props) {
               deleteTab={handleDeleteTab} />)}
           <li className="new-tab">
             <input
+              className="new-tab-input"
               id="newTabInput"
               defaultValue=""
               placeholder="New tab"

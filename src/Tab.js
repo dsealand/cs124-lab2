@@ -1,5 +1,6 @@
 import './Tab.css';
 import React from 'react';
+import { FaWindowClose } from 'react-icons/fa';
 
 export function Tab(props) {
     const classNames = ["tab-list-item"];
@@ -7,9 +8,13 @@ export function Tab(props) {
         classNames.push("tab-list-active");
     }
     return <li className={classNames.join(" ")}
-        onClick={() => {props.onClickTab(props.id)
-        console.log(props)}}>
-        {props.label}
-        <div onClick={() => {props.deleteTab(props.id)}}>Delete</div>
+        onClick={() => {
+            props.onClickTab(props.id)
+        }}>
+        <div className="tab-name">{props.label}
+        </div>
+        <button className="icon-button" onClick={() => { props.deleteTab(props.id) }}>
+            <FaWindowClose />
+        </button>
     </li>
 }

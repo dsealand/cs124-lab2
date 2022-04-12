@@ -62,32 +62,28 @@ button {
 }
 
 .tab-list {
-  /* height: 40px;  */
+  height: 60px; 
+  display: flex;
+  flex-direction: row;
   margin: 0px;
   position: fixed; 
   bottom:0%;
   width:100%; 
-  background-color: #393838; 
+  background-color: #D8C3A5; 
   opacity: 1;
-}
-
-.tab-list-item {
-  display: inline-block;
-  list-style: none;
-  /* margin-bottom: -1px; */
-  /* padding: 0.5rem 0.75rem; */
-  border: solid white; /*White with width to reserve space for active gray border*/
-  border-width: 1px 1px 0 1px;
-}
-
-.tab-list-active {
-  background-color: white;
-  border-color: #cccccc;
+  /* align-items: center; */
 }
 
 .new-tab {
+  display: flex;
+  flex-direction: row;
   border: solid white;
   list-style: none;
   border-width: 1px 1px 0 1px;
-  display: inline-block;
+}
+
+.new-tab-input {
+  font-family: "Montserrat", sans-serif;
+  font-size:24px;
+  width: 200px;
 }
