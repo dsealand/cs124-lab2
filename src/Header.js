@@ -6,7 +6,14 @@ import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-
 function SortLabel({ field, name, isSelected, dir, onSortClick }) {
 
   return <li onClick={e => { onSortClick(field) }}>
-    <p tabindex={0} className={"sort-label " + (isSelected ? "selected" : "")}>
+    <p 
+      tabindex={0} 
+      className={"sort-label " + (isSelected ? "selected" : "")}
+      onKeyDown={(e) => {
+        if (e.keyCode === 32 || e.keyCode === 13) e.target.click()
+      }
+      }
+    >
       {name} {isSelected ? ((dir === "asc") ? '\u2191' : '\u2193') : ''}
     </p>
   </li>
@@ -100,7 +107,10 @@ function Header(props) {
       <h3 className="header-name">Tasks</h3>
       <div className="spacing" />
       <div className="icon-trash icon-wrapper">
-        <button className="icon-button" onClick={() => props.setModal(modalOptions)}>
+        <button 
+          className="icon-button" 
+          onClick={() => props.setModal(modalOptions)}
+          aria-label="Delete completed items?">
           <FaRegTrashAlt />
         </button>
       </div>

@@ -19,7 +19,10 @@ function NewListItem(props) {
   return (
     <div className="task-row new">
       <div className="task-icon">
-        <button className="icon-button" onClick={handleButtonClick}>
+        <button 
+          className="icon-button" 
+          onClick={handleButtonClick}
+          aria-label="Add new task">
           <FaPencilAlt/>
         </button>
       </div>

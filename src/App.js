@@ -128,26 +128,30 @@ function App(props) {
 
   return (
     <div className="App">
-      <Header
-        onToggleShowCompleted={handleToggleShowCompleted}
-        setModal={setModal}
-        onDeleteCompleted={handleDeleteCompleted}
-        isShowCompleted={isShowCompleted}
-        setSortOrder={setSortOrder}
-        sortOrder={sortOrder}
-      ></Header>
-      <ListContainer
-        items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
-        onChangeField={handleChangeField}
-        onToggleItemCompleted={handleToggleItemCompleted}
-        onAddNewTask={handleAddNewTask}
-        onDeleteById={handleDeleteById}
-      />
-      {modal.show && 
-        <Modal {...modal}>
-          {modal.children}
-        </Modal>}
-      <div className="tabs">
+      <div className="header">
+        <Header
+          onToggleShowCompleted={handleToggleShowCompleted}
+          setModal={setModal}
+          onDeleteCompleted={handleDeleteCompleted}
+          isShowCompleted={isShowCompleted}
+          setSortOrder={setSortOrder}
+          sortOrder={sortOrder}
+        ></Header>
+      </div>
+      <div className="content">
+        <ListContainer
+          items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
+          onChangeField={handleChangeField}
+          onToggleItemCompleted={handleToggleItemCompleted}
+          onAddNewTask={handleAddNewTask}
+          onDeleteById={handleDeleteById}
+        />
+        {modal.show && 
+          <Modal {...modal}>
+            {modal.children}
+          </Modal>}
+      </div>
+      <div className="footer">
         <ol className="tab-list">
           {tabs.map(tab =>
             <Tab
@@ -165,6 +169,7 @@ function App(props) {
               defaultValue=""
               placeholder="New tab"
               onBlur={handleBlur}
+              autocomplete="off"
               onKeyPress={(e) => {
                 if (e.key === 'Enter') {
                   e.target.blur()

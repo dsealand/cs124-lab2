@@ -25,13 +25,18 @@ function ListItem(props) {
   return (
     <div className={"task-row" + ((props.isCompleted) ? " completed" : "")}>
       <div className="task-icon">
-        <button className="icon-button" onClick={() => props.onToggleItemCompleted(props.id)}>
+        <button 
+          className="icon-button" 
+          onClick={() => props.onToggleItemCompleted(props.id)}
+          aria-label={`Complete ${props.text}`}
+          >
           {(props.isCompleted) ? <FaRegCheckCircle/> : <FaRegCircle/>}
         </button>
       </div>
       <input
         className="task-label"
         value={isEditing?text:props.text}
+        autocomplete="off"
         onFocus={handleFocus}
         onChange={e => setText(e.target.value)}
         onBlur={handleBlur}
@@ -46,6 +51,7 @@ function ListItem(props) {
           onClick={(e) => {
             props.onChangeField(props.id, "priority", (props.priority%3)+1);
           }}
+          aria-label={`Priority of ${props.text} is ${props.priority}. Change to ${(props.priority%3)+1}?`}
         >
           {Array(props.priority).fill(<FaExclamation />)}
         </button>

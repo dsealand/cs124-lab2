@@ -1,10 +1,38 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap");
+body {
+  height:  100%;
+  max-height:  100%;
+  margin:  0;
+}
+
+#root {
+  height:  100%;
+}
 
 .App {
   background-color: #EAE7DC;
   font-size: 18pt;
   font-family: "Montserrat", sans-serif;
   margin: 0;
+  display: flex;
+  min-height: 100vh;
+  max-height: 100vh;
+  flex-direction: column;
+}
+
+.header, .footer {
+  flex: 0 0 auto;
+}
+
+.footer {
+  height:  60px;
+  width:100%;
+  background-color: #D8C3A5; 
+}
+
+.content {
+  flex: 1;  
+  overflow-y: scroll;
 }
 
 .backdrop {

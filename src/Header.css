@@ -13,6 +13,7 @@
   align-items: center;
   text-align: center;
   padding: 5px;
+  flex:  0;
 }
 
 #header h3 {
