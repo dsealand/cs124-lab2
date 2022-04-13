@@ -59,12 +59,12 @@ function App(props) {
   }
 
   function handleChangeField(id, field, value) {
-      updateDoc(doc(tasksCollection, id),
+    updateDoc(doc(tasksCollection, id),
         {
           [field]: value,
           updated: serverTimestamp()
         })
-    }
+  }
 
   function handleToggleItemCompleted(id) {
     handleChangeField(id, "isCompleted", !tasks.find(t => t.id === id).isCompleted)
@@ -73,13 +73,13 @@ function App(props) {
   function handleAddNewTask(task) {
     const uniqueID = generateUniqueID();
     setDoc(doc(tasksCollection, uniqueID),
-      {
-        id: uniqueID,
-        text: task,
-        isCompleted: false,
-        priority: 1,
-        updated: serverTimestamp()
-      });
+        {
+          id: uniqueID,
+          text: task,
+          isCompleted: false,
+          priority: 1,
+          updated: serverTimestamp()
+        });
     // console.log(activeTab)
   }
 
@@ -90,11 +90,11 @@ function App(props) {
   function handleAddTab(tabName) {
     const uniqueID = generateUniqueID();
     setDoc(doc(tabsCollection, uniqueID),
-      {
-        id: uniqueID,
-        name: tabName,
-        created: serverTimestamp()
-      });
+        {
+          id: uniqueID,
+          name: tabName,
+          created: serverTimestamp()
+        });
   }
 
   function handleSelectTab(id) {
@@ -123,59 +123,59 @@ function App(props) {
 
 
   return (
-    <div className="App">
-      <div className="header">
-        <Header
-          onToggleShowCompleted={handleToggleShowCompleted}
-          setModal={setModal}
-          onDeleteCompleted={handleDeleteCompleted}
-          isShowCompleted={isShowCompleted}
-          setSortOrder={setSortOrder}
-          sortOrder={sortOrder}
-        ></Header>
-      </div>
-      <div className="content">
-        <ListContainer
-          items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
-          onChangeField={handleChangeField}
-          onToggleItemCompleted={handleToggleItemCompleted}
-          onAddNewTask={handleAddNewTask}
-          onDeleteById={handleDeleteById}
-        />
-        {modal.show && 
-          <Modal {...modal}>
-            {modal.children}
-          </Modal>}
-      </div>
-      <div className="footer">
-        <ol className="tab-list">
-          {tabs.map(tab =>
-            <Tab
-              key={tab.id}
-              id={tab.id}
-              activeTab={activeTab}
-              label={tab.name}
-              onClickTab={handleSelectTab}
-              deleteTab={handleDeleteTab}
-              setModal={setModal}/>)}
-          <li className="new-tab">
-            <input
-              className="new-tab-input"
-              id="newTabInput"
-              defaultValue=""
-              placeholder="New tab"
-              onBlur={handleBlur}
-              autocomplete="off"
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  e.target.blur()
-                }
-              }}
-            />
-          </li>
-      </ol>
-    </div>
-    </div >
+      <div className="App">
+        <div className="header">
+          <Header
+              onToggleShowCompleted={handleToggleShowCompleted}
+              setModal={setModal}
+              onDeleteCompleted={handleDeleteCompleted}
+              isShowCompleted={isShowCompleted}
+              setSortOrder={setSortOrder}
+              sortOrder={sortOrder}
+          ></Header>
+        </div>
+        <div className="content">
+          <ListContainer
+              items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
+              onChangeField={handleChangeField}
+              onToggleItemCompleted={handleToggleItemCompleted}
+              onAddNewTask={handleAddNewTask}
+              onDeleteById={handleDeleteById}
+          />
+          {modal.show &&
+              <Modal {...modal}>
+                {modal.children}
+              </Modal>}
+        </div>
+        <div className="footer">
+          <ol className="tab-list">
+            {tabs.map(tab =>
+                <Tab
+                    key={tab.id}
+                    id={tab.id}
+                    activeTab={activeTab}
+                    label={tab.name}
+                    onClickTab={handleSelectTab}
+                    deleteTab={handleDeleteTab}
+                    setModal={setModal}/>)}
+            <li className="new-tab">
+              <input
+                  className="new-tab-input"
+                  id="newTabInput"
+                  defaultValue=""
+                  placeholder="New tab"
+                  onBlur={handleBlur}
+                  autocomplete="off"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      e.target.blur()
+                    }
+                  }}
+              />
+            </li>
+          </ol>
+        </div>
+      </div >
   );
 }
 
