@@ -1,30 +1,27 @@
 import React from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useFirestoreConnect } from 'react-redux-firebase';
+import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { getTasksByTabId } from './selectors';
 
 const collection = "tabs-0"
 
 function Tasks({name, owner, id}) {
-  
-  console.log("adding listener");
-  useFirestoreConnect([
-    { collection: "tabs-0",
-      doc: id,
-      subcollections: [{ collection: 'tasks'}],
-      storeAs: `${id}-tasks`
-    }
-  ])
-  console.log("listening to " + id);
 
-  const tasks = useSelector(({ firestore: { data } }) => data[`${id}-tasks`])
-  console.log("firestore data", useSelector(state => state.firestore.data));
+  const tasks = getTasksByTabId(id);
 
-  console.log("tasks", tasks)
-  return tasks ? Object.entries(tasks).map(([id, task]) => 
+  if (!isLoaded(tasks)) {
+    return <div>Loading...</div>
+  }
+
+  if (isEmpty(tasks)) {
+    return <div>no tasks</div>
+  }
+
+  return Object.entries(tasks).map(([id, task]) => 
     <p key={task.id}>
       {task.text}
-    </p>):null;
+    </p>)
 
 }
 
