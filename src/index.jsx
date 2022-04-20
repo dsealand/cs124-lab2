@@ -1,30 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import ReduxWrapper from './ReduxWrapper';
 import reportWebVitals from './reportWebVitals';
 
-const initialData = [
-  {
-    id: 1,
-    text: 'Get groceries',
-    isCompleted: true,
-  },
-  {
-    id: 2,
-    text: 'Buy book',
-    isCompleted: true,
-  },
-  {
-    id: 3,
-    text: 'call mom',
-    isCompleted: false,
-  }
-]
-
 ReactDOM.render(
-  <React.StrictMode>
-    <App data={initialData}/>
-  </React.StrictMode>,
+    <ReduxWrapper />,
   document.getElementById('root')
 );
 
