@@ -3,6 +3,7 @@ body {
   height:  100%;
   max-height:  100%;
   margin:  0;
+  overscroll-behavior-x: none;
 }
 
 #root {
@@ -134,27 +135,79 @@ button {
   width: 200px;
 }
 
-.loginForm {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+.loginTitle {
+  font-size: 50px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  height: 100%;
+  background-color: #D8C3A5;
+
 }
 
-.signInButton {
+.loginForm {
+  display: flex;
+  font-size: 18pt;
+  font-family: "Montserrat", sans-serif;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.signInForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 15px 50px;
+  height: 100%;
+  width: 300px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.signUpForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 15px 50px;
+  height: 100%;
+  width: 300px;
+  text-align: center;
+}
+
+h1 {
+  font-weight: bold;
+  margin: 10px;
+}
+
+
+input {
+  background-color: #eee;
+  border: none;
+  padding: 12px 15px;
+  margin: 0;
+  width: 100%;
+
+}
+
+.signButton {
   display: block;
   margin-left: auto;
-  padding: 15px 30px;
+  margin-right: auto;
+  padding: 15px 20px;
+  width: 80%;
   border: none;
   background-color: orange;
   color: white;
   border-radius: 6px;
   cursor: pointer;
   font-size: 16px;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
-.signInButton:hover {
+.signButton:hover {
   background-color: #9867C5;
   transform: translateY(-2px);
 }

@@ -11,7 +11,7 @@ import {
     collection, doc, getFirestore, query, orderBy, setDoc, updateDoc, deleteDoc,
     serverTimestamp, where
 } from "firebase/firestore";
-import { useCollectionData } from "react-firebasex-hooks/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
     getAuth, sendEmailVerification, signOut } from "firebase/auth";
 
@@ -212,23 +212,20 @@ function SignIn() {
     } else if (loading1 || loading2) {
         return <p>Logging in…</p>
     }
-    return <div>
+    return <div class="signInForm">
         {error1 && <p>"Error logging in: " {error1.message}</p>}
         {error2 && <p>"Error logging in: " {error2.message}</p>}
-        <label htmlFor='email'>Email: </label>
-        <input type="text" id='email' value={email}
+        <h1>Sign in</h1>
+        <input type="text" id='email' value={email} placeholder="Email"
                onChange={e=>setEmail(e.target.value)}/>
         <br/>
-        <label htmlFor='pw'>Password: </label>
-        <input type="text" id='pw' value={pw}
+        <input type="text" id='pw' value={pw} placeholder="Password"
                onChange={e=>setPw(e.target.value)}/>
         <br/>
-        <button className="signInButton" onClick={() =>signInWithEmailAndPassword(email, pw)}>
+        <button className="signButton" onClick={() =>signInWithEmailAndPassword(email, pw)}>
             Sign in with Email
         </button>
-
-        <hr/>
-        <button className="signInButton" onClick={() => signInWithGoogle()}>
+        <button className="signButton" onClick={() => signInWithGoogle()}>
             Sign in with Google
         </button>
     </div>
@@ -249,17 +246,16 @@ function SignUp() {
     } else if (loading) {
         return <p>Signing up…</p>
     }
-    return <div>
+    return <div class="signUpForm">
         {error && <p>"Error signing up: " {error.message}</p>}
-        <label htmlFor='email'>Email: </label>
-        <input type="text" id='email' value={email}
+        <h1>Sign up</h1>
+        <input type="text" id='email' value={email} placeholder="Email"
                onChange={e=>setEmail(e.target.value)}/>
         <br/>
-        <label htmlFor='pw'>Password: </label>
-        <input type="text" id='pw' value={pw}
+        <input type="text" id='pw' value={pw} placeholder="Password"
                onChange={e=>setPw(e.target.value)}/>
         <br/>
-        <button className="signUp" onClick={() =>
+        <button className="signButton" onClick={() =>
             createUserWithEmailAndPassword(email, pw)}>
             Sign Up
         </button>
