@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap");
 body {
   height:  100%;
-  max-height:  100%;
   margin:  0;
   overscroll-behavior-x: none;
+  background-color: #EAE7DC;
 }
 
 #root {

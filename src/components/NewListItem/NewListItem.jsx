@@ -1,13 +1,32 @@
 import React from 'react';
 import './NewListItem.css';
 import { FaPencilAlt } from 'react-icons/fa';
+import { useFirestore } from 'react-redux-firebase';
+import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
+import { getActiveTabID } from '../../selectors';
 
 function NewListItem(props) {
+  const firestore = useFirestore();
+  const activeTab = getActiveTabID();
+
+  function handleNewTask(task) {
+    const updated = new Date();
+    firestore
+      .collection('tabs-0')
+      .doc(activeTab)
+      .collection('tasks')
+      .doc()
+      .set({
+        text: task,
+        isCompleted: false,
+        priority: 1,
+        updated: updated.toISOString()
+      });
+  }
 
   function handleBlur(e) {
     if (e.target.value !== "") {
-      props.onAddNewTask(e.target.value);
-      console.log(e.target.value);
+      handleNewTask(e.target.value);
       document.getElementById("newTaskInput").value = "";
     }
   }
