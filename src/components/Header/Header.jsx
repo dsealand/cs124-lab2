@@ -53,9 +53,10 @@ function Header({setModal}) {
   const [field, dir] = getSortOrder();
   const isShowCompleted = getShowCompleted();
   const activeTabID = getActiveTabID();
+
   const firestore = useFirestore();
   const dispatch = useDispatch();
-  const tasks = getTasksByTabID(activeTabID);
+  const tasks = (isLoaded(activeTabID) && activeTabID) ? getTasksByTabID(activeTabID) : [];
 
 
   function toggleSortMenu() {

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  tab: "GiMZWEq5xaZk41sbq21E",
+  tab: null,
   sortOrder: ["priority", "desc"],
   showCompleted: true,
 }

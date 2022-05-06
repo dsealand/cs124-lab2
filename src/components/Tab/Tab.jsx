@@ -16,10 +16,10 @@ export default function Tab(props) {
     firestore
       .collection("tabs-0")
       .doc(id).delete();
+    dispatch(setActiveTabID(null))
   }
 
   function selectTab(id) {
-    console.log("here")
     dispatch(setActiveTabID(id));
   }
 

@@ -11,9 +11,7 @@ function ListContainer(props) {
   const tasks = getTasksByTabID(activeTab, sortOrder);
   const showCompleted = getShowCompleted();
 
-  if (!activeTab) {
-    return <p>no tab selected</p>
-  }
+  
  
   if (!isLoaded(tasks)) {
     return <p>Loading</p>

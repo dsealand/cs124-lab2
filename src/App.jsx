@@ -3,95 +3,40 @@ import React from 'react';
 import { Header, Tab, ListContainer, Modal } from './components';
 import { useState } from 'react';
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
+import { useDispatch } from 'react-redux';
 import { useFirestore, isLoaded } from 'react-redux-firebase';
-import { getAllTabs } from './selectors';
+import { getAllTabs, getActiveTabID } from './selectors';
+import { setActiveTabID } from './activeSlice'
 
 function App(props) {
   const [modal, setModal] = useState({show: false})
   const firestore = useFirestore();
   const tabs = getAllTabs();
+  const dispatch = useDispatch();
+  const activeTabID = getActiveTabID();
 
   if (!isLoaded(tabs)) {
     return <p>Loading</p>
   }
 
-  // const tasksCollection = collection(db, `${tabCollectionName}/${activeTab}/tasks`);
+  if (isLoaded(tabs) && !activeTabID) {
+    dispatch(setActiveTabID(Object.keys(tabs)[0]))
+    return <p>Loading</p>
+  }
 
-  // const [tabs, tabsLoading, tabsError] = useCollectionData(query(tabsCollection, orderBy("created")));
-  // const [tasks, tasksLoading, tasksError] = useCollectionData(query(tasksCollection, orderBy(...sortOrder.split(" "))));
-
-  // useEffect(() => {
-  //   if (activeTab === 0 && !(tabsError || tabsLoading)) {
-  //     setActiveTab(tabs[0].id);
-  //     console.log(tabs);
-  //   }
-  // });
-
-
-  // function handleDeleteCompleted() {
-  //   const completedTasks = tasks.filter((t) => t.isCompleted)
-
-  //   completedTasks.forEach((t) => {
-  //     deleteDoc(doc(tasksCollection, t.id));
-  //   });
-  // }
-
-  // function handleChangeField(id, field, value) {
-  //     updateDoc(doc(tasksCollection, id),
-  //       {
-  //         [field]: value,
-  //         updated: serverTimestamp().toDate().toISOString()
-  //       })
-  //   }
-
-  // function handleToggleItemCompleted(id) {
-  //   handleChangeField(id, "isCompleted", !tasks.find(t => t.id === id).isCompleted)
-  // }
-
-  // function handleAddNewTask(task) {
-  //   const uniqueID = generateUniqueID();
-  //   setDoc(doc(tasksCollection, uniqueID),
-  //     {
-  //       id: uniqueID,
-  //       text: task,
-  //       isCompleted: false,
-  //       priority: 1,
-  //       updated: serverTimestamp()
-  //     });
-  //   // console.log(activeTab)
-  // }
-
-  // function handleDeleteById(id) {
-  //   deleteDoc(doc(tasksCollection, id));
-  // }
-
-  // function handleAddTab(tabName) {
-  //   const uniqueID = generateUniqueID();
-  //   setDoc(doc(tabsCollection, uniqueID),
-  //     {
-  //       id: uniqueID,
-  //       name: tabName,
-  //       created: serverTimestamp()
-  //     });
-  // }
-
-  // function handleSelectTab(id) {
-  //   setActiveTab(id);
-  //   console.log('active tab', activeTab);
-  // }
 
   function handleBlur(e) {
     if (e.target.value !== "") {
-      const uniqueID = generateUniqueID();
       const created = new Date();
-      firestore
+      const newDoc = firestore
         .collection("tabs-0")
-        .add({
-          id: uniqueID,
+        .doc()
+      newDoc.set({
           name: e.target.value,
-          created: created.toISOString()
+          created: created.toISOString(),
         })
       document.getElementById("newTabInput").value = "";
+      dispatch(setActiveTabID(newDoc.id));
     }
   }
 
@@ -105,7 +50,6 @@ function App(props) {
       </div>
       <div className="content">
         <ListContainer
-          // items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
         />
         {modal.show && 
           <Modal {...modal}>
@@ -114,12 +58,15 @@ function App(props) {
       </div>
       <div className="footer">
         <ol className="tab-list">
-          {Object.entries(tabs).map(([id, tab]) =>
-            <Tab
+          {Object.entries(tabs).map(([id, tab]) => {
+            if (tab) {
+            return <Tab
               key={id}
               id={id}
               label={tab.name}
-              setModal={setModal}/>)}
+              setModal={setModal}
+            />
+          }})}
           <li className="new-tab">
             <input
               className="new-tab-input"
