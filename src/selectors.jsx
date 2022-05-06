@@ -2,7 +2,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useFirestoreConnect } from 'react-redux-firebase';
 
-import { setActiveTab, setActiveSortOrder } from './activeSlice';
+import { setActiveTab, setSortOrder } from './activeSlice';
 
 const tabsCollection = "tabs-0";
 const tasksCollection = "tasks";
@@ -26,7 +26,7 @@ export const getShowCompleted = () => {
 export const getTasksByTabID = (tabID, orderBy=["priority", "desc"], showCompleted=true) => {
   const storeAs = tabID+tasksCollection;
   useDispatch()(setActiveTab(tabID));
-  useDispatch()(setActiveSortOrder(orderBy))
+  useDispatch()(setSortOrder(orderBy))
   useFirestoreConnect([{ 
     collection: tabsCollection,
     doc: tabID,

@@ -3,13 +3,23 @@ import React from 'react';
 import { useState } from 'react';
 import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-icons/fa';
 
+import { useDispatch } from 'react-redux';
+import { getSortOrder, getShowCompleted } from '../../selectors';
+import { setSortOrder, setShowCompleted } from '../../activeSlice'
+
 function SortLabel({ field, name, isSelected, dir, onSortClick }) {
+
+  function handleSortClick() {
+    const newDir = (dir === "asc") ? "desc" : "asc";
+    useDispatch()(setSortOrder(field, newDir))
+  }
 
   return <li onClick={e => { onSortClick(field) }}>
     <p 
       tabindex={0} 
       className={"sort-label " + (isSelected ? "selected" : "")}
       onKeyDown={(e) => {
+        // TODO: change to constants?
         if (e.keyCode === 32 || e.keyCode === 13) e.target.click()
       }
       }
@@ -22,54 +32,38 @@ function SortLabel({ field, name, isSelected, dir, onSortClick }) {
 function Header(props) {
   const [showSortMenu, setShowSortMenu] = useState(false);
   const fields = ["updated", "text", "priority"];
-  const names = ["Last Updated", "Alphabetical", "Priority"];
-  const [currentField, currentDir] = props.sortOrder.split(" ")
+  const sortNames = {
+    "updated": "Last Updated",
+    "text": "Alphabetical",
+    "priority": "Priority",
+  };
+  const [field, dir] = getSortOrder().split(" ")
+  const isShowCompleted = getShowCompleted()
 
-
-  function handleSortClick(field) {
-    let newOrder = "";
-
-    if (field === currentField) {
-      newOrder = [field, (currentDir === "asc") ? "desc" : "asc"].join(" ");
-    }
-
-    else if (field === "text") {
-      newOrder = [field, "asc"].join(" ");
-    }
-
-    else {
-      newOrder = [field, "desc"].join(" ");
-    }
-    props.setSortOrder(newOrder);
-    setShowSortMenu(false);
+  function toggleSortMenu() {
+    setShowSortMenu(!showSortMenu);
   }
 
   function createLabel(field, index) {
     return <SortLabel
       key={field}
       field={field}
-      name={names[index]}
-      dir={currentDir}
-      isSelected={(currentField === field)}
-      onSortClick={handleSortClick}
+      name={sortNames[field]}
+      dir={dir}
+      toggleSortMenu={toggleSortMenu}
     />
   }
 
-  const properSortName = {
-    "updated desc": "Last Updated",
-    "updated asc": "Last Updated",
-    "text desc": "Alphabetical",
-    "text asc": "Alphabetical",
-    "priority desc": "Priority",
-    "priority asc": "Priority"
-  };
+  function deleteCompleted() {
+    // TODO: make some call to firebase reducer deleting completed tasks from active tab
+  }
 
   const modalOptions = {
     show: true,
     onClose: () => (props.setModal({ show: false })),
     onCancel: () => (props.setModal({ show: false })),
     cancelText: "Cancel",
-    onConfirm: props.onDeleteCompleted,
+    onConfirm: deleteCompleted,
     confirmText: "OK",
     children: "Delete all completed items?"
   }
@@ -78,10 +72,10 @@ function Header(props) {
     <div id="header">
       <div className="icon-eye icon-wrapper">
         <button
-          aria-label={props.isShowCompleted ? 'hide completed tasks' : 'show completed tasks'}
+          aria-label={isShowCompleted ? 'hide completed tasks' : 'show completed tasks'}
           className="icon-button"
-          onClick={props.onToggleShowCompleted}>
-          {(props.isShowCompleted) ? <FaRegEye /> : <FaRegEyeSlash />}
+          onClick={() => setShowCompleted(!isShowCompleted)}>
+          {(isShowCompleted) ? <FaRegEye /> : <FaRegEyeSlash />}
         </button>
       </div>
       <div className="header-sort">
@@ -101,7 +95,7 @@ function Header(props) {
           }
         </div>
         <div className="display-lg">
-          {properSortName[props.sortOrder]}
+          {sortNames[field]}
         </div>
       </div>
       <h3 className="header-name">Tasks</h3>

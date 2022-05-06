@@ -44,7 +44,7 @@ function App(props) {
       updateDoc(doc(tasksCollection, id),
         {
           [field]: value,
-          updated: serverTimestamp()
+          updated: serverTimestamp().toDate().toISOString()
         })
     }
 
@@ -108,12 +108,7 @@ function App(props) {
     <div className="App">
       <div className="header">
         <Header
-          onToggleShowCompleted={handleToggleShowCompleted}
           setModal={setModal}
-          onDeleteCompleted={handleDeleteCompleted}
-          isShowCompleted={isShowCompleted}
-          setSortOrder={setSortOrder}
-          sortOrder={sortOrder}
         ></Header>
       </div>
       <div className="content">

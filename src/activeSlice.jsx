@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   tab: null,
-  sortOrder: "priority desc"
+  sortOrder: ["priority", "desc"],
+  showCompleted: true,
 }
 
 const activeSlice = createSlice({
@@ -10,9 +11,10 @@ const activeSlice = createSlice({
   initialState,
   reducers: {
     setActiveTab: (state, action) => {state.tab = action.payload},
-    setActiveSortOrder: (state, action) => {state.sortOrder = action.payload}
+    setSortOrder: (state, action) => {state.sortOrder = action.payload},
+    setShowCompleted: (state, action) => {state.showCompleted = action.payload}
   }
 })
 
-export const { setActiveTab, setActiveSortOrder } = activeSlice.actions;
+export const { setActiveTab, setSortOrder } = activeSlice.actions;
 export default activeSlice.reducer;
