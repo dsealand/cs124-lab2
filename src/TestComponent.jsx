@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { getTasksByTabID } from './selectors';
+import { getTasksByTabID, getActiveTabID, getTabByID } from './selectors';
 
 const collection = "tabs-0"
 
