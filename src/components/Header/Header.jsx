@@ -4,14 +4,15 @@ import { useState } from 'react';
 import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-icons/fa';
 
 import { useDispatch } from 'react-redux';
-import { getSortOrder, getShowCompleted } from '../../selectors';
+import { useFirestore } from "react-redux-firebase";
+import { getSortOrder, getShowCompleted, getActiveTabID } from '../../selectors';
 import { setSortOrder, setShowCompleted } from '../../activeSlice'
 
 function SortLabel({ field, name, isSelected, dir, onSortClick }) {
 
   function handleSortClick() {
     const newDir = (dir === "asc") ? "desc" : "asc";
-    useDispatch()(setSortOrder(field, newDir))
+    useDispatch()(setSortOrder([field, newDir]))
   }
 
   return <li onClick={e => { onSortClick(field) }}>
@@ -37,8 +38,10 @@ function Header(props) {
     "text": "Alphabetical",
     "priority": "Priority",
   };
-  const [field, dir] = getSortOrder().split(" ")
-  const isShowCompleted = getShowCompleted()
+  const [field, dir] = getSortOrder().split(" ");
+  const isShowCompleted = getShowCompleted();
+  const activeTabID = getActiveTabID();
+  const firestore = useFirestore();
 
   function toggleSortMenu() {
     setShowSortMenu(!showSortMenu);
@@ -55,7 +58,16 @@ function Header(props) {
   }
 
   function deleteCompleted() {
-    // TODO: make some call to firebase reducer deleting completed tasks from active tab
+    // TODO: constant for collection name
+    const tasks = getTasksByTabID(activeTabID);
+    for (const id in tasks) {
+      firestore
+        .collection("tabs-0")
+        .doc(activeTabID)
+        .collection("tasks")
+        .doc(id)
+        .delete()
+    }
   }
 
   const modalOptions = {
@@ -74,7 +86,7 @@ function Header(props) {
         <button
           aria-label={isShowCompleted ? 'hide completed tasks' : 'show completed tasks'}
           className="icon-button"
-          onClick={() => setShowCompleted(!isShowCompleted)}>
+          onClick={() => useDispatch()(setShowCompleted(!isShowCompleted))}>
           {(isShowCompleted) ? <FaRegEye /> : <FaRegEyeSlash />}
         </button>
       </div>
