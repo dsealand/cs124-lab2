@@ -57,10 +57,10 @@ export const getSharedTabIDsByUserID = (userID) => {
   });
 }
 
-export const getAllTabIDs = () => {
+export const getAllTabs = () => {
   useFirestoreConnect([{
     collection: tabsCollection,
   }]);
 
-  return useSelector(state => (Object.keys(state.firestore.data[tabsCollection])));
+  return useSelector(state => (state.firestore.data[tabsCollection]));
 }

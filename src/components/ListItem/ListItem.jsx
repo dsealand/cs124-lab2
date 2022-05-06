@@ -1,7 +1,7 @@
-import React from 'react';
-import { useState } from 'react';
+import React, {useState} from 'react';
 import { FaRegCircle, FaRegCheckCircle, FaExclamation } from 'react-icons/fa';
 import './ListItem.css';
+
 import { useFirestore } from 'react-redux-firebase';
 import { getActiveTabID } from '../../selectors';
 
@@ -31,14 +31,15 @@ function ListItem(props) {
   }
 
   function handleUpdate(id, field, value) {
+    const updated = new Date()
     firestore
-      .collection('tabs-1')
+      .collection('tabs-0')
       .doc(activeTab)
       .collection('tasks')
       .doc(id)
       .update({
         [field]: value,
-        updated: serverTimestamp().toDate().toISOString()
+        updated: updated.toISOString()
       });
   }
 

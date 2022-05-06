@@ -1,14 +1,16 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { getTasksByTabID, getActiveTabID, getTabByID } from './selectors';
+
+import { useFirestore, useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { getTasksByTabID } from './selectors';
 
 const collection = "tabs-0"
 
 function Tasks({name, owner, id}) {
 
   const tasks = getTasksByTabID(id);
+  const firestore = useFirestore();
 
   if (!isLoaded(tasks)) {
     return <div>Loading...</div>
@@ -18,10 +20,24 @@ function Tasks({name, owner, id}) {
     return <div>no tasks</div>
   }
 
-  return Object.entries(tasks).map(([id, task]) => 
-    <p key={task.id}>
-      {task.text}
-    </p>)
+  function handleDelete(taskID) {
+    firestore
+      .collection(collection)
+      .doc(id)
+      .collection("tasks")
+      .doc(taskID)
+      .delete();
+  }
+
+  return Object.entries(tasks).map(([id, task]) =>
+    <Fragment key={task.id}>
+      <p>
+        {task.text}
+      </p>
+      <button onClick={() => handleDelete(id)}>
+        delete
+      </button>      
+    </Fragment>)
 
 }
 

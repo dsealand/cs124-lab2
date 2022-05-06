@@ -15,6 +15,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import activeReducer from './activeSlice';
 import TestComponent from './TestComponent';
+import App from './App';
 
 const store = configureStore({
   reducer: {
@@ -57,7 +58,7 @@ const rrfProps = {
 ReactDOM.render(
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
-        <TestComponent />
+        <App />
       </ReactReduxFirebaseProvider>
     </Provider>,
   document.getElementById('root')

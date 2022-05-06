@@ -10,114 +10,108 @@ import {
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
+import { useFirestore, useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { getAllTabs } from './selectors';
+
 function App(props) {
-  const [isShowCompleted, setIsShowCompleted] = useState(true);
-  const [sortOrder, setSortOrder] = useState("updated desc");
-  const [activeTab, setActiveTab] = useState(0);
   const [modal, setModal] = useState({show: false})
+  const firestore = useFirestore();
+  const tabs = getAllTabs();
 
-  const tasksCollection = collection(db, `${tabCollectionName}/${activeTab}/tasks`);
-
-  const [tabs, tabsLoading, tabsError] = useCollectionData(query(tabsCollection, orderBy("created")));
-  const [tasks, tasksLoading, tasksError] = useCollectionData(query(tasksCollection, orderBy(...sortOrder.split(" "))));
-
-  useEffect(() => {
-    if (activeTab === 0 && !(tabsError || tabsLoading)) {
-      setActiveTab(tabs[0].id);
-      console.log(tabs);
-    }
-  });
-
-  function handleToggleShowCompleted() {
-    setIsShowCompleted(!isShowCompleted);
+  if (!isLoaded(tabs)) {
+    return <p>Loading</p>
   }
 
-  function handleDeleteCompleted() {
-    const completedTasks = tasks.filter((t) => t.isCompleted)
+  // const tasksCollection = collection(db, `${tabCollectionName}/${activeTab}/tasks`);
 
-    completedTasks.forEach((t) => {
-      deleteDoc(doc(tasksCollection, t.id));
-    });
-  }
+  // const [tabs, tabsLoading, tabsError] = useCollectionData(query(tabsCollection, orderBy("created")));
+  // const [tasks, tasksLoading, tasksError] = useCollectionData(query(tasksCollection, orderBy(...sortOrder.split(" "))));
 
-  function handleChangeField(id, field, value) {
-      updateDoc(doc(tasksCollection, id),
-        {
-          [field]: value,
-          updated: serverTimestamp().toDate().toISOString()
-        })
-    }
+  // useEffect(() => {
+  //   if (activeTab === 0 && !(tabsError || tabsLoading)) {
+  //     setActiveTab(tabs[0].id);
+  //     console.log(tabs);
+  //   }
+  // });
 
-  function handleToggleItemCompleted(id) {
-    handleChangeField(id, "isCompleted", !tasks.find(t => t.id === id).isCompleted)
-  }
 
-  function handleAddNewTask(task) {
-    const uniqueID = generateUniqueID();
-    setDoc(doc(tasksCollection, uniqueID),
-      {
-        id: uniqueID,
-        text: task,
-        isCompleted: false,
-        priority: 1,
-        updated: serverTimestamp()
-      });
-    // console.log(activeTab)
-  }
+  // function handleDeleteCompleted() {
+  //   const completedTasks = tasks.filter((t) => t.isCompleted)
 
-  function handleDeleteById(id) {
-    deleteDoc(doc(tasksCollection, id));
-  }
+  //   completedTasks.forEach((t) => {
+  //     deleteDoc(doc(tasksCollection, t.id));
+  //   });
+  // }
 
-  function handleAddTab(tabName) {
-    const uniqueID = generateUniqueID();
-    setDoc(doc(tabsCollection, uniqueID),
-      {
-        id: uniqueID,
-        name: tabName,
-        created: serverTimestamp()
-      });
-  }
+  // function handleChangeField(id, field, value) {
+  //     updateDoc(doc(tasksCollection, id),
+  //       {
+  //         [field]: value,
+  //         updated: serverTimestamp().toDate().toISOString()
+  //       })
+  //   }
 
-  function handleSelectTab(id) {
-    setActiveTab(id);
-    console.log('active tab', activeTab);
-  }
+  // function handleToggleItemCompleted(id) {
+  //   handleChangeField(id, "isCompleted", !tasks.find(t => t.id === id).isCompleted)
+  // }
+
+  // function handleAddNewTask(task) {
+  //   const uniqueID = generateUniqueID();
+  //   setDoc(doc(tasksCollection, uniqueID),
+  //     {
+  //       id: uniqueID,
+  //       text: task,
+  //       isCompleted: false,
+  //       priority: 1,
+  //       updated: serverTimestamp()
+  //     });
+  //   // console.log(activeTab)
+  // }
+
+  // function handleDeleteById(id) {
+  //   deleteDoc(doc(tasksCollection, id));
+  // }
+
+  // function handleAddTab(tabName) {
+  //   const uniqueID = generateUniqueID();
+  //   setDoc(doc(tabsCollection, uniqueID),
+  //     {
+  //       id: uniqueID,
+  //       name: tabName,
+  //       created: serverTimestamp()
+  //     });
+  // }
+
+  // function handleSelectTab(id) {
+  //   setActiveTab(id);
+  //   console.log('active tab', activeTab);
+  // }
 
   function handleBlur(e) {
     if (e.target.value !== "") {
-      handleAddTab(e.target.value);
-      console.log(e.target.value);
+      const uniqueID = generateUniqueID();
+      firestore
+        .collection("tabs-0")
+        .add({
+          id: uniqueID,
+          name: e.target.value,
+          created: serverTimestamp().toDate().toISOString()
+        })
       document.getElementById("newTabInput").value = "";
     }
   }
 
-  function handleDeleteTab(id) {
-    deleteDoc(doc(tabsCollection, id));
-    setActiveTab(tabs[0].id)
-    console.log('active tab after delete:', activeTab)
-  }
-
-
-  if (tasksLoading || tabsLoading) return (<div></div>)
-  if (tasksError) return (<div>{`Error: ${tasksError}`}</div>)
-  if (tabsError) return (<div>{`Error: ${tabsError}`}</div>)
-
 
   return (
     <div className="App">
-      <div className="header">
+      {/*<div className="header">
         <Header
           setModal={setModal}
         ></Header>
-      </div>
+      </div>*/}
       <div className="content">
         <ListContainer
-          items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
-          onChangeField={handleChangeField}
-          onToggleItemCompleted={handleToggleItemCompleted}
-          onAddNewTask={handleAddNewTask}
-          onDeleteById={handleDeleteById}
+          // items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
         />
         {modal.show && 
           <Modal {...modal}>
@@ -126,14 +120,11 @@ function App(props) {
       </div>
       <div className="footer">
         <ol className="tab-list">
-          {tabs.map(tab =>
+          {Object.entries(tabs).map(([id, tab]) =>
             <Tab
-              key={tab.id}
-              id={tab.id}
-              activeTab={activeTab}
+              key={id}
+              id={id}
               label={tab.name}
-              onClickTab={handleSelectTab}
-              deleteTab={handleDeleteTab}
               setModal={setModal}/>)}
           <li className="new-tab">
             <input

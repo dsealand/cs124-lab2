@@ -5,7 +5,7 @@ import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-
 
 import { useDispatch } from 'react-redux';
 import { useFirestore } from "react-redux-firebase";
-import { getSortOrder, getShowCompleted, getActiveTabID } from '../../selectors';
+import { getSortOrder, getShowCompleted, getActiveTabID, getTasksByTabID } from '../../selectors';
 import { setSortOrder, setShowCompleted } from '../../activeSlice'
 
 function SortLabel({ field, name, isSelected, dir, onSortClick }) {
@@ -30,7 +30,7 @@ function SortLabel({ field, name, isSelected, dir, onSortClick }) {
   </li>
 }
 
-function Header(props) {
+function Header({setModal}) {
   const [showSortMenu, setShowSortMenu] = useState(false);
   const fields = ["updated", "text", "priority"];
   const sortNames = {
@@ -72,8 +72,8 @@ function Header(props) {
 
   const modalOptions = {
     show: true,
-    onClose: () => (props.setModal({ show: false })),
-    onCancel: () => (props.setModal({ show: false })),
+    onClose: () => (setModal({ show: false })),
+    onCancel: () => (setModal({ show: false })),
     cancelText: "Cancel",
     onConfirm: deleteCompleted,
     confirmText: "OK",
@@ -115,7 +115,7 @@ function Header(props) {
       <div className="icon-trash icon-wrapper">
         <button 
           className="icon-button" 
-          onClick={() => props.setModal(modalOptions)}
+          onClick={() => setModal(modalOptions)}
           aria-label="Delete completed items?">
           <FaRegTrashAlt />
         </button>
