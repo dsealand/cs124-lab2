@@ -10,23 +10,6 @@ import {
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDs9yo12K8YT79DyMVEguJ25hO0d9V-JwQ",
-  authDomain: "cs124-lab3-d845a.firebaseapp.com",
-  projectId: "cs124-lab3-d845a",
-  storageBucket: "cs124-lab3-d845a.appspot.com",
-  messagingSenderId: "204426368246",
-  appId: "1:204426368246:web:c8c15574b455c27c0448d7"
-};
-
-
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-const tabCollectionName = "tabs-0";
-const tabsCollection = collection(db, tabCollectionName);
-
 function App(props) {
   const [isShowCompleted, setIsShowCompleted] = useState(true);
   const [sortOrder, setSortOrder] = useState("updated desc");

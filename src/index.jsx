@@ -4,6 +4,8 @@ import reportWebVitals from './reportWebVitals';
 
 import { Provider } from 'react-redux';
 
+// In order to use react-redux-firebase, we have to use v9 compat syntax
+// https://github.com/prescottprue/react-redux-firebase/issues/1145
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore'; 
@@ -11,12 +13,15 @@ import { firebaseReducer, ReactReduxFirebaseProvider } from 'react-redux-firebas
 import { createFirestoreInstance, firestoreReducer } from 'redux-firestore';
 import { configureStore } from '@reduxjs/toolkit';
 
+import activeReducer from './activeSlice';
 import TestComponent from './TestComponent';
 
 const store = configureStore({
   reducer: {
     firebase: firebaseReducer,
-    firestore: firestoreReducer, // <- needed if using firestore
+    firestore: firestoreReducer,
+    //TODO: name this reducer(?) lmao
+    active: activeReducer
   }
 });
 
@@ -29,21 +34,24 @@ const firebaseConfig = {
   appId: "1:204426368246:web:c8c15574b455c27c0448d7"
 };
 
+// Initialize firebase instance and firestore.
+// In order to use react-redux-firebase, we have to use v9 compat syntax
+// https://github.com/prescottprue/react-redux-firebase/issues/1145
+firebase.initializeApp(firebaseConfig);
+firebase.firestore();
+
+
 // react-redux-firebase config
 const rrfConfig = {
   userProfile: 'users',
   useFirestoreForProfile: true
 }
 
-// Initialize firebase instance and firestore
-firebase.initializeApp(firebaseConfig);
-firebase.firestore();
-
 const rrfProps = {
   firebase,
   config: rrfConfig,
   dispatch: store.dispatch,
-  createFirestoreInstance // <- needed if using firestore
+  createFirestoreInstance
 }
 
 ReactDOM.render(

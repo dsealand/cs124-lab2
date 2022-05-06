@@ -2,13 +2,13 @@ import React from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { getTasksByTabId } from './selectors';
+import { getTasksByTabID } from './selectors';
 
 const collection = "tabs-0"
 
 function Tasks({name, owner, id}) {
 
-  const tasks = getTasksByTabId(id);
+  const tasks = getTasksByTabID(id);
 
   if (!isLoaded(tasks)) {
     return <div>Loading...</div>
@@ -34,8 +34,6 @@ function TestComponent() {
   ])
 
   const tabs = useSelector((state) => state.firestore.ordered[collection] || [])
-  // const fState = useSelector((state) => state.firestore)
-  // console.log(fState)
 
   const buttons = tabs.map(tab => 
     <button 
