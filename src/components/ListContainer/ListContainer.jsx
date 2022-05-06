@@ -15,16 +15,15 @@ function ListContainer(props) {
   if (!activeTab) {
     return <p>no tab selected</p>
   }
-  
 
   return (
     <div id="container">
       {Object.entries(tasks).map(([id, task]) =>
-        <ListItem 
+        <ListItem
           key={id}
           {...task}
         />)}
-      <NewListItem onAddNewTask={props.onAddNewTask}/>
+      <NewListItem/>
     </div>
   )
 }
