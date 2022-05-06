@@ -1,14 +1,10 @@
 // import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useFirestoreConnect } from 'react-redux-firebase';
-
-import { setActiveTab, setSortOrder } from './activeSlice';
 
 const tabsCollection = "tabs-0";
 const tasksCollection = "tasks";
 const sharedUsers = "sharedUsers";
-// const dispatch = useDispatch();
-
 
 export const getActiveTabID = () => {
   return useSelector(state => state.active.tab)
@@ -33,7 +29,7 @@ export const getTasksByTabID = (tabID, orderBy=["priority", "desc"]) => {
     orderBy
   }]);
 
-  return useSelector(state => state.firestore.data[storeAs])
+  return useSelector(state => state.firestore.ordered[storeAs])
 }
 
 export const getTabByID = (tabID) => {

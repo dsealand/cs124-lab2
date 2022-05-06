@@ -3,20 +3,20 @@ import './NewListItem.css';
 import { FaPencilAlt } from 'react-icons/fa';
 import { useFirestore } from 'react-redux-firebase';
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
+import { getActiveTabID } from '../../selectors';
 
 function NewListItem(props) {
   const firestore = useFirestore();
+  const activeTab = getActiveTabID();
 
   function handleNewTask(task) {
     const updated = new Date();
-    const uniqueID = generateUniqueID();
     firestore
       .collection('tabs-0')
       .doc(activeTab)
       .collection('tasks')
-      .doc(id)
+      .doc()
       .set({
-        [id]: uniqueID,
         text: task,
         isCompleted: false,
         priority: 1,

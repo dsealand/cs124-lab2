@@ -4,20 +4,32 @@ import { useState } from 'react';
 import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-icons/fa';
 
 import { useDispatch } from 'react-redux';
-import { useFirestore } from "react-redux-firebase";
+import { useFirestore, isLoaded, isEmpty } from "react-redux-firebase";
 import { getSortOrder, getShowCompleted, getActiveTabID, getTasksByTabID } from '../../selectors';
 import { setSortOrder, setShowCompleted } from '../../activeSlice'
 
-function SortLabel({ field, name, isSelected, dir, onSortClick }) {
+function SortLabel({ field, name }) {
+
+  const dispatch = useDispatch();
+  const [currentField, dir] = getSortOrder();
+  const isSelected = field === currentField;
 
   function handleSortClick() {
-    const newDir = (dir === "asc") ? "desc" : "asc";
-    useDispatch()(setSortOrder([field, newDir]))
+    if (isSelected) {
+      const newDir = (dir === "asc") ? "desc" : "asc";
+      dispatch(setSortOrder([field, newDir]));
+    }
+    else if (field === "text") {
+      dispatch(setSortOrder([field, "asc"]));
+    }
+    else {
+      dispatch(setSortOrder([field, "desc"]));
+    }
   }
 
-  return <li onClick={e => { onSortClick(field) }}>
+  return <li onClick={handleSortClick}>
     <p 
-      tabindex={0} 
+      tabIndex={0} 
       className={"sort-label " + (isSelected ? "selected" : "")}
       onKeyDown={(e) => {
         // TODO: change to constants?
@@ -38,13 +50,20 @@ function Header({setModal}) {
     "text": "Alphabetical",
     "priority": "Priority",
   };
-  const [field, dir] = getSortOrder().split(" ");
+  const [field, dir] = getSortOrder();
   const isShowCompleted = getShowCompleted();
   const activeTabID = getActiveTabID();
   const firestore = useFirestore();
+  const dispatch = useDispatch();
+  const tasks = getTasksByTabID(activeTabID);
+
 
   function toggleSortMenu() {
     setShowSortMenu(!showSortMenu);
+  }
+
+  function toggleShowCompleted() {
+    dispatch(setShowCompleted(!isShowCompleted))
   }
 
   function createLabel(field, index) {
@@ -52,21 +71,21 @@ function Header({setModal}) {
       key={field}
       field={field}
       name={sortNames[field]}
-      dir={dir}
       toggleSortMenu={toggleSortMenu}
     />
   }
 
   function deleteCompleted() {
     // TODO: constant for collection name
-    const tasks = getTasksByTabID(activeTabID);
-    for (const id in tasks) {
-      firestore
-        .collection("tabs-0")
-        .doc(activeTabID)
-        .collection("tasks")
-        .doc(id)
-        .delete()
+    for (const task of tasks) {
+      if (task.isCompleted) {
+        firestore
+          .collection("tabs-0")
+          .doc(activeTabID)
+          .collection("tasks")
+          .doc(task.id)
+          .delete()
+      }
     }
   }
 
@@ -86,7 +105,7 @@ function Header({setModal}) {
         <button
           aria-label={isShowCompleted ? 'hide completed tasks' : 'show completed tasks'}
           className="icon-button"
-          onClick={() => useDispatch()(setShowCompleted(!isShowCompleted))}>
+          onClick={toggleShowCompleted}>
           {(isShowCompleted) ? <FaRegEye /> : <FaRegEyeSlash />}
         </button>
       </div>

@@ -5,11 +5,9 @@ import './ListItem.css';
 import { useFirestore } from 'react-redux-firebase';
 import { getActiveTabID } from '../../selectors';
 
-function ListItem(props) {
+function ListItem({id, isCompleted, priority, ...props}) {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(props.text);
-  const [completed, setCompleted] = useState(props.isCompleted)
-  const [priority, setPriority] = useState(props.priority);
 
   const activeTab = getActiveTabID();
 
@@ -20,7 +18,7 @@ function ListItem(props) {
       handleDelete(props.id);
     }
     else if (text !== props.text) {
-      handleUpdate(props.id, "text", e.target.value);
+      handleUpdate(id, "text", e.target.value);
     }
     setIsEditing(false);
   }
@@ -53,17 +51,16 @@ function ListItem(props) {
   }
 
   return (
-    <div className={"task-row" + ((completed) ? " completed" : "")}>
+    <div className={"task-row" + ((isCompleted) ? " completed" : "")}>
       <div className="task-icon">
         <button 
           className="icon-button" 
           onClick={() => {
-            handleUpdate(props.id, 'isCompleted', !completed);
-            setCompleted(!completed);
+            handleUpdate(id, 'isCompleted', !isCompleted);
         }}
           aria-label={`Complete ${text}`}
           >
-          {(completed) ? <FaRegCheckCircle/> : <FaRegCircle/>}
+          {(isCompleted) ? <FaRegCheckCircle/> : <FaRegCircle/>}
         </button>
       </div>
       <input
@@ -82,8 +79,7 @@ function ListItem(props) {
         <button 
           className="icon-button" 
           onClick={(e) => {
-            handleUpdate(props.id, "priority", (priority%3)+1);
-            setPriority((priority%3)+1);
+            handleUpdate(id, "priority", (priority%3)+1);
           }}
           aria-label={`Priority of ${text} is ${priority}. Change to ${(priority%3)+1}?`}
         >

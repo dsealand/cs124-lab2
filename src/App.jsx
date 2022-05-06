@@ -1,16 +1,9 @@
 import './App.css';
 import React from 'react';
 import { Header, Tab, ListContainer, Modal } from './components';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
-import { initializeApp } from "firebase/app";
-import {
-  collection, doc, getFirestore, query, orderBy, setDoc, updateDoc, deleteDoc,
-  serverTimestamp
-} from "firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-
-import { useFirestore, useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { useFirestore, isLoaded } from 'react-redux-firebase';
 import { getAllTabs } from './selectors';
 
 function App(props) {
@@ -90,12 +83,13 @@ function App(props) {
   function handleBlur(e) {
     if (e.target.value !== "") {
       const uniqueID = generateUniqueID();
+      const created = new Date();
       firestore
         .collection("tabs-0")
         .add({
           id: uniqueID,
           name: e.target.value,
-          created: serverTimestamp().toDate().toISOString()
+          created: created.toISOString()
         })
       document.getElementById("newTabInput").value = "";
     }
@@ -104,11 +98,11 @@ function App(props) {
 
   return (
     <div className="App">
-      {/*<div className="header">
+      <div className="header">
         <Header
           setModal={setModal}
         ></Header>
-      </div>*/}
+      </div>
       <div className="content">
         <ListContainer
           // items={tasks.filter(t => !t.isCompleted || isShowCompleted)}
