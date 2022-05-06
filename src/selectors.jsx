@@ -23,10 +23,8 @@ export const getShowCompleted = () => {
 }
 
 // TODO: deal with ordering, orderBy in useFirestoreConnect
-export const getTasksByTabID = (tabID, orderBy=["priority", "desc"], showCompleted=true) => {
+export const getTasksByTabID = (tabID, orderBy=["priority", "desc"]) => {
   const storeAs = tabID+tasksCollection;
-  useDispatch()(setActiveTab(tabID));
-  useDispatch()(setSortOrder(orderBy))
   useFirestoreConnect([{ 
     collection: tabsCollection,
     doc: tabID,
