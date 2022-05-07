@@ -74,7 +74,7 @@ function App({ auth, ...props }) {
                   className={"alert-button alert-cancel"}
                   type={"button"}
                   onClick={() => {setShareModal(false)}}>
-                  Cancel sharing
+                  Cancel
                 </button>
                 <button
                   aria-label={'confirm share task list'}
@@ -86,7 +86,7 @@ function App({ auth, ...props }) {
                       /* add email to task list usersSharedWith */
                     }
                   }>
-                  Confirm sharing
+                  Share
                 </button>
               </div>
             </div>

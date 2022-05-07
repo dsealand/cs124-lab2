@@ -91,8 +91,8 @@ button {
   border-style: solid;
   margin: 0 auto;
   top: 50pt;
-  height: 100pt;
-  width: 300pt;
+  height: 105pt;
+  width: 200pt;
   padding: 10pt;
   position: relative;
 }
@@ -101,8 +101,8 @@ button {
   background-color: #eee;
   border: none;
   padding: 12px 15px;
-  margin: 0;
-  width: 275pt;
+  /* margin: 0; */
+  width: 175pt;
 }
 
 .alert-buttons {
@@ -147,7 +147,7 @@ button {
 
 .tab-list {
   flex: 7;
-  overflow-x: hidden;
+  overflow-x: scroll;
   overflow-y: hidden;
   /* height: 60px; */
   display: flex;
@@ -167,7 +167,9 @@ button {
 .new-tab {
   display: flex;
   flex-direction: row;
-  border: solid white;
+  border-right: 1px;
+  border-top: none;
+  /* border: solid white; */
   list-style: none;
   border-width: 1px 1px 0 1px;
 }
@@ -224,6 +226,9 @@ h1 {
   margin: 10px;
 }
 
+.tab-list-item {
+  border-top: none;
+}
 
 input {
   background-color: #eee;
