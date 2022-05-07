@@ -55,22 +55,14 @@ function App({auth, ...props}) {
           setModal={setModal}
         ></Header>
       </div>
-      {/* <div className="content">
-        {!isEmpty(auth)?
-          <>
+      <div className="content">
             <ListContainer/>
             {modal.show && 
             <Modal {...modal}>
               {modal.children}
             </Modal>}
-          </>:
-          <div className="loginForm">
-            <Login className="signIn"/>
-            <Register className="signUp"/>
-          </div>
-        }
-      </div> */}
-      {!isEmpty(auth) ? <div className="footer">
+      </div>
+      <div className="footer">
         <ol className="tab-list">
           {Object.entries(tabs).map(([id, tab]) => {
             if (tab) {
@@ -98,15 +90,7 @@ function App({auth, ...props}) {
             />
           </li>
         </ol>
-        <div className="icon-user">
-          <button
-            aria-label="sharing and user menu"
-            className="icon-button"
-            onClick={console.log('hello')}>
-            <FaUser />
-          </button>
-        </div>
-      </div> : ''}
+      </div>
     </div >
   );
 }

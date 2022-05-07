@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-icons/fa';
 
 import { useDispatch } from 'react-redux';
-import { useFirestore, isLoaded, isEmpty } from "react-redux-firebase";
+import { useFirestore, useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import { getSortOrder, getShowCompleted, getActiveTabID, getTasksByTabID, getAuth } from '../../selectors';
 import { setSortOrder, setShowCompleted } from '../../activeSlice';
 
@@ -65,6 +65,7 @@ function Header({setModal}) {
   }
 
   const firestore = useFirestore();
+  const firebase = useFirebase();
   const dispatch = useDispatch();
   const tasks = (isLoaded(activeTabID) && activeTabID) ? getTasksByTabID(activeTabID) : [];
 
@@ -100,7 +101,7 @@ function Header({setModal}) {
     }
   }
 
-  const modalOptions = {
+  const deleteModalOptions = {
     show: true,
     onClose: () => (setModal({ show: false })),
     onCancel: () => (setModal({ show: false })),
@@ -108,6 +109,20 @@ function Header({setModal}) {
     onConfirm: deleteCompleted,
     confirmText: "OK",
     children: "Delete all completed items?"
+  }
+
+  function logout() {
+    firebase.logout();
+  }
+
+  const logoutModalOptions = {
+    show: true,
+    onClose: () => (setModal({ show: false })),
+    onCancel: () => (setModal({ show: false })),
+    cancelText: "Cancel",
+    onConfirm: logout,
+    confirmText: "Log out",
+    children: "Are you sure you want to log out?"
   }
 
   return (
@@ -140,12 +155,13 @@ function Header({setModal}) {
           {sortNames[field]}
         </div>
       </div>
-      <h3 className="header-name">noteify</h3>
+      <h3 className="header-name"
+        onClick={() => setModal(logoutModalOptions)}>noteify</h3>
       <div className="spacing" />
       <div className="icon-trash icon-wrapper">
         <button 
           className="icon-button" 
-          onClick={() => setModal(modalOptions)}
+          onClick={() => setModal(deleteModalOptions)}
           aria-label="Delete completed items?">
           <FaRegTrashAlt />
         </button>
