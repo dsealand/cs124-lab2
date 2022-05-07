@@ -44,6 +44,8 @@ function App({auth, ...props}) {
     }
   }
 
+  console.log('auth', isEmpty(auth))
+
   return (
     <div className="App">
       <div className="header">
@@ -62,13 +64,14 @@ function App({auth, ...props}) {
         <ol className="tab-list">
           {Object.entries(tabs).map(([id, tab]) => {
             if (tab) {
-            return <Tab
-              key={id}
-              id={id}
-              label={tab.name}
-              setModal={setModal}
-            />
-          }})}
+              return <Tab
+                key={id}
+                id={id}
+                label={tab.name}
+                setModal={setModal}
+              />
+            }
+          })}
           <li className="new-tab">
             <input
               className="new-tab-input"

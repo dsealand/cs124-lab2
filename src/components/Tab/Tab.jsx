@@ -7,7 +7,7 @@ import { setActiveTabID } from '../../activeSlice';
 import { getActiveTabID, getTasksByTabID } from '../../selectors';
 import constants from '../../constants'
 
-export default function Tab(props) {
+function Tab(props) {
 
   const firestore = useFirestore();
   const activeTab = getActiveTabID();
@@ -75,3 +75,5 @@ export default function Tab(props) {
     </li>
   )
 }
+
+export default Tab;
