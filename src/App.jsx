@@ -6,11 +6,13 @@ import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import { useDispatch, useSelector } from 'react-redux';
 import { useFirestore, useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { getSharedTabs, getAllTabs, getActiveTabID, getAuth } from './selectors';
-import { setActiveTabID } from './activeSlice'
+import { setActiveTabID } from './activeSlice';
+import { FaUser } from 'react-icons/fa';
 import constants from './constants';
 
 function App({auth, ...props}) {
   const [modal, setModal] = useState({show: false});
+  const [shareModal, setShareModal] = useState(false);
   const firestore = useFirestore();
   const dispatch = useDispatch();
 
@@ -68,7 +70,7 @@ function App({auth, ...props}) {
           </div>
         }
       </div> */}
-      {isEmpty(auth) ? <div className="footer">
+      {!isEmpty(auth) ? <div className="footer">
         <ol className="tab-list">
           {Object.entries(tabs).map(([id, tab]) => {
             if (tab) {
