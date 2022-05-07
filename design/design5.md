@@ -20,7 +20,7 @@ We had 3 people test our app, none of whom have taken this class, or have notabl
 
 We leveraged the common design metaphor of a header on a mobile application; though the header is the first item on the screen, it is understood that the main content of the page is below in the main container. We have actions listed in the header (showing/hiding or deleting completed items) along with the title/name of "Tasks".
 
-(NEW FEATURES): We have added a sorting button, which opens to a drop-down menu where the user can select a method to sort by. We also added the feature of text displaying the current sorting method, which is only present when the screen is more than 800 pixels wide.
+We have added a sorting button, which opens to a drop-down menu where the user can select a method to sort by. We also added the feature of text displaying the current sorting method, which is only present when the screen is more than 800 pixels wide.
 
 ### Icons
 
@@ -97,9 +97,22 @@ Clicking eye icon:
 
 One of the final features we wished to implement was authorization, so that a user must log in in order to see their tasks. This feature also allowed the possibility of sharing task lists between users (which we'll elaborate more on in the next section). Our login scheme consisted of signing in with an email, which could be done just through our App's database or with Google. Going through our app would require them to first sign up with an email and password. These features meant we had to initiliaze the app on a login screen, that would reveal the app with the user's task lists when succesfully logged in.
 
+Sign-In Form:
+
+<img src="sign_in.png" width="300">
+
+Sign-Up Form:
+
+<img src="sign_up.png" width="300">
+
 ### Sharing (NEW FEATURE)
 
-In being able to log into an account, we gave users the ability to privately view and edit only their own task lists, and this also opens up the opportunity for a user to privately share task lists with another user, and gives them editing ability.
+In being able to log into an account, we gave users the ability to privately view and edit only their own task lists, and this also opens up the opportunity for a user to privately share task lists with another user, and gives them editing ability. Here are the rules of our sharing system:
+
++ If person A shares a tab with person B, that tab appears in person B's list of tabs at the bottom
++ If person B deletes the tab shared by person A, then that tab is removed from person B's list, but still present in person A's list
++ If person A deletes the tab they shared with person B, then that tab is removed from both person A's and person B's lists
++ Person B can share the tab owned by person A with person C. If person B delete the tab from their list of tabs, they are the only ones it is unshared with. Person C still has access. Essentially, only person A (the owner) can globally delete the tab from everyone's tab list. 
 
 ## Challenges
 

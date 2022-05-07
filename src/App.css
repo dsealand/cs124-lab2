@@ -38,7 +38,6 @@ body {
   background-color: #D8C3A5;
   display: flex;
   flex-direction: row;
-  
 }
 
 .content {
@@ -101,9 +100,13 @@ button {
   border-radius: 5pt;
 }
 
-.icon-user {
-  flex: 1;
+.footer-user {
+  flex: 2;
   text-align: center;
+  text-decoration: none;
+}
+
+.user-icon {
   vertical-align: middle;
 }
 
@@ -116,7 +119,7 @@ button {
 }
 
 .tab-list {
-  flex: 4;
+  flex: 8;
   overflow-x: scroll;
   overflow-y: hidden;
   /* height: 60px; */
@@ -126,7 +129,7 @@ button {
   /* position: fixed;
   bottom: 0%;
   width: 100%; */
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   background-color: #D8C3A5;
   /* opacity: 1; */
   padding-right: 0px;
