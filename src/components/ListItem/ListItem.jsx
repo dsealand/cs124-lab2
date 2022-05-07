@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { FaRegCircle, FaRegCheckCircle, FaExclamation } from 'react-icons/fa';
 import './ListItem.css';
+import constants from '../../constants';
 
 import { useFirestore } from 'react-redux-firebase';
 import { getActiveTabID } from '../../selectors';
@@ -31,9 +32,9 @@ function ListItem({id, isCompleted, priority, ...props}) {
   function handleUpdate(id, field, value) {
     const updated = new Date()
     firestore
-      .collection('tabs-0')
+      .collection(constants.TABS_COLLECTION)
       .doc(activeTab)
-      .collection('tasks')
+      .collection(constants.TASKS_COLLECTION)
       .doc(id)
       .update({
         [field]: value,
@@ -43,7 +44,7 @@ function ListItem({id, isCompleted, priority, ...props}) {
 
   function handleDelete(id) {
     firestore
-      .collection('tabs-1')
+      .collection('tabs-0')
       .doc(activeTab)
       .collection('tasks')
       .doc(id)

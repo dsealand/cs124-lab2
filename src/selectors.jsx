@@ -1,10 +1,11 @@
 // import React from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect } from 'react-redux-firebase';
+import constants from './constants'
 
-const tabsCollection = "tabs-0";
-const tasksCollection = "tasks";
-const sharedUsers = "sharedUsers";
+const tabsCollection = constants.TABS_COLLECTION;
+const tasksCollection = constants.TASKS_COLLECTION;
+const sharedUsers = constants.SHARED_USERS;
 
 export const getActiveTabID = () => {
   return useSelector(state => state.active.tab)
@@ -16,6 +17,10 @@ export const getSortOrder = () => {
 
 export const getShowCompleted = () => {
   return useSelector(state => state.active.showCompleted)
+}
+
+export const getAuth = () => {
+  return useSelector(state => state.firebase.auth)
 }
 
 // TODO: deal with ordering, orderBy in useFirestoreConnect

@@ -1,11 +1,11 @@
 import './App.css';
 import React from 'react';
-import { Header, Tab, ListContainer, Modal } from './components';
+import { Header, Tab, ListContainer, Modal, Login, Register } from './components';
 import { useState } from 'react';
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import { useDispatch } from 'react-redux';
-import { useFirestore, isLoaded } from 'react-redux-firebase';
-import { getAllTabs, getActiveTabID } from './selectors';
+import { useFirestore, isLoaded, isEmpty } from 'react-redux-firebase';
+import { getAllTabs, getActiveTabID, getAuth } from './selectors';
 import { setActiveTabID } from './activeSlice'
 
 function App(props) {
@@ -14,6 +14,7 @@ function App(props) {
   const tabs = getAllTabs();
   const dispatch = useDispatch();
   const activeTabID = getActiveTabID();
+  const auth = getAuth();
 
   if (!isLoaded(tabs)) {
     return <p>Loading</p>
@@ -40,7 +41,6 @@ function App(props) {
     }
   }
 
-
   return (
     <div className="App">
       <div className="header">
@@ -49,14 +49,21 @@ function App(props) {
         ></Header>
       </div>
       <div className="content">
-        <ListContainer
-        />
-        {modal.show && 
-          <Modal {...modal}>
-            {modal.children}
-          </Modal>}
+        {!isEmpty(auth)?
+          <>
+            <ListContainer/>
+            {modal.show && 
+            <Modal {...modal}>
+              {modal.children}
+            </Modal>}
+          </>:
+          <div className="loginForm">
+            <Login className="signIn"/>
+            <Register className="signUp"/>
+          </div>
+        }
       </div>
-      <div className="footer">
+      {!isEmpty(auth)?<div className="footer">
         <ol className="tab-list">
           {Object.entries(tabs).map(([id, tab]) => {
             if (tab) {
@@ -82,8 +89,8 @@ function App(props) {
               }}
             />
           </li>
-      </ol>
-    </div>
+        </ol>
+      </div>:''}
     </div >
   );
 }

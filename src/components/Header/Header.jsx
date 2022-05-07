@@ -5,7 +5,7 @@ import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-
 
 import { useDispatch } from 'react-redux';
 import { useFirestore, isLoaded, isEmpty } from "react-redux-firebase";
-import { getSortOrder, getShowCompleted, getActiveTabID, getTasksByTabID } from '../../selectors';
+import { getSortOrder, getShowCompleted, getActiveTabID, getTasksByTabID, getAuth } from '../../selectors';
 import { setSortOrder, setShowCompleted } from '../../activeSlice'
 
 function SortLabel({ field, name }) {
@@ -53,6 +53,14 @@ function Header({setModal}) {
   const [field, dir] = getSortOrder();
   const isShowCompleted = getShowCompleted();
   const activeTabID = getActiveTabID();
+  const auth = getAuth();
+
+  if (isEmpty(auth)) {
+    return (
+      <div id="header">
+        <h3 className="header-name">noteify</h3>
+      </div>)
+  }
 
   const firestore = useFirestore();
   const dispatch = useDispatch();
@@ -130,7 +138,7 @@ function Header({setModal}) {
           {sortNames[field]}
         </div>
       </div>
-      <h3 className="header-name">Tasks</h3>
+      <h3 className="header-name">noteify</h3>
       <div className="spacing" />
       <div className="icon-trash icon-wrapper">
         <button 

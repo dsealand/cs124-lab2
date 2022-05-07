@@ -2,7 +2,6 @@ import React from 'react';
 import './NewListItem.css';
 import { FaPencilAlt } from 'react-icons/fa';
 import { useFirestore } from 'react-redux-firebase';
-import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import { getActiveTabID } from '../../selectors';
 
 function NewListItem(props) {
