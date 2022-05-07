@@ -239,6 +239,10 @@ input {
   width: 100%;
 }
 
+input[type='text'] {
+  font-family: "Montserrat", sans-serif;
+}
+
 .signButton {
   display: block;
   margin-left: auto;
