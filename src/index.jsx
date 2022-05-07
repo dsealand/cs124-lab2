@@ -14,8 +14,6 @@ import { createFirestoreInstance, firestoreReducer } from 'redux-firestore';
 import { configureStore } from '@reduxjs/toolkit';
 
 import activeReducer from './activeSlice';
-import TestComponent from './TestComponent';
-import App from './App';
 import AuthWrapper from './AuthWrapper';
 
 const store = configureStore({

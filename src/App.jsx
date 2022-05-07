@@ -1,16 +1,19 @@
 import './App.css';
 import React from 'react';
-import { Header, Tab, ListContainer, Modal, Login, Register } from './components';
+import { Header, Tab, ListContainer, Modal } from './components';
 import { useState } from 'react';
-import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
-import { useDispatch, useSelector } from 'react-redux';
-import { useFirestore, useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { getSharedTabs, getAllTabs, getActiveTabID, getAuth } from './selectors';
-import { setActiveTabID } from './activeSlice'
+
+import { useDispatch } from 'react-redux';
+import { useFirestore, isLoaded, isEmpty } from 'react-redux-firebase';
+import { getSharedTabs, getAllTabs, getActiveTabID } from './selectors';
+import { setActiveTabID } from './activeSlice';
+import { FaUser } from 'react-icons/fa';
 import constants from './constants';
 
-function App({auth, ...props}) {
-  const [modal, setModal] = useState({show: false});
+function App({ auth, ...props }) {
+  const [modal, setModal] = useState({ show: false });
+  const [shareModal, setShareModal] = useState(false);
+  const [emailInput, seteEmailInput] = useState(null);
   const firestore = useFirestore();
   const dispatch = useDispatch();
 
@@ -18,11 +21,6 @@ function App({auth, ...props}) {
   const activeTabID = getActiveTabID();
 
   if (!isLoaded(tabs)) {
-    return <p>Loading</p>
-  }
-
-  if (isLoaded(tabs) && !activeTabID) {
-    dispatch(setActiveTabID(Object.keys(tabs)[0]))
     return <p>Loading</p>
   }
 
@@ -34,17 +32,15 @@ function App({auth, ...props}) {
         .collection(constants.TABS_COLLECTION)
         .doc()
       newDoc.set({
-          owner: auth.email,
-          name: e.target.value,
-          created: created.toISOString(),
-          sharedUsers: [auth.email]
-        })
+        owner: auth.email,
+        name: e.target.value,
+        created: created.toISOString(),
+        sharedUsers: [auth.email]
+      })
       document.getElementById("newTabInput").value = "";
       dispatch(setActiveTabID(newDoc.id));
     }
   }
-
-  console.log('auth', isEmpty(auth))
 
   return (
     <div className="App">
@@ -54,15 +50,50 @@ function App({auth, ...props}) {
         ></Header>
       </div>
       <div className="content">
-            <ListContainer/>
-            {modal.show && 
-            <Modal {...modal}>
-              {modal.children}
-            </Modal>}
+        <ListContainer />
+        {modal.show &&
+          <Modal {...modal}>
+            {modal.children}
+          </Modal>}
+      </div>
+      <div className="share-modal">
+        {shareModal &&
+          <div className={"backdrop"} onClick={(e) => { setShareModal(false) }}>
+            <div className="modal">
+              Enter email of user to share with:
+              <input
+                type='text'
+                value={emailInput}
+                onChange={e => seteEmailInput(e.target.value)}
+                >
+              </input>
+              <div className="alert-buttons">
+                <button
+                  aria-label={'cancel share task list'}
+                  className={"alert-button alert-cancel"}
+                  type={"button"}
+                  onClick={() => {setShareModal(false)}}>
+                  Cancel sharing
+                </button>
+                <button
+                  aria-label={'confirm share task list'}
+                  className={"alert-button alert-ok"}
+                  type={"button"}
+                  onClick={
+                    () => {
+                      setShareModal(false);
+                      /* add email to task list usersSharedWith */
+                    }
+                  }>
+                  Confirm sharing
+                </button>
+              </div>
+            </div>
+          </div>}
       </div>
       <div className="footer">
         <ol className="tab-list">
-          {Object.entries(tabs).map(([id, tab]) => {
+          {!isEmpty(tabs)?Object.entries(tabs).map(([id, tab]) => {
             if (tab) {
               return <Tab
                 key={id}
@@ -71,7 +102,7 @@ function App({auth, ...props}) {
                 setModal={setModal}
               />
             }
-          })}
+          }):''}
           <li className="new-tab">
             <input
               className="new-tab-input"
@@ -88,6 +119,13 @@ function App({auth, ...props}) {
             />
           </li>
         </ol>
+        <div className="footer-user">
+          <button className="user-icon" onClick={(e) => {
+            setShareModal(true)
+          }}>
+            <FaUser />
+          </button>
+        </div>
       </div>
     </div >
   );

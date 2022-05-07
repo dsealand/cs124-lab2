@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import constants from './constants'
@@ -25,14 +24,20 @@ export const getAuth = () => {
 
 // TODO: deal with ordering, orderBy in useFirestoreConnect
 export const getTasksByTabID = (tabID, orderBy=["priority", "desc"]) => {
+  tabID = tabID || '_';
   const storeAs = tabID+tasksCollection;
-  useFirestoreConnect([{ 
-    collection: tabsCollection,
-    doc: tabID,
-    subcollections: [{ collection: tasksCollection}],
-    storeAs,
-    orderBy
-  }]);
+  try {
+    useFirestoreConnect([{ 
+      collection: tabsCollection,
+      doc: tabID,
+      subcollections: [{ collection: tasksCollection}],
+      storeAs,
+      orderBy
+    }]);
+  }
+  catch (e) {
+    console.log("err",e)
+  }
 
   return useSelector(state => state.firestore.ordered[storeAs])
 }
@@ -46,11 +51,13 @@ export const getTabByID = (tabID) => {
 }
 
 export const getSharedTabs = (email) => {
-  // console.log(email)
-  useFirestoreConnect([{ 
-    collection: tabsCollection,
-    where: [sharedUsers, "array-contains", email]
-  }]);
+  useFirestoreConnect(function(){
+    if (email) return [{ 
+      collection: tabsCollection,
+      where: [sharedUsers, "array-contains", email]
+    }]
+    else return null
+  });
 
   return useSelector(state => (state.firestore.data[tabsCollection]));
 
