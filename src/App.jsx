@@ -13,7 +13,7 @@ import constants from './constants';
 function App({ auth, ...props }) {
   const [modal, setModal] = useState({ show: false });
   const [shareModal, setShareModal] = useState(false);
-  const [emailInput, seteEmailInput] = useState(null);
+  const [emailInput, seteEmailInput] = useState("");
   const firestore = useFirestore();
   const dispatch = useDispatch();
 

@@ -23,7 +23,7 @@ export const getAuth = () => {
 }
 
 // TODO: deal with ordering, orderBy in useFirestoreConnect
-export const getTasksByTabID = (tabID, orderBy=["priority", "desc"]) => {
+export const getTasksByTabID = (tabID) => {
   tabID = tabID || '_';
   const storeAs = tabID+tasksCollection;
   try {
@@ -31,8 +31,7 @@ export const getTasksByTabID = (tabID, orderBy=["priority", "desc"]) => {
       collection: tabsCollection,
       doc: tabID,
       subcollections: [{ collection: tasksCollection}],
-      storeAs,
-      orderBy
+      storeAs
     }]);
   }
   catch (e) {

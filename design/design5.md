@@ -114,6 +114,12 @@ In being able to log into an account, we gave users the ability to privately vie
 + If person A deletes the tab they shared with person B, then that tab is removed from both person A's and person B's lists
 + Person B can share the tab owned by person A with person C. If person B delete the tab from their list of tabs, they are the only ones it is unshared with. Person C still has access. Essentially, only person A (the owner) can globally delete the tab from everyone's tab list. 
 
+The UI for this sharing process involves a button with a person icon on the bottom right, in the same horizontal level on the tab list. We felt this was intuitive because tab lists are what will be shared. When the icon is clicked, it opens up a modal with an input field that takes in an email, and if you press the share button, it shares the tab you are currently on with that email.
+
+Sharing Modal:
+
+<img src="sharing_modal.png" width="300">
+
 ## Challenges
 
 ### Technical issues
