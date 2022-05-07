@@ -7,9 +7,10 @@ import { useDispatch } from 'react-redux';
 import { useFirestore, isLoaded, isEmpty } from 'react-redux-firebase';
 import { getAllTabs, getActiveTabID, getAuth } from './selectors';
 import { setActiveTabID } from './activeSlice'
+import { FaUser } from 'react-icons/fa'
 
 function App(props) {
-  const [modal, setModal] = useState({show: false})
+  const [modal, setModal] = useState({ show: false })
   const firestore = useFirestore();
   const tabs = getAllTabs();
   const dispatch = useDispatch();
@@ -33,13 +34,15 @@ function App(props) {
         .collection("tabs-0")
         .doc()
       newDoc.set({
-          name: e.target.value,
-          created: created.toISOString(),
-        })
+        name: e.target.value,
+        created: created.toISOString(),
+      })
       document.getElementById("newTabInput").value = "";
       dispatch(setActiveTabID(newDoc.id));
     }
   }
+
+  console.log('auth', isEmpty(auth))
 
   return (
     <div className="App">
@@ -48,7 +51,7 @@ function App(props) {
           setModal={setModal}
         ></Header>
       </div>
-      <div className="content">
+      {/* <div className="content">
         {!isEmpty(auth)?
           <>
             <ListContainer/>
@@ -62,18 +65,19 @@ function App(props) {
             <Register className="signUp"/>
           </div>
         }
-      </div>
-      {!isEmpty(auth)?<div className="footer">
+      </div> */}
+      {isEmpty(auth) ? <div className="footer">
         <ol className="tab-list">
           {Object.entries(tabs).map(([id, tab]) => {
             if (tab) {
-            return <Tab
-              key={id}
-              id={id}
-              label={tab.name}
-              setModal={setModal}
-            />
-          }})}
+              return <Tab
+                key={id}
+                id={id}
+                label={tab.name}
+                setModal={setModal}
+              />
+            }
+          })}
           <li className="new-tab">
             <input
               className="new-tab-input"
@@ -90,7 +94,15 @@ function App(props) {
             />
           </li>
         </ol>
-      </div>:''}
+        <div className="icon-user">
+          <button
+            aria-label="sharing and user menu"
+            className="icon-button"
+            onClick={console.log('hello')}>
+            <FaUser />
+          </button>
+        </div>
+      </div> : ''}
     </div >
   );
 }

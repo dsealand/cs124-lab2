@@ -15,7 +15,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import activeReducer from './activeSlice';
 import TestComponent from './TestComponent';
-import App from './App';
+import App from './App.jsx';
 
 const store = configureStore({
   reducer: {
