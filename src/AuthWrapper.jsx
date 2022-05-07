@@ -1,19 +1,19 @@
 import React from 'react';
 import { getAuth } from './selectors';
-import { isLoaded, isEmpty } from 'react-redux-firebase';
+import { isLoaded, isEmpty, useFirebase } from 'react-redux-firebase';
 import App from './App'
-
-
+import { LandingPage } from './components'
 
 function AuthWrapper() {
   const auth = getAuth();
+  const firebase = useFirebase();
+  // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
-  if (isLoaded(auth)) {
-    console.log(auth)
+  if (!isEmpty(auth)) {
     return <App auth={auth}/>
   }
   else {
-    return <p>Loading</p>
+    return <LandingPage/>
   }
 }
-export default AuthWrapper
+export default AuthWrapper;

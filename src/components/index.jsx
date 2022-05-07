@@ -6,3 +6,4 @@ export { default as Modal } from './Modal/Modal';
 export { default as Tab } from './Tab/Tab';
 export { default as Login } from './SignIn/Login';
 export { default as Register } from './SignIn/Register';
+export { default as LandingPage } from './SignIn/LandingPage';

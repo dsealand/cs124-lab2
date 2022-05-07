@@ -52,21 +52,13 @@ function App({auth, ...props}) {
         ></Header>
       </div>
       <div className="content">
-        {!isEmpty(auth)?
-          <>
             <ListContainer/>
             {modal.show && 
             <Modal {...modal}>
               {modal.children}
             </Modal>}
-          </>:
-          <div className="loginForm">
-            <Login className="signIn"/>
-            <Register className="signUp"/>
-          </div>
-        }
       </div>
-      {!isEmpty(auth)?<div className="footer">
+      <div className="footer">
         <ol className="tab-list">
           {Object.entries(tabs).map(([id, tab]) => {
             if (tab) {
@@ -93,7 +85,7 @@ function App({auth, ...props}) {
             />
           </li>
         </ol>
-      </div>:''}
+      </div>
     </div >
   );
 }
