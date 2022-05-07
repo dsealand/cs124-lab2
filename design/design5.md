@@ -97,6 +97,14 @@ Clicking eye icon:
 
 One of the final features we wished to implement was authorization, so that a user must log in in order to see their tasks. This feature also allowed the possibility of sharing task lists between users (which we'll elaborate more on in the next section). Our login scheme consisted of signing in with an email, which could be done just through our App's database or with Google. Going through our app would require them to first sign up with an email and password. These features meant we had to initiliaze the app on a login screen, that would reveal the app with the user's task lists when succesfully logged in.
 
+Sign-In Form:
+
+<img src="sign_in.png" width="300">
+
+Sign-Up Form:
+
+<img src="sign_up.png" width="300">
+
 ### Sharing (NEW FEATURE)
 
 In being able to log into an account, we gave users the ability to privately view and edit only their own task lists, and this also opens up the opportunity for a user to privately share task lists with another user, and gives them editing ability. Here are the rules of our sharing system:
