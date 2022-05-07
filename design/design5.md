@@ -20,7 +20,7 @@ We had 3 people test our app, none of whom have taken this class, or have notabl
 
 We leveraged the common design metaphor of a header on a mobile application; though the header is the first item on the screen, it is understood that the main content of the page is below in the main container. We have actions listed in the header (showing/hiding or deleting completed items) along with the title/name of "Tasks".
 
-(NEW FEATURES): We have added a sorting button, which opens to a drop-down menu where the user can select a method to sort by. We also added the feature of text displaying the current sorting method, which is only present when the screen is more than 800 pixels wide.
+We have added a sorting button, which opens to a drop-down menu where the user can select a method to sort by. We also added the feature of text displaying the current sorting method, which is only present when the screen is more than 800 pixels wide.
 
 ### Icons
 
@@ -99,7 +99,12 @@ One of the final features we wished to implement was authorization, so that a us
 
 ### Sharing (NEW FEATURE)
 
-In being able to log into an account, we gave users the ability to privately view and edit only their own task lists, and this also opens up the opportunity for a user to privately share task lists with another user, and gives them editing ability.
+In being able to log into an account, we gave users the ability to privately view and edit only their own task lists, and this also opens up the opportunity for a user to privately share task lists with another user, and gives them editing ability. Here are the rules of our sharing system:
+
++ If person A shares a tab with person B, that tab appears in person B's list of tabs at the bottom
++ If person B deletes the tab shared by person A, then that tab is removed from person B's list, but still present in person A's list
++ If person A deletes the tab they shared with person B, then that tab is removed from both person A's and person B's lists
++ Person B can share the tab owned by person A with person C. If person B delete the tab from their list of tabs, they are the only ones it is unshared with. Person C still has access. Essentially, only person A (the owner) can globally delete the tab from everyone's tab list. 
 
 ## Challenges
 
