@@ -21,7 +21,7 @@ function Register() {
         <input type="text" id='email' value={email} placeholder="Email"
                onChange={e=>setEmail(e.target.value)}/>
         <br/>
-        <input type="text" id='pw' value={password} placeholder="Password"
+        <input type="password" id='pw' value={password} placeholder="Password"
                onChange={e=>setPassword(e.target.value)}/>
         <br/>
         <button className="signButton" onClick={emailRegister}>

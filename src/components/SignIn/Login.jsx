@@ -33,11 +33,11 @@ function Login() {
         <input type="text" id='email' value={email} placeholder="Email"
                onChange={e=>setEmail(e.target.value)}/>
         <br/>
-        <input type="text" id='pw' value={password} placeholder="Password"
+        <input type="password" id='pw' value={password} placeholder="Password"
                onChange={e=>setPassword(e.target.value)}/>
         <br/>
         <button className="signButton" onClick={emailLogin}>
-            Sign in with Email
+            Sign in
         </button>
         <button className="signButton" onClick={googleLogin}>
             Sign in with Google
