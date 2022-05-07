@@ -95,6 +95,7 @@ button {
   width: 200pt;
   padding: 10pt;
   position: relative;
+  z-index: 0;
 }
 
 .email-input {

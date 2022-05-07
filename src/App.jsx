@@ -24,7 +24,6 @@ function App({ auth, ...props }) {
     return <p>Loading</p>
   }
 
-
   function handleBlur(e) {
     if (e.target.value !== "") {
       const created = new Date();
@@ -39,6 +38,17 @@ function App({ auth, ...props }) {
       })
       document.getElementById("newTabInput").value = "";
       dispatch(setActiveTabID(newDoc.id));
+    }
+  }
+
+  function handleShare(email) {
+    console.log("email: ", email)
+    if (!isEmpty(activeTabID)) {
+      firestore
+        .collection('tabs-0')
+        .doc(activeTabID)
+        .update(firestore.FieldValue.arrayUnion(email)
+        )
     }
   }
 
@@ -58,14 +68,24 @@ function App({ auth, ...props }) {
       </div>
       <div>
         {shareModal &&
-          <div className={"backdrop"} onClick={(e) => { setShareModal(false) }}>
-            <div className="share-modal">
+          <div className={"backdrop"} onClick={(e) => {
+            setShareModal(false)
+          }}>
+            <div
+              className="share-modal"
+              onClick={e => e.stopPropagation()}>
               Enter email of user to share with:
               <input
                 className='email-input'
                 type='text'
                 value={emailInput}
-                onChange={e => seteEmailInput(e.target.value)}
+                onFocus={e => {
+                  console.log('stopped propogation')
+                  e.stopPropagation();
+                }}
+                onChange={e => {
+                  seteEmailInput(e.target.value)
+                }}
               >
               </input>
               <div className="alert-buttons">
@@ -73,7 +93,7 @@ function App({ auth, ...props }) {
                   aria-label={'cancel share task list'}
                   className={"alert-button alert-cancel"}
                   type={"button"}
-                  onClick={() => {setShareModal(false)}}>
+                  onClick={() => { setShareModal(false) }}>
                   Cancel
                 </button>
                 <button
@@ -83,7 +103,7 @@ function App({ auth, ...props }) {
                   onClick={
                     () => {
                       setShareModal(false);
-                      /* add email to task list usersSharedWith */
+                      handleShare(emailInput);
                     }
                   }>
                   Share
@@ -94,7 +114,7 @@ function App({ auth, ...props }) {
       </div>
       <div className="footer">
         <ol className="tab-list">
-          {!isEmpty(tabs)?Object.entries(tabs).map(([id, tab]) => {
+          {!isEmpty(tabs) ? Object.entries(tabs).map(([id, tab]) => {
             if (tab) {
               return <Tab
                 key={id}
@@ -103,7 +123,7 @@ function App({ auth, ...props }) {
                 setModal={setModal}
               />
             }
-          }):''}
+          }) : ''}
           <li className="new-tab">
             <input
               className="new-tab-input"

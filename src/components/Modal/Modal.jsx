@@ -10,7 +10,10 @@ function Modal({cancelText, onCancel, confirmText, onConfirm, onClose, children}
 
   return (
     <div className={"backdrop"} onClick={onClose}>
-      <div className="modal">
+      <div
+        className="modal"
+        onClick={e => e.stopPropagation()}
+      >
         {children}
         <div className="alert-buttons">
           <button 
