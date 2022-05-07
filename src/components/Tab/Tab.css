@@ -6,7 +6,9 @@
     margin-bottom: -1px;
     width: 200px;
     padding: 0.5rem 0.75rem;
-    border: solid white; /*White with width to reserve space for active gray border*/
+    border-top: none;
+    border-right: solid white;
+    /* border: solid white; White with width to reserve space for active gray border */
     border-width: 1px 1px 1px;
     align-items: center;
 }

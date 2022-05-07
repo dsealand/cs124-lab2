@@ -1,13 +1,32 @@
 import React from 'react';
 import './NewListItem.css';
 import { FaPencilAlt } from 'react-icons/fa';
+import { useFirestore } from 'react-redux-firebase';
+import { getActiveTabID } from '../../selectors';
+import constants from '../../constants'
 
 function NewListItem(props) {
+  const firestore = useFirestore();
+  const activeTab = getActiveTabID();
+
+  function handleNewTask(task) {
+    const updated = new Date();
+    firestore
+      .collection(constants.TABS_COLLECTION)
+      .doc(activeTab)
+      .collection(constants.TASKS_COLLECTION)
+      .doc()
+      .set({
+        text: task,
+        isCompleted: false,
+        priority: 1,
+        updated: updated.toISOString()
+      });
+  }
 
   function handleBlur(e) {
     if (e.target.value !== "") {
-      props.onAddNewTask(e.target.value);
-      console.log(e.target.value);
+      handleNewTask(e.target.value);
       document.getElementById("newTaskInput").value = "";
     }
   }
@@ -33,7 +52,7 @@ function NewListItem(props) {
         placeholder="Create new task"
         onBlur={handleBlur}
         onKeyPress={(e) => {
-          if (e.key === 'Enter') {
+          if (constants.ARIA_KEYS.includes(e.key)) {
             e.target.blur()
           }
         }}
