@@ -4,18 +4,30 @@ import { FaWindowClose } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { useFirestore } from "react-redux-firebase";
 import { setActiveTabID } from '../../activeSlice';
-import { getActiveTabID } from '../../selectors';
+import { getActiveTabID, getTasksByTabID } from '../../selectors';
+import constants from '../../constants'
 
 function Tab(props) {
 
   const firestore = useFirestore();
   const activeTab = getActiveTabID();
   const dispatch = useDispatch();
+  const tasks = getTasksByTabID(props.id);
 
-  function deleteTab(id) {
+
+  function deleteTab() {
+
+    for (const taskID in tasks) {
+      firestore
+        .collection(constants.TABS_COLLECTION)
+        .doc(props.id)
+        .collection(constants.TASKS_COLLECTION)
+        .doc(taskID).delete();
+    }
+
     firestore
-      .collection("tabs-0")
-      .doc(id).delete();
+      .collection(constants.TABS_COLLECTION)
+      .doc(props.id).delete();
     dispatch(setActiveTabID(null))
   }
 
@@ -28,7 +40,7 @@ function Tab(props) {
     onClose: () => (props.setModal({show:false})),
     onCancel: () => (props.setModal({show:false})),
     cancelText: "Cancel",
-    onConfirm: () => deleteTab(props.id),
+    onConfirm: deleteTab,
     confirmText: "OK",
     children: `Delete ${props.label} tab?`
     }
@@ -46,7 +58,7 @@ function Tab(props) {
           selectTab(props.id)
       }}
       onKeyDown={(e) => {
-        if (e.keyCode === 32 || e.keyCode === 13) e.target.click()
+        if (constants.ARIA_KEYS.includes(e.key)) e.target.click()
       }}
       aria-label={`Select ${props.label} tab`}>
       <div
