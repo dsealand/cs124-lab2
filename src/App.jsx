@@ -46,7 +46,7 @@ function App({ auth, ...props }) {
     console.log("email: ", typeof(email))
     if (!isEmpty(activeTabID)) {
       firestore
-        .collection('tabs-0')
+        .collection(constants.TABS_COLLECTION)
         .doc(activeTabID)
         .update({sharedUsers: firestore.FieldValue.arrayUnion(email)}
         )
