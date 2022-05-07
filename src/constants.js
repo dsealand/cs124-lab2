@@ -1,8 +1,8 @@
-const TABS_COLLECTION = "tabs-1";
+const TABS_COLLECTION = "tabs-0";
 const TASKS_COLLECTION = "tasks";
 const SHARED_USERS = "sharedUsers";
 
-const ARIA_KEYCODES = [13, 32];
+const ARIA_KEYS = ["Enter"];
 
 const ERROR_MESSAGES = {
   "auth/invalid-email": "This email address is not valid. Please try again.",
@@ -14,6 +14,7 @@ const ERROR_MESSAGES = {
 export default {
   TABS_COLLECTION,
   TASKS_COLLECTION,
-  ARIA_KEYCODES,
+  SHARED_USERS,
+  ARIA_KEYS,
   ERROR_MESSAGES
 }

@@ -16,6 +16,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import activeReducer from './activeSlice';
 import TestComponent from './TestComponent';
 import App from './App';
+import AuthWrapper from './AuthWrapper';
 
 const store = configureStore({
   reducer: {
@@ -58,7 +59,7 @@ const rrfProps = {
 ReactDOM.render(
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
-        <App/>
+        <AuthWrapper/>
       </ReactReduxFirebaseProvider>
     </Provider>,
   document.getElementById('root')

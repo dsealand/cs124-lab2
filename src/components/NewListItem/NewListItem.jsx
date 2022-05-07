@@ -3,6 +3,7 @@ import './NewListItem.css';
 import { FaPencilAlt } from 'react-icons/fa';
 import { useFirestore } from 'react-redux-firebase';
 import { getActiveTabID } from '../../selectors';
+import constants from '../../constants'
 
 function NewListItem(props) {
   const firestore = useFirestore();
@@ -11,9 +12,9 @@ function NewListItem(props) {
   function handleNewTask(task) {
     const updated = new Date();
     firestore
-      .collection('tabs-0')
+      .collection(constants.TABS_COLLECTION)
       .doc(activeTab)
-      .collection('tasks')
+      .collection(constants.TASKS_COLLECTION)
       .doc()
       .set({
         text: task,
@@ -51,7 +52,7 @@ function NewListItem(props) {
         placeholder="Create new task"
         onBlur={handleBlur}
         onKeyPress={(e) => {
-          if (e.key === 'Enter') {
+          if (constants.ARIA_KEYS.includes(e.key)) {
             e.target.blur()
           }
         }}

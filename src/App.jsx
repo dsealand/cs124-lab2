@@ -3,18 +3,19 @@ import React from 'react';
 import { Header, Tab, ListContainer, Modal, Login, Register } from './components';
 import { useState } from 'react';
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
-import { useDispatch } from 'react-redux';
-import { useFirestore, isLoaded, isEmpty } from 'react-redux-firebase';
-import { getAllTabs, getActiveTabID, getAuth } from './selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFirestore, useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { getSharedTabs, getAllTabs, getActiveTabID, getAuth } from './selectors';
 import { setActiveTabID } from './activeSlice'
+import constants from './constants';
 
-function App(props) {
-  const [modal, setModal] = useState({show: false})
+function App({auth, ...props}) {
+  const [modal, setModal] = useState({show: false});
   const firestore = useFirestore();
-  const tabs = getAllTabs();
   const dispatch = useDispatch();
+
+  const tabs = getSharedTabs(auth.email);
   const activeTabID = getActiveTabID();
-  const auth = getAuth();
 
   if (!isLoaded(tabs)) {
     return <p>Loading</p>
@@ -30,11 +31,13 @@ function App(props) {
     if (e.target.value !== "") {
       const created = new Date();
       const newDoc = firestore
-        .collection("tabs-0")
+        .collection(constants.TABS_COLLECTION)
         .doc()
       newDoc.set({
+          owner: auth.email,
           name: e.target.value,
           created: created.toISOString(),
+          sharedUsers: [auth.email]
         })
       document.getElementById("newTabInput").value = "";
       dispatch(setActiveTabID(newDoc.id));
@@ -83,7 +86,7 @@ function App(props) {
               onBlur={handleBlur}
               autoComplete="off"
               onKeyPress={(e) => {
-                if (e.key === 'Enter') {
+                if (constants.ARIA_KEYS.includes(e.key)) {
                   e.target.blur()
                 }
               }}

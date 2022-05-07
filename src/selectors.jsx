@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import constants from './constants'
@@ -45,17 +45,22 @@ export const getTabByID = (tabID) => {
   return useSelector(state => state.firestore.data[tabID]);
 }
 
-export const getSharedTabIDsByUserID = (userID) => {
-  useFirestoreConnect([{ collection: tabsCollection,
-    where: [[sharedUsers, "array-contains", userID]]
+export const getSharedTabs = (email) => {
+  // console.log(email)
+  useFirestoreConnect([{ 
+    collection: tabsCollection,
+    where: [sharedUsers, "array-contains", email]
   }]);
 
-  return useSelector(state => {
-    const sharedTabs = Object.entries(state.firestore.data[tabsCollection]).filter(
-      ([id,tab]) => tab.sharedUsers.contains(userID)
-    );
-    return sharedTabs.map(t => t[0]);
-  });
+  return useSelector(state => (state.firestore.data[tabsCollection]));
+
+  // return useSelector(state => {
+  //   if (!(state.firestore.data[tabsCollection])) return [];
+  //   const sharedTabs = Object.entries(state.firestore.data[tabsCollection]).filter(
+  //     ([id,tab]) => tab.sharedUsers.contains(auth.email)
+  //   );
+  //   return sharedTabs.map(t => t[0]);
+  // });
 }
 
 export const getAllTabs = () => {

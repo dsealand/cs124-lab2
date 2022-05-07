@@ -6,7 +6,9 @@ import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-
 import { useDispatch } from 'react-redux';
 import { useFirestore, isLoaded, isEmpty } from "react-redux-firebase";
 import { getSortOrder, getShowCompleted, getActiveTabID, getTasksByTabID, getAuth } from '../../selectors';
-import { setSortOrder, setShowCompleted } from '../../activeSlice'
+import { setSortOrder, setShowCompleted } from '../../activeSlice';
+
+import constants from '../../constants'
 
 function SortLabel({ field, name }) {
 
@@ -89,9 +91,9 @@ function Header({setModal}) {
     for (const task of tasks) {
       if (task.isCompleted) {
         firestore
-          .collection("tabs-0")
+          .collection(constants.TABS_COLLECTION)
           .doc(activeTabID)
-          .collection("tasks")
+          .collection(constants.TASKS_COLLECTION)
           .doc(task.id)
           .delete()
       }
