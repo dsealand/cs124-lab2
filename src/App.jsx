@@ -64,38 +64,35 @@ function App({ auth, ...props }) {
             {modal.children}
           </Modal>}
       </div>
-      <div className="share-modal">
+      <div>
         {shareModal &&
           <div className={"backdrop"} onClick={(e) => { setShareModal(false) }}>
-            <div className="modal">
+            <div className="share-modal">
               Enter email of user to share with:
               <input
+                className='email-input'
                 type='text'
                 value={emailInput}
                 onChange={e => seteEmailInput(e.target.value)}
-                >
+              >
               </input>
               <div className="alert-buttons">
                 <button
                   aria-label={'cancel share task list'}
                   className={"alert-button alert-cancel"}
                   type={"button"}
-                  onClick={() => {
-                    () => {
-                      setShareModal(false)
-                    };
+                  onClick={(e) => {
+                    setShareModal(false)
                   }}>
                   Cancel sharing
                 </button>
                 <button
                   aria-label={'confirm share task list'}
-                  className={"alert-button alert-ok"}
+                  className={"alert-button alert-ok-share"}
                   type={"button"}
-                  onClick={() => {
-                    () => {
-                      setShareModal(false);
-                      /* add email to task list usersSharedWith */
-                    }
+                  onClick={(e) => {
+                    setShareModal(false);
+                    /* add email to task list usersSharedWith */
                   }}>
                   Confirm sharing
                 </button>
