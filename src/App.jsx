@@ -5,11 +5,10 @@ import { useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { useFirestore, isLoaded, isEmpty } from 'react-redux-firebase';
-import { getSharedTabs, getAllTabs, getActiveTabID } from './selectors';
+import { getSharedTabs, getActiveTabID } from './selectors';
 import { setActiveTabID } from './activeSlice';
 import { FaUser } from 'react-icons/fa';
 import constants from './constants';
-import { act } from 'react-dom/test-utils';
 
 function App({ auth, ...props }) {
   const [modal, setModal] = useState({ show: false });
@@ -125,6 +124,7 @@ function App({ auth, ...props }) {
                 setModal={setModal}
               />
             }
+            return ''
           }) : ''}
           <li className="new-tab">
             <input

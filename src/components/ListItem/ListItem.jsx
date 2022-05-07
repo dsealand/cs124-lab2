@@ -4,7 +4,6 @@ import './ListItem.css';
 import constants from '../../constants';
 
 import { useFirestore } from 'react-redux-firebase';
-import { getActiveTabID } from '../../selectors';
 
 function ListItem({id, isCompleted, priority, activeTab, ...props}) {
   const [isEditing, setIsEditing] = useState(false);

@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { FaRegTrashAlt, FaRegEye, FaRegEyeSlash, FaSortAmountDown } from 'react-icons/fa';
 
 import { useDispatch } from 'react-redux';
-import { useFirestore, useFirebase, isLoaded, isEmpty } from "react-redux-firebase";
-import { getSortOrder, getShowCompleted, getActiveTabID, getTasksByTabID, getAuth } from '../../selectors';
+import { useFirestore, useFirebase } from "react-redux-firebase";
+import { getSortOrder, getShowCompleted, getActiveTabID, getTasksByTabID } from '../../selectors';
 import { setSortOrder, setShowCompleted } from '../../activeSlice';
 
 import constants from '../../constants'
@@ -52,10 +52,9 @@ function Header({setModal}) {
     "text": "Alphabetical",
     "priority": "Priority",
   };
-  const [field, dir] = getSortOrder();
+  const field = getSortOrder()[0];
   const isShowCompleted = getShowCompleted();
   const activeTabID = getActiveTabID();
-  const auth = getAuth();
 
   const firestore = useFirestore();
   const firebase = useFirebase();
