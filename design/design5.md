@@ -105,6 +105,10 @@ Sign-Up Form:
 
 <img src="sign_up.png" width="300">
 
+Once logged-in, if the user wishes to log out, they simply click on the noteify logo at the top, and are presented with a log-out modal:
+
+<img src="log_out.png" width="300">
+
 ### Sharing (NEW FEATURE)
 
 In being able to log into an account, we gave users the ability to privately view and edit only their own task lists, and this also opens up the opportunity for a user to privately share task lists with another user, and gives them editing ability. Here are the rules of our sharing system:
