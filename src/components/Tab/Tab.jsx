@@ -4,31 +4,41 @@ import { FaWindowClose } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { useFirestore } from "react-redux-firebase";
 import { setActiveTabID } from '../../activeSlice';
-import { getActiveTabID, getTasksByTabID } from '../../selectors';
+import { getActiveTabID, getTasksByTabID, getAuth } from '../../selectors';
 import constants from '../../constants'
 
 function Tab(props) {
-
   const firestore = useFirestore();
   const activeTab = getActiveTabID();
   const dispatch = useDispatch();
   const tasks = getTasksByTabID(props.id);
+  const auth = getAuth();
 
 
   function deleteTab() {
+    if (auth.email === props.owner) {
 
-    for (const taskID in tasks) {
+      for (const taskID in tasks) {
+        firestore
+          .collection(constants.TABS_COLLECTION)
+          .doc(props.id)
+          .collection(constants.TASKS_COLLECTION)
+          .doc(taskID).delete();
+        }
+        firestore
+          .collection(constants.TABS_COLLECTION)
+          .doc(props.id).delete();
+    }
+    else {
       firestore
         .collection(constants.TABS_COLLECTION)
         .doc(props.id)
-        .collection(constants.TASKS_COLLECTION)
-        .doc(taskID).delete();
+        .update({
+          sharedUsers: firestore.FieldValue.arrayRemove(auth.email)
+        })
     }
 
-    firestore
-      .collection(constants.TABS_COLLECTION)
-      .doc(props.id).delete();
-    dispatch(setActiveTabID(null))
+    dispatch(setActiveTabID(null));
   }
 
   function selectTab(id) {

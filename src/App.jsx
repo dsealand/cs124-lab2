@@ -121,6 +121,7 @@ function App({ auth, ...props }) {
                 key={id}
                 id={id}
                 label={tab.name}
+                {...tab}
                 setModal={setModal}
               />
             }
