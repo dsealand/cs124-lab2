@@ -6,7 +6,7 @@ import { useFirestore } from "react-redux-firebase";
 import { setActiveTabID } from '../../activeSlice';
 import { getActiveTabID } from '../../selectors';
 
-export default function Tab(props) {
+function Tab(props) {
 
   const firestore = useFirestore();
   const activeTab = getActiveTabID();
@@ -63,3 +63,5 @@ export default function Tab(props) {
     </li>
   )
 }
+
+export default Tab;

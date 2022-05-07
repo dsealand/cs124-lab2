@@ -1,9 +1,9 @@
 import './App.css';
 import React from 'react';
-import Header from './Header';
-import { Tab } from './Tab';
-import ListContainer from './ListContainer';
-import Modal from './Modal';
+import Header from './components/Header/Header';
+import Tab from './components/Tab/Tab';
+import ListContainer from './components/ListContainer/ListContainer';
+import Modal from './components/Modal/Modal';
 import { useState, useEffect } from 'react';
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import { initializeApp } from "firebase/app";
