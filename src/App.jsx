@@ -9,6 +9,7 @@ import { getSharedTabs, getAllTabs, getActiveTabID } from './selectors';
 import { setActiveTabID } from './activeSlice';
 import { FaUser } from 'react-icons/fa';
 import constants from './constants';
+import { act } from 'react-dom/test-utils';
 
 function App({ auth, ...props }) {
   const [modal, setModal] = useState({ show: false });
@@ -42,12 +43,12 @@ function App({ auth, ...props }) {
   }
 
   function handleShare(email) {
-    console.log("email: ", email)
+    console.log("email: ", typeof(email))
     if (!isEmpty(activeTabID)) {
       firestore
         .collection('tabs-0')
         .doc(activeTabID)
-        .update(firestore.FieldValue.arrayUnion(email)
+        .update({sharedUsers: firestore.FieldValue.arrayUnion(email)}
         )
     }
   }
@@ -141,11 +142,12 @@ function App({ auth, ...props }) {
           </li>
         </ol>
         <div className="footer-user">
+          {!isEmpty(activeTabID) &&
           <button className="user-icon" onClick={(e) => {
             setShareModal(true)
           }}>
             <FaUser />
-          </button>
+          </button>}
         </div>
       </div>
     </div >
