@@ -44,9 +44,9 @@ function ListItem({id, isCompleted, priority, activeTab, ...props}) {
 
   function handleDelete(id) {
     firestore
-      .collection('tabs-0')
+      .collection(constants.TABS_COLLECTION)
       .doc(activeTab)
-      .collection('tasks')
+      .collection(constants.TASKS_COLLECTION)
       .doc(id)
       .delete()
   }
