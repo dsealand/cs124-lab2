@@ -38,7 +38,6 @@ body {
   background-color: #D8C3A5;
   display: flex;
   flex-direction: row;
-  
 }
 
 .content {
@@ -101,9 +100,13 @@ button {
   border-radius: 5pt;
 }
 
-.icon-user {
+.footer-user {
   flex: 2;
   text-align: center;
+  text-decoration: none;
+}
+
+.user-icon {
   vertical-align: middle;
 }
 
