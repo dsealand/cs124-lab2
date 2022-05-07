@@ -8,7 +8,6 @@ function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const firebase = useFirebase();
-    const auth = useSelector(state => state.firebase.auth);
     const authError = useSelector(state => state.firebase.authError)
 
     function emailRegister() {
@@ -16,12 +15,12 @@ function Register() {
     }
     
     return <div className="signUpForm">
-        {!isEmpty(authError) && <p>{constants.ERROR_MESSAGES[authError.code]}</p>}
+        {!isEmpty(authError) && <p>{constants.REGISTER_ERROR_MESSAGES[authError.code]}</p>}
         <h1>Sign up</h1>
         <input type="text" id='email' value={email} placeholder="Email"
                onChange={e=>setEmail(e.target.value)}/>
         <br/>
-        <input type="text" id='pw' value={password} placeholder="Password"
+        <input type="password" id='pw' value={password} placeholder="Password"
                onChange={e=>setPassword(e.target.value)}/>
         <br/>
         <button className="signButton" onClick={emailRegister}>

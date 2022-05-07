@@ -6,9 +6,10 @@ import { LandingPage } from './components'
 
 function AuthWrapper() {
   const auth = getAuth();
-  const firebase = useFirebase();
   // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-
+  if (!isLoaded(auth)) {
+    return <p>Loading</p>
+  }
   if (!isEmpty(auth)) {
     return <App auth={auth}/>
   }

@@ -57,17 +57,10 @@ function Header({setModal}) {
   const activeTabID = getActiveTabID();
   const auth = getAuth();
 
-  if (isEmpty(auth)) {
-    return (
-      <div id="header">
-        <h3 className="header-name">noteify</h3>
-      </div>)
-  }
-
   const firestore = useFirestore();
   const firebase = useFirebase();
   const dispatch = useDispatch();
-  const tasks = (isLoaded(activeTabID) && activeTabID) ? getTasksByTabID(activeTabID) : [];
+  const tasks = getTasksByTabID(activeTabID);
 
 
   function toggleSortMenu() {
@@ -88,7 +81,6 @@ function Header({setModal}) {
   }
 
   function deleteCompleted() {
-    // TODO: constant for collection name
     for (const task of tasks) {
       if (task.isCompleted) {
         firestore
