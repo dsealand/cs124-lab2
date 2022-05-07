@@ -11,7 +11,6 @@ function ListContainer(props) {
   const tasks = getTasksByTabID(activeTab, sortOrder);
   const showCompleted = getShowCompleted();
 
-  
  
   if (!isLoaded(tasks)) {
     return <p>Loading</p>
@@ -21,16 +20,17 @@ function ListContainer(props) {
     if (showCompleted || !task.isCompleted) {
       return <ListItem 
           key={id}
+          activeTab={activeTab}
           {...task}
         />
     }
-    return 
+    return null
   }
 
   return (
     <div id="container">
       {(isEmpty(tasks))?'':Object.entries(tasks).map(renderItem)}
-      <NewListItem/>
+      {activeTab?<NewListItem/>:<p>Select a tab below, or create a new one!</p>}
     </div>
   )
 }

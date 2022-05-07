@@ -6,11 +6,11 @@ import constants from '../../constants';
 import { useFirestore } from 'react-redux-firebase';
 import { getActiveTabID } from '../../selectors';
 
-function ListItem({id, isCompleted, priority, ...props}) {
+function ListItem({id, isCompleted, priority, activeTab, ...props}) {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(props.text);
 
-  const activeTab = getActiveTabID();
+  // const activeTab = getActiveTabID();
 
   const firestore = useFirestore();
 

@@ -1,11 +1,10 @@
 import './App.css';
 import React from 'react';
-import { Header, Tab, ListContainer, Modal, Login, Register } from './components';
+import { Header, Tab, ListContainer, Modal } from './components';
 import { useState } from 'react';
-import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
-import { useDispatch, useSelector } from 'react-redux';
-import { useFirestore, useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { getSharedTabs, getAllTabs, getActiveTabID, getAuth } from './selectors';
+import { useDispatch } from 'react-redux';
+import { useFirestore, isLoaded, isEmpty } from 'react-redux-firebase';
+import { getSharedTabs, getAllTabs, getActiveTabID } from './selectors';
 import { setActiveTabID } from './activeSlice'
 import constants from './constants';
 
@@ -21,10 +20,9 @@ function App({auth, ...props}) {
     return <p>Loading</p>
   }
 
-  if (isLoaded(tabs) && !activeTabID) {
-    dispatch(setActiveTabID(Object.keys(tabs)[0]))
-    return <p>Loading</p>
-  }
+  // if (isLoaded(tabs)) {
+  //   return <p>Loading</p>
+  // }
 
 
   function handleBlur(e) {
@@ -44,8 +42,6 @@ function App({auth, ...props}) {
     }
   }
 
-  console.log('auth', isEmpty(auth))
-
   return (
     <div className="App">
       <div className="header">
@@ -62,7 +58,7 @@ function App({auth, ...props}) {
       </div>
       <div className="footer">
         <ol className="tab-list">
-          {Object.entries(tabs).map(([id, tab]) => {
+          {!isEmpty(tabs)?Object.entries(tabs).map(([id, tab]) => {
             if (tab) {
               return <Tab
                 key={id}
@@ -71,7 +67,7 @@ function App({auth, ...props}) {
                 setModal={setModal}
               />
             }
-          })}
+          }):''}
           <li className="new-tab">
             <input
               className="new-tab-input"
